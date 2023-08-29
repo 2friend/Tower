@@ -43,6 +43,13 @@ class Tower : MonoBehaviour
     float atkspd;
     float atkspdCurrent;
 
+    public Tower(Bullet _bullet, GameObject _bulletObj, float _spd)
+    {
+        bulletType = _bullet;
+        bulletObj = _bulletObj;
+        atkspd = _spd;
+    }
+
     void Attack()
     {
         if (atkspdCurrent <= 0)
@@ -53,13 +60,40 @@ class Tower : MonoBehaviour
     }
 }
 
-class Bullet
-{
-    int dmg;
-    float speed;
-}
-
 class Enemy
 {
+    int maxHp;
+    int currHp;
 
+    public Enemy(int _hp)
+    {
+        currHp = maxHp = _hp;
+    }
+
+    void TakeDamage(Bullet bullet)
+    {
+        if (currHp - bullet.dmg <= 0)
+            Die();
+        else
+            currHp -= bullet.dmg;
+    }
+
+    void Die()
+    {
+
+    }
+
+    
+}
+
+class Bullet
+{
+    public int dmg;
+    public float speed;
+
+    public Bullet(int _dmg, float _spd)
+    {
+        dmg = _dmg;
+        speed = _spd;
+    }
 }
