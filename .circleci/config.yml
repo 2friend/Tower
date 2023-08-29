@@ -7,18 +7,40 @@ jobs:
 
     steps:
       - checkout
+
+      # Установка Unity Hub
       - run:
-        name: List Unity Hub Contents
-        command: |
-          ls -la /opt/Unity/Hub
-          
-      # Установка Unity Hub и сборка WebGL
+          name: Install Unity Hub
+          command: |
+            curl -o UnityHub.AppImage https://public-cdn.cloud.unity3d.com/hub/prod/UnityHub.AppImage
+            chmod +x UnityHub.AppImage
+            ./UnityHub.AppImage -- --install-location /opt/UnityHub
+
+      # Вывод содержимого папки с Unity Hub
+      - run:
+          name: List Unity Hub Contents
+          command: |
+            ls -la /opt/Unity/Hub
+
+      # Вывод содержимого папки с конкретной версией Unity
+      - run:
+          name: List Unity Editor Contents
+          command: |
+            ls -la /opt/Unity/Hub/Editor/2022.3.7f1/Editor
+
+      # Вывести текущий рабочий каталог
+      - run:
+          name: Print Current Directory
+          command: |
+            pwd
+
+      # Выполнение сборки WebGL проекта
       - run:
           name: Build Unity Project for WebGL
           command: |
-            APPRUN_1="--appimage-extract-and-run" /opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity \
+            /opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity \
               -batchmode \
-              -projectPath /path/to/your/project \
+              -projectPath /home/circleci/project \
               -executeMethod BuildScript.BuildWebGL
 
 workflows:
