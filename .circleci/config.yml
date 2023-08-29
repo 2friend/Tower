@@ -8,25 +8,11 @@ jobs:
     steps:
       - checkout
 
-      # Установка Unity Hub
-      - run:
-          name: Install Unity Hub
-          command: |
-            curl -o UnityHub.AppImage https://public-cdn.cloud.unity3d.com/hub/prod/UnityHub.AppImage
-            chmod +x UnityHub.AppImage
-            ./UnityHub.AppImage -- --install-location /opt/UnityHub
-
-      # Установка зависимостей Unity
-      - run:
-          name: Install Unity Dependencies
-          command: |
-            /opt/UnityHub/UnityHub.AppImage --headless install --version 2022.3.7f1 --module "Standard Assets, WebGL Build Support"
-
-      # Выполнение сборки WebGL проекта
+      # Установка Unity Hub и сборка WebGL
       - run:
           name: Build Unity Project for WebGL
           command: |
-            /opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity \
+            APPRUN_1="--appimage-extract-and-run" /opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity \
               -batchmode \
               -projectPath /path/to/your/project \
               -executeMethod BuildScript.BuildWebGL
