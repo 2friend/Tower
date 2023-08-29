@@ -3,33 +3,33 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/msvc:2019
+      - image: cimg/node:16.8
 
     steps:
       - checkout
 
-      # Установка зависимостей
+      # Установка Unity Hub
       - run:
-          name: Install Dependencies
+          name: Install Unity Hub
           command: |
-            apt-get update
-            apt-get install -y mingw-w64
+            curl -o UnityHub.AppImage https://public-cdn.cloud.unity3d.com/hub/prod/UnityHub.AppImage
+            chmod +x UnityHub.AppImage
+            ./UnityHub.AppImage -- --install-location /opt/UnityHub
 
-      # Настройка переменных окружения
+      # Установка зависимостей Unity
       - run:
-          name: Set Up Environment
+          name: Install Unity Dependencies
           command: |
-            export PATH="/usr/x86_64-w64-mingw32/bin:$PATH"
-            export CXX="x86_64-w64-mingw32-g++"
-            export CC="x86_64-w64-mingw32-gcc"
-            export UNITY_EXECUTABLE="/opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity"  # Замените на фактический путь
-            export PROJECT_PATH="/home/circleci/project"  # Путь к проекту
+            /opt/UnityHub/UnityHub.AppImage --headless install --version 2022.3.7f1 --module "Standard Assets, WebGL Build Support"
 
-      # Выполнение сборки проекта
+      # Выполнение сборки WebGL проекта
       - run:
-          name: Build Unity Project for Windows
+          name: Build Unity Project for WebGL
           command: |
-            "$UNITY_EXECUTABLE" -batchmode -projectPath "$PROJECT_PATH" -executeMethod BuildScript.Build
+            /opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity \
+              -batchmode \
+              -projectPath /path/to/your/project \
+              -executeMethod BuildScript.BuildWebGL
 
 workflows:
   version: 2
