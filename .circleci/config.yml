@@ -1,7 +1,4 @@
-- run:
-    name: Print Current Directory
-    command: |
-      pwd
+version: 2.1
 
 jobs:
   build:
@@ -12,17 +9,30 @@ jobs:
       - checkout
 
       # Установка зависимостей
+      - run:
+          name: Install Dependencies
+          command: |
+            apt-get update
+            apt-get install -y mingw-w64
 
+      # Настройка переменных окружения
       - run:
           name: Set Up Environment
           command: |
             export PATH="/usr/x86_64-w64-mingw32/bin:$PATH"
             export CXX="x86_64-w64-mingw32-g++"
             export CC="x86_64-w64-mingw32-gcc"
-            export UNITY_EXECUTABLE="/opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity"
-            export PROJECT_PATH="/home/circleci/project"
+            export UNITY_EXECUTABLE="/opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity"  # Замените на фактический путь
+            export PROJECT_PATH="/home/circleci/project"  # Путь к проекту
 
+      # Выполнение сборки проекта
       - run:
           name: Build Unity Project for Windows
           command: |
             "$UNITY_EXECUTABLE" -batchmode -projectPath "$PROJECT_PATH" -executeMethod BuildScript.Build
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
