@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: unityci/editor:2022.3.7f1-base-2
+      - image: unityci/editor:2022.3.7f1-windows-mono-2
 
     steps:
       - checkout
