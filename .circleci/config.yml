@@ -2,11 +2,7 @@
     name: Print Current Directory
     command: |
       pwd
-Настройка переменных окружения:
-Когда вы определите абсолютные пути к Unity Editor и к вашему проекту, вы можете настроить переменные окружения в конфигурации CircleCI:
 
-yaml
-Copy code
 jobs:
   build:
     docker:
