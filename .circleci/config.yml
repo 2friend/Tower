@@ -1,18 +1,32 @@
-version: 2.1
+- run:
+    name: Print Current Directory
+    command: |
+      pwd
+Настройка переменных окружения:
+Когда вы определите абсолютные пути к Unity Editor и к вашему проекту, вы можете настроить переменные окружения в конфигурации CircleCI:
 
+yaml
+Copy code
 jobs:
   build:
     docker:
-      - image: unityci/editor:2022.3.7f1-windows-mono-2
+      - image: cimg/msvc:2019
 
     steps:
       - checkout
-      - run:
-          name: Build Unity Project
-          command: unity-editor -batchmode -projectPath /root/project -executeMethod BuildScript.Build
 
-workflows:
-  version: 2
-  build:
-    jobs:
-      - build
+      # Установка зависимостей
+
+      - run:
+          name: Set Up Environment
+          command: |
+            export PATH="/usr/x86_64-w64-mingw32/bin:$PATH"
+            export CXX="x86_64-w64-mingw32-g++"
+            export CC="x86_64-w64-mingw32-gcc"
+            export UNITY_EXECUTABLE="/opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity"
+            export PROJECT_PATH="/home/circleci/project"
+
+      - run:
+          name: Build Unity Project for Windows
+          command: |
+            "$UNITY_EXECUTABLE" -batchmode -projectPath "$PROJECT_PATH" -executeMethod BuildScript.Build
