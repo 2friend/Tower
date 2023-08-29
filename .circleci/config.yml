@@ -1,28 +1,18 @@
 version: 2.1
-setup: true
-orbs:
-  orb-tools: circleci/orb-tools@12.0
-  shellcheck: circleci/shellcheck@3.1
 
-filters: &filters
-  tags:
-    only: /.*/
+jobs:
+  build:
+    docker:
+      - image: unityci/editor:latest
+
+    steps:
+      - checkout
+      - run:
+          name: Build Unity Project
+          command: unity-editor -batchmode -projectPath /root/project -executeMethod BuildScript.Build
 
 workflows:
-  lint-pack:
+  version: 2
+  build:
     jobs:
-      - orb-tools/lint:
-          filters: *filters
-      - orb-tools/pack:
-          filters: *filters
-      - orb-tools/review:
-          exclude: RC010
-          filters: *filters
-      - shellcheck/check:
-          filters: *filters
-      - orb-tools/continue:
-          orb_name: unity
-          pipeline_number: << pipeline.number >>
-          vcs_type: << pipeline.project.type >>
-          requires: [orb-tools/lint, orb-tools/pack, orb-tools/review, shellcheck/check]
-          filters: *filters
+      - build
