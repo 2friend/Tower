@@ -3,52 +3,29 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/node:16.8
+      - image: ubuntu-2022.3.7f1-webgl-2.0.0
 
     steps:
       - checkout
 
-      # Установка зависимостей для Unity Hub
-      - run:
-          name: Install Unity Hub Dependencies
-          command: |
-            apt-get update -y
-            apt-get install -y libnss3
+      # Установка зависимостей для Unity (если необходимо)
+      # - run:
+      #     name: Install Unity Dependencies
+      #     command: |
+      #       apt-get update
+      #       apt-get install -y some_dependency
 
-      # Установка Unity Hub
+      # Вывод содержимого рабочей директории (для отладки)
       - run:
-          name: Install Unity Hub
+          name: List Working Directory
           command: |
-            curl -o UnityHub.AppImage https://public-cdn.cloud.unity3d.com/hub/prod/UnityHub.AppImage
-            chmod +x UnityHub.AppImage
-            ./UnityHub.AppImage --appimage-extract-and-run -- --install-location /opt/UnityHub
+            ls -la
 
-      # Вывод содержимого папки с Unity Hub
-      - run:
-          name: List Unity Hub Contents
-          command: |
-            ls -la /opt/Unity/Hub
-
-      # Вывод содержимого папки с конкретной версией Unity
-      - run:
-          name: List Unity Editor Contents
-          command: |
-            ls -la /opt/Unity/Hub/Editor/2022.3.7f1/Editor
-
-      # Вывести текущий рабочий каталог
-      - run:
-          name: Print Current Directory
-          command: |
-            pwd
-
-      # Выполнение сборки WebGL проекта
+      # Сборка Unity WebGL проекта
       - run:
           name: Build Unity Project for WebGL
           command: |
-            /opt/Unity/Hub/Editor/2022.3.7f1/Editor/Unity \
-              -batchmode \
-              -projectPath /home/circleci/project \
-              -executeMethod BuildScript.BuildWebGL
+            unity-editor -batchmode -projectPath $(pwd) -executeMethod BuildScript.BuildWebGL
 
 workflows:
   version: 2
