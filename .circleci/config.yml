@@ -7,7 +7,11 @@ jobs:
 
     steps:
       - checkout
-
+      - run:
+        name: List Unity Hub Contents
+        command: |
+          ls -la /opt/Unity/Hub
+          
       # Установка Unity Hub и сборка WebGL
       - run:
           name: Build Unity Project for WebGL
