@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Build Unity Project for WebGL
           command: |
-            unity-editor -batchmode -projectPath $(pwd) -executeMethod BuildScript.BuildWebGL
+            unity-editor -batchmode -projectPath $(pwd) -executeMethod Assets.src.Builds.BuildScript.BuildWebGL
 
 workflows:
   version: 2
