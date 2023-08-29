@@ -8,6 +8,13 @@ jobs:
     steps:
       - checkout
 
+      # Установка зависимостей для Unity Hub
+      - run:
+          name: Install Unity Hub Dependencies
+          command: |
+            apt-get update
+            apt-get install -y libnss3
+
       # Установка Unity Hub
       - run:
           name: Install Unity Hub
