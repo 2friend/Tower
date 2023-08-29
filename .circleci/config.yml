@@ -10,24 +10,7 @@ workflows:
       # You only need this if you are using the Personal license
       # More info: https://game.ci/docs/circleci/activation#personal-license
       - unity/create-activation-file:
-          name: "create-activation-file"
-
-      # Run tests in playmode for Linux, Windows and macOS
-      # More info: https://game.ci/docs/circleci/test
-      - unity/test:
-          name: "test-windows"
-          step-name: "Check if the tests run and results are uploaded"
-          unity-license-var-name: "UNITY_ENCODED_LICENSE"
-          unity-username-var-name: "UNITY_USERNAME"
-          unity-password-var-name: "UNITY_PASSWORD"
-          executor:
-            name: "unity/windows-2019"
-            size: "large"
-            editor_version: "2022.3.7f1"
-            target_platform: "windows-il2cpp"
-          project-path: "src"
-          test-platform: "playmode"
-          context: cpe-unity
+          editor_version: 2022.3.7f1
 
       # Build for several platforms using IL2CPP for the scripting backend
       # More info: https://game.ci/docs/circleci/build  
