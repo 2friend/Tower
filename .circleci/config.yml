@@ -10,12 +10,11 @@ jobs:
 
       # Установка Unity Hub
       - run:
-        name: Install Unity Hub
-        command: |
-          curl -o UnityHub.AppImage https://public-cdn.cloud.unity3d.com/hub/prod/UnityHub.AppImage
-          chmod +x UnityHub.AppImage
-          ./UnityHub.AppImage --appimage-extract-and-run -- --install-location /opt/UnityHub
-
+          name: Install Unity Hub
+          command: |
+            curl -o UnityHub.AppImage https://public-cdn.cloud.unity3d.com/hub/prod/UnityHub.AppImage
+            chmod +x UnityHub.AppImage
+            ./UnityHub.AppImage --appimage-extract-and-run -- --install-location /opt/UnityHub
 
       # Вывод содержимого папки с Unity Hub
       - run:
