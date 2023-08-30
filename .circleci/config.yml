@@ -21,3 +21,7 @@ workflows:
           build-target: StandaloneLinux64
           compress: true
           context: unity
+      - build:
+          filters:
+            branches:
+              ignore: "*"
