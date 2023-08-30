@@ -3,24 +3,10 @@ version: 2.1
 orbs:
   unity: game-ci/unity@1.6.0
 
-executors:
-  unity-executor:
-    docker:
-      - image: gameci/unity3d:2022.3.7f1
-
 workflows:
   build-unity-project:
     jobs:
       - unity/create-activation-file:
           editor_version: 2022.3.7f1
-      - unity/build:
-          executor: unity-executor
-          platform: standalone
-          target_platform: Linux
-          player_version: latest
-          build_name: MyUnityBuild
-          build_path: Builds/
-          project_path: .
-          build_options: "-batchmode -nographics"
       - store_artifacts:
           path: Builds/
