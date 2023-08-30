@@ -9,6 +9,7 @@ workflows:
       - unity/build:
           name: 'build-linux64-il2cpp'
           step-name: 'Build StandaloneLinux64'
+          unity-username-var-name: 'UNITY_ENCODED_LICENSE' 
           unity-username-var-name: 'UNITY_USERNAME'
           unity-password-var-name: 'UNITY_PASSWORD'
           executor:
