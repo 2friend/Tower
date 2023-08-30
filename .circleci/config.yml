@@ -11,6 +11,16 @@ workflows:
       # More info: https://game.ci/docs/circleci/activation#personal-license
       - unity/create-activation-file:
           editor_version: 2022.3.7f1
+      - unity/build:
+          platform: standalone
+          target_platform: Linux
+          player_version: latest
+          build_name: MyUnityBuild
+          build_path: Builds/
+          project_path: .
+          build_options: "-batchmode -nographics"
+      - store_artifacts:  # Добавляем шаг для сохранения артефакта
+          path: Builds/
 
       # Build for several platforms using IL2CPP for the scripting backend
       # More info: https://game.ci/docs/circleci/build  
