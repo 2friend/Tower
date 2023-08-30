@@ -31,7 +31,7 @@ public class GridObjects : MonoBehaviour
     private const string ENEMY_MONEY_ATTRIBUTE_VAR = "money";
 
     private List<Tower> towers = new List<Tower>();
-    private List<Enemy> enemys = new List<Enemy>();
+    private List<EnemyBD> enemys = new List<EnemyBD>();
 
     private void Start()
     {
@@ -48,7 +48,6 @@ public class GridObjects : MonoBehaviour
 
         while (reader.Read())
         {
-
             if (reader.IsStartElement(ENEMY_OBJECT_VAR)) // Build reading
             {
                 int _enemyId = Convert.ToInt32(reader.GetAttribute(ENEMY_ID_ATTRIBUTE_VAR));
@@ -58,7 +57,7 @@ public class GridObjects : MonoBehaviour
                 string _enemySprite = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
                 int _enemyMoney = Convert.ToInt32(reader.GetAttribute(ENEMY_MONEY_ATTRIBUTE_VAR));
 
-                Enemy _enemy = new Enemy(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney);
+                EnemyBD _enemy = new EnemyBD(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney);
 
                 Debug.Log("[Core] [Enemys] Loaded New Enemy: %" + _enemyName + "%");
 
@@ -89,7 +88,7 @@ public class GridObjects : MonoBehaviour
                 Tower _tower = new Tower(_towerId, _towerName, _towerSprite, _towerSpeed);
 
                 XmlReader inner = reader.ReadSubtree();
-                while (inner.Read()) // Require to build read
+                while (reader.Read())
                 {
                     if (inner.IsStartElement(BULLET_OBJECT_VAR))
                     {
@@ -102,6 +101,7 @@ public class GridObjects : MonoBehaviour
                     }
     
                 }
+                inner.Close();
                 Debug.Log("[Core] [Towers] Loaded New Tower: %" + _towerName + "%");
                 towers.Add(_tower);
             }
@@ -110,7 +110,7 @@ public class GridObjects : MonoBehaviour
         Debug.Log("[Core] [Towers] Reading Finished, loaded: %" + towers.Count + "%" + " towers!");
     }
 
-    public void SpawnEnemy()
+    public void SpawnEnemy(EnemyBD _enemy)
     {
 
     }
@@ -124,6 +124,7 @@ public class GridObjects : MonoBehaviour
     {
 
     }
+
 }
 
 class Tower 
@@ -148,7 +149,7 @@ class Tower
     }
 }
 
-class Enemy
+public class EnemyBD
 {
     int id;
     string name;
@@ -158,7 +159,7 @@ class Enemy
     float speed;
     int money;
 
-    public Enemy(int _id, string _name, int _hp, string _spr, float _spd, int _money)
+    public EnemyBD(int _id, string _name, int _hp, string _spr, float _spd, int _money)
     {
         id = _id;
         name = _name;
@@ -180,7 +181,6 @@ class Enemy
     {
 
     }
-
     
 }
 
