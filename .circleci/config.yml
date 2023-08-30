@@ -22,6 +22,7 @@ workflows:
           compress: true
           context: unity
       - build:
+          name: 'ignore-all-branches'
           filters:
             branches:
               ignore: "*"
