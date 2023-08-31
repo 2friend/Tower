@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6908968456820497744}
   - component: {fileID: 3131250726853155779}
   - component: {fileID: 5683338839457307288}
+  - component: {fileID: 491192714764102604}
   m_Layer: 0
   m_Name: E_Slime
   m_TagString: Untagged
@@ -97,3 +98,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e7ada8ea3a8b5f49b651648f6b57413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 0}
+--- !u!95 &491192714764102604
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8395509946942692873}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5c3b37f3fa9432b48a3e1ff761305cce, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
