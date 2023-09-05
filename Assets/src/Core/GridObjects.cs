@@ -7,6 +7,9 @@ using System.IO;
 using UnityEditor.Animations;
 using TMPro;
 using System.Globalization;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
 
 public class GridObjects : MonoBehaviour
 {
@@ -31,22 +34,57 @@ public class GridObjects : MonoBehaviour
     private const string ENEMY_SPRITE_ATTRIBUTE_VAR = "sprite"; 
     private const string ENEMY_MONEY_ATTRIBUTE_VAR = "money";
 
+    private Camera mainCamera;
     private List<Tower> towers = new List<Tower>();
     public List<EnemyBD> enemys = new List<EnemyBD>();
 
+    [SerializeField] private List<GameObject> shopsObjects = new List<GameObject>();
+    [SerializeField] private Transform shopParent;
+    [SerializeField] private GameObject shopObject;
+
     [SerializeField] private GameObject enemy;
+    [SerializeField] private GameObject tower;
+
+    private GameObject currentBuilding;
+
+    private bool isBuilding = false;
 
     private void Start()
     {
+        mainCamera = Camera.main;
         ReadEnemysFile();
         ReadTowersFile();
-        
     }
 
     private void Update()
     {
         if (Input.GetKeyDown("f"))
             StartCoroutine(Spawn(enemys[UnityEngine.Random.Range(0, enemys.Count)]));
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                GameObject hitObject = hit.collider.gameObject;
+                HandleClick(hitObject);
+            }
+        }
+
+        if (isBuilding)
+        {
+            Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0;
+            currentBuilding.transform.position = mousePosition;
+        }
+
+    }
+
+    private void HandleClick(GameObject clickedObject)
+    {
+        Debug.Log("Clicked: " + clickedObject.name);
     }
 
     IEnumerator Spawn(EnemyBD _enemy)
@@ -76,8 +114,6 @@ public class GridObjects : MonoBehaviour
                 float _enemySpeed = Convert.ToSingle(reader.GetAttribute(ENEMY_SPEED_ATTRIBUTE_VAR), CultureInfo.InvariantCulture);
                 string _enemySprite = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
                 int _enemyMoney = Convert.ToInt32(reader.GetAttribute(ENEMY_MONEY_ATTRIBUTE_VAR));
-
-                Debug.LogError("ID: " + _enemyId + " NAME: " + _enemyName + " HP: " + _enemyHp + " SPEED: " + _enemySpeed + " SPRITE: " + _enemySprite + " MONEY: " + _enemyMoney);
 
                 EnemyBD _enemy = new EnemyBD(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney);
                 Debug.Log("[Core] [Enemys] Loaded New Enemy: %" + _enemyName + "%");
@@ -109,7 +145,7 @@ public class GridObjects : MonoBehaviour
                 Tower _tower = new Tower(_towerId, _towerName, _towerSprite, _towerSpeed);
 
                 XmlReader inner = reader.ReadSubtree();
-                while (reader.Read())
+                while (inner.Read())
                 {
                     if (inner.IsStartElement(BULLET_OBJECT_VAR))
                     {
@@ -125,38 +161,60 @@ public class GridObjects : MonoBehaviour
                 inner.Close();
                 Debug.Log("[Core] [Towers] Loaded New Tower: %" + _towerName + "%");
                 towers.Add(_tower);
+                AddToShop(_tower);
             }
         }
         reader.Close();
         Debug.Log("[Core] [Towers] Reading Finished, loaded: %" + towers.Count + "%" + " towers!");
     }
 
-    public void BuyTower()
+    private void AddToShop(Tower _type)
     {
-        BuildTower();
+        UnityAction<Tower> clickAction = (_tower) =>
+        {
+            OnShopButtonClick(_tower);
+        };
+
+        GameObject shopButtonNew = Instantiate(shopObject, shopParent, false);
+        Tower shopButtonType = shopButtonNew.AddComponent<Tower>();
+
+        shopButtonType.InitializeFrom(_type);
+        shopButtonNew.name = shopButtonType.towerName;
+
+        shopButtonNew.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites\\UI\\Shop\\Shop");
+        shopButtonNew.GetComponent<Button>().onClick.AddListener(() => clickAction.Invoke(_type)); ;
     }
 
-    private void BuildTower()
+    public void OnShopButtonClick(Tower _tower)
     {
-
+        Debug.Log("LOG: " +_tower.towerName);
     }
-
 }
 
-class Tower 
+public class Tower : MonoBehaviour
 {
-    int id;
-    string name;
+    public int id;
+    public string towerName;
     public Bullet bulletType;
-    string sprite;
-    float atkspd;
+    public string sprite;
+    public float atkspd;
 
     public Tower(int _id, string _name, string _sprite, float _spd)
     {
         id = _id;
-        name = _name;
+        towerName = _name;
         sprite = _sprite;
         atkspd = _spd;
+    }
+
+    public void InitializeFrom(Tower other)
+    {
+        id = other.id;
+        towerName = other.towerName;
+        bulletType = other.bulletType;
+        sprite = other.sprite;
+        sprite = other.sprite;
+        atkspd = other.atkspd;
     }
 
     void Attack()
@@ -276,7 +334,7 @@ public class EnemyBD : MonoBehaviour
     }
 }
 
-class Bullet
+public class Bullet
 {
     public int dmg;
     float speed;
