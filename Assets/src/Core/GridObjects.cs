@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Xml;
 using System.IO;
+using UnityEditor.Animations;
 using TMPro;
 using System.Globalization;
 
@@ -31,12 +32,32 @@ public class GridObjects : MonoBehaviour
     private const string ENEMY_MONEY_ATTRIBUTE_VAR = "money";
 
     private List<Tower> towers = new List<Tower>();
-    private List<EnemyBD> enemys = new List<EnemyBD>();
+    public List<EnemyBD> enemys = new List<EnemyBD>();
+
+    [SerializeField] private GameObject enemy;
 
     private void Start()
     {
         ReadEnemysFile();
         ReadTowersFile();
+        
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown("f"))
+            StartCoroutine(Spawn(enemys[UnityEngine.Random.Range(0, enemys.Count)]));
+    }
+
+    IEnumerator Spawn(EnemyBD _enemy)
+    {
+        for (int i = 0; i <= 10; i++)
+        {
+            GameObject enemyObj = Instantiate(enemy);
+            EnemyBD enemyComp = enemyObj.AddComponent<EnemyBD>();
+            enemyComp.InitializeFrom(_enemy);
+            yield return new WaitForSeconds(1.1f);
+        }
     }
 
     private void ReadEnemysFile()
@@ -44,7 +65,6 @@ public class GridObjects : MonoBehaviour
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + ENEMY_FILE_PATH);
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
         Debug.Log("[Core] [Enemys] Reading Enemys File: " + FOLDER_PATH + "/" + ENEMY_FILE_PATH + ".xml");
-        enemys.Clear();
 
         while (reader.Read())
         {
@@ -53,12 +73,13 @@ public class GridObjects : MonoBehaviour
                 int _enemyId = Convert.ToInt32(reader.GetAttribute(ENEMY_ID_ATTRIBUTE_VAR));
                 string _enemyName = reader.GetAttribute(ENEMY_NAME_ATTRIBUTE_VAR);
                 int _enemyHp = Convert.ToInt32(reader.GetAttribute(ENEMY_HP_ATTRIBUTE_VAR));
-                float _enemySpeed = float.Parse(reader.GetAttribute(ENEMY_SPEED_ATTRIBUTE_VAR), CultureInfo.InvariantCulture);
+                float _enemySpeed = Convert.ToSingle(reader.GetAttribute(ENEMY_SPEED_ATTRIBUTE_VAR), CultureInfo.InvariantCulture);
                 string _enemySprite = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
                 int _enemyMoney = Convert.ToInt32(reader.GetAttribute(ENEMY_MONEY_ATTRIBUTE_VAR));
 
-                EnemyBD _enemy = new EnemyBD(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney);
+                Debug.LogError("ID: " + _enemyId + " NAME: " + _enemyName + " HP: " + _enemyHp + " SPEED: " + _enemySpeed + " SPRITE: " + _enemySprite + " MONEY: " + _enemyMoney);
 
+                EnemyBD _enemy = new EnemyBD(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney);
                 Debug.Log("[Core] [Enemys] Loaded New Enemy: %" + _enemyName + "%");
 
                 enemys.Add(_enemy);
@@ -110,11 +131,6 @@ public class GridObjects : MonoBehaviour
         Debug.Log("[Core] [Towers] Reading Finished, loaded: %" + towers.Count + "%" + " towers!");
     }
 
-    public void SpawnEnemy(EnemyBD _enemy)
-    {
-
-    }
-
     public void BuyTower()
     {
         BuildTower();
@@ -149,39 +165,115 @@ class Tower
     }
 }
 
-public class EnemyBD
+public class EnemyBD : MonoBehaviour
 {
-    int id;
-    string name;
-    int maxHp;
-    int currHp;
-    string sprite;
-    float speed;
-    int money;
+    private const string ANIMATORS_PATH = "Animations\\Enemys\\";
+
+    public int id;
+    public string enemyName;
+    public int maxHp;
+    public int currHp;
+    public string sprite;
+    public float speed;
+    public int money;
+    private int currentWaypointIndex = 0;
+
+    private Animator animator;
+
+    public GridTEmp grid;
 
     public EnemyBD(int _id, string _name, int _hp, string _spr, float _spd, int _money)
     {
         id = _id;
-        name = _name;
+        enemyName = _name;
         currHp = maxHp = _hp;
         sprite = _spr;
         speed = _spd;
         money = _money;
     }
 
-    void TakeDamage(Bullet bullet)
+    public void InitializeFrom(EnemyBD other)
     {
-        if (currHp - bullet.dmg <= 0)
-            Die();
+        id = other.id;
+        enemyName = other.enemyName;
+        currHp = other.currHp;
+        maxHp = other.maxHp;
+        sprite = other.sprite;
+        speed = other.speed;
+        money = other.money;
+    }
+
+    private void Start()
+    {
+        grid = GameObject.Find("Grid").GetComponent<GridTEmp>();
+        animator = GetComponent<Animator>();
+        InitializeEnemyType();
+        Debug.LogError(enemyName);
+    }
+
+    private void Update()
+    {
+        if (currentWaypointIndex < grid.waypoints.Count)
+        {
+            Transform targetWaypoint = grid.waypoints[currentWaypointIndex];
+
+            Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
+
+            animator.SetFloat("X", moveDirection.x);
+            animator.SetFloat("Y", moveDirection.y);
+
+            transform.Translate(moveDirection * speed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
+            {
+                currentWaypointIndex++;
+            }
+        }
         else
-            currHp -= bullet.dmg;
+        {
+            Destroy(this.gameObject);
+        }
     }
 
-    void Die()
+    public void TakingDamage(int _dmg)
+    {
+        if (currHp - _dmg > 0)
+        {
+            currHp -= _dmg;
+        }
+        else
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger("Die");
+    }
+
+    public void DestroyEnemy()
     {
 
     }
-    
+
+    void InitializeEnemyType()
+    {
+        if (animator != null)
+        {
+            RuntimeAnimatorController newController = Resources.Load<RuntimeAnimatorController>(ANIMATORS_PATH + enemyName + "\\" + "E_" + enemyName);
+            if (newController != null)
+            {
+                animator.runtimeAnimatorController = newController;
+            }
+            else
+            {
+            }
+        }
+        else
+        {
+        }
+    }
 }
 
 class Bullet
