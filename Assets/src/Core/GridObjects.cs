@@ -38,6 +38,8 @@ public class GridObjects : MonoBehaviour
     private List<Tower> towers = new List<Tower>();
     public List<EnemyBD> enemys = new List<EnemyBD>();
 
+    [SerializeField] private GridController grid;
+
     [SerializeField] private List<GameObject> shopsObjects = new List<GameObject>();
     [SerializeField] private Transform shopParent;
     [SerializeField] private GameObject shopObject;
@@ -45,9 +47,9 @@ public class GridObjects : MonoBehaviour
     [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject tower;
 
-    private GameObject currentBuilding;
+    public GameObject currentBuilding;
 
-    private bool isBuilding = false;
+    public bool isBuilding = false;
 
     private void Start()
     {
@@ -59,39 +61,29 @@ public class GridObjects : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown("f"))
-            StartCoroutine(Spawn(enemys[UnityEngine.Random.Range(0, enemys.Count)]));
+            StartCoroutine(Spawn(enemys[UnityEngine.Random.Range(0, enemys.Count)], 10));
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && isBuilding)
         {
             Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);
 
-            if (hit.collider != null)
+            if (hit.collider != null && !hit.collider.GetComponent<Node>().haveSomething)
             {
-                GameObject hitObject = hit.collider.gameObject;
-                HandleClick(hitObject);
+                isBuilding = false;
+                hit.collider.GetComponent<Node>().haveSomething = true;
+                currentBuilding.GetComponent<SpriteRenderer>().color = Color.white;
+                currentBuilding = null;
             }
+            
         }
-
-        if (isBuilding)
-        {
-            Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0;
-            currentBuilding.transform.position = mousePosition;
-        }
-
     }
 
-    private void HandleClick(GameObject clickedObject)
+    IEnumerator Spawn(EnemyBD _enemy, int count)
     {
-        Debug.Log("Clicked: " + clickedObject.name);
-    }
-
-    IEnumerator Spawn(EnemyBD _enemy)
-    {
-        for (int i = 0; i <= 10; i++)
+        for (int i = 0; i <= count; i++)
         {
-            GameObject enemyObj = Instantiate(enemy);
+            GameObject enemyObj = Instantiate(enemy, grid.waypoints[0]);
             EnemyBD enemyComp = enemyObj.AddComponent<EnemyBD>();
             enemyComp.InitializeFrom(_enemy);
             yield return new WaitForSeconds(1.1f);
@@ -187,7 +179,10 @@ public class GridObjects : MonoBehaviour
 
     public void OnShopButtonClick(Tower _tower)
     {
-        Debug.Log("LOG: " +_tower.towerName);
+        currentBuilding = Instantiate(tower);
+        isBuilding = true;
+        Tower towerType = currentBuilding.AddComponent<Tower>();
+        towerType.InitializeFrom(_tower);
     }
 }
 

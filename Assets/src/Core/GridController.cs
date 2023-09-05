@@ -29,7 +29,7 @@ public class GridController : MonoBehaviour
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 nodePosition = new Vector3(x, y, 0); 
+                Vector3 nodePosition = new Vector3(x-9, y-5, 0); 
                 GameObject newNode = Instantiate(nodePrefab, nodePosition, Quaternion.identity);
                 Node nodeComponent = newNode.AddComponent<Node>();
 
@@ -37,13 +37,14 @@ public class GridController : MonoBehaviour
                 {
                     nodeComponent.spriteRenderer.sprite = sprites[0];
                     waypoints.Add(newNode.transform);
+                    nodeComponent.haveSomething = true;
                 }
                 else
                 {
                     nodeComponent.spriteRenderer.sprite = sprites[1]; 
                 }
 
-                newNode.gameObject.name = "X: " + nodePosition.x + " Y: " + nodePosition.y;
+                newNode.gameObject.name = "X: " + x + " Y: " + y;
                 nodeComponent.x = x;
                 nodeComponent.y = y;
                 newNode.transform.SetParent(gameObject.transform);
