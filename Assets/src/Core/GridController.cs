@@ -10,6 +10,8 @@ public class GridController : MonoBehaviour
     public GameObject nodePrefab;
     public int gridSizeX, gridSizeY;
 
+    public List<Transform> waypoints;
+
     public GameObject[,] grid;
 
     private void Start()
@@ -33,7 +35,8 @@ public class GridController : MonoBehaviour
 
                 if (path.Contains(new Vector2Int(x, y)))
                 {
-                    nodeComponent.spriteRenderer.sprite = sprites[0]; 
+                    nodeComponent.spriteRenderer.sprite = sprites[0];
+                    waypoints.Add(newNode.transform);
                 }
                 else
                 {

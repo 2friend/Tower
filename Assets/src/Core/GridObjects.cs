@@ -238,7 +238,7 @@ public class EnemyBD : MonoBehaviour
 
     private Animator animator;
 
-    public GridTEmp grid;
+    public GridController grid;
 
     public EnemyBD(int _id, string _name, int _hp, string _spr, float _spd, int _money)
     {
@@ -263,10 +263,9 @@ public class EnemyBD : MonoBehaviour
 
     private void Start()
     {
-        grid = GameObject.Find("Grid").GetComponent<GridTEmp>();
+        grid = GameObject.Find("Grid").GetComponent<GridController>();
         animator = GetComponent<Animator>();
         InitializeEnemyType();
-        Debug.LogError(enemyName);
     }
 
     private void Update()
