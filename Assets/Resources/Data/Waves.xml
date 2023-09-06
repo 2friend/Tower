@@ -1,0 +1,10 @@
+<root>
+  <wave id="0">
+    <enemy enemy_type="Orc" count="10"/>
+    <enemy enemy_type="Cat" count="10"/>
+    <enemy enemy_type="Bee" count="10"/>
+  </wave>
+  <wave id="1">
+    <enemy enemy_type="Cat" count="10"/>
+  </wave>
+</root>

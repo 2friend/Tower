@@ -79,8 +79,9 @@ public class GridObjects : MonoBehaviour
         }
     }
 
-    IEnumerator Spawn(EnemyBD _enemy, int count)
+    public IEnumerator Spawn(EnemyBD _enemy, int count)
     {
+        Debug.Log("[Core] [Spawning] Start Spawning enemy: %" + _enemy.enemyName + "%. Count: %" + count + "%");
         for (int i = 0; i <= count; i++)
         {
             GameObject enemyObj = Instantiate(enemy, grid.waypoints[0]);
