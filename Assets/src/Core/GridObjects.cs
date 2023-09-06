@@ -39,6 +39,7 @@ public class GridObjects : MonoBehaviour
     public List<EnemyBD> enemys = new List<EnemyBD>();
 
     [SerializeField] private GridController grid;
+    [SerializeField] private WaveController waveController;
 
     [SerializeField] private List<GameObject> shopsObjects = new List<GameObject>();
     [SerializeField] private Transform shopParent;
@@ -82,13 +83,15 @@ public class GridObjects : MonoBehaviour
     public IEnumerator Spawn(EnemyBD _enemy, int count)
     {
         Debug.Log("[Core] [Spawning] Start Spawning enemy: %" + _enemy.enemyName + "%. Count: %" + count + "%");
-        for (int i = 0; i <= count; i++)
+        for (int i = 0; i < count; i++)
         {
             GameObject enemyObj = Instantiate(enemy, grid.waypoints[0]);
             EnemyBD enemyComp = enemyObj.AddComponent<EnemyBD>();
             enemyComp.InitializeFrom(_enemy);
+            waveController.aliveEnemys++;
             yield return new WaitForSeconds(1.1f);
         }
+        waveController.activeWave.startedWave = false;
     }
 
     private void ReadEnemysFile()
@@ -235,6 +238,7 @@ public class EnemyBD : MonoBehaviour
     private Animator animator;
 
     public GridController grid;
+    public WaveController waveController;
 
     public EnemyBD(int _id, string _name, int _hp, string _spr, float _spd, int _money)
     {
@@ -260,6 +264,7 @@ public class EnemyBD : MonoBehaviour
     private void Start()
     {
         grid = GameObject.Find("Grid").GetComponent<GridController>();
+        waveController = GameObject.Find("MainCamera").GetComponent<WaveController>();
         animator = GetComponent<Animator>();
         InitializeEnemyType();
     }
@@ -284,6 +289,7 @@ public class EnemyBD : MonoBehaviour
         }
         else
         {
+            waveController.aliveEnemys--;
             Destroy(this.gameObject);
         }
     }

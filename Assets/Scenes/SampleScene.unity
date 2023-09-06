@@ -404,6 +404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemys: []
   grid: {fileID: 905250956}
+  waveController: {fileID: 519420034}
   shopsObjects: []
   shopParent: {fileID: 365663303}
   shopObject: {fileID: 3859293001068440817, guid: 0e8eeb3ea92c19a44a72ea81114209ad, type: 3}
@@ -525,7 +526,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &812643769
 RectTransform:
   m_ObjectHideFlags: 0
@@ -707,7 +708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1138220427
 Transform:
   m_ObjectHideFlags: 0

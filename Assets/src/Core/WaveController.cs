@@ -24,16 +24,15 @@ public class WaveController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waveCounter;
 
     public List<Wave> waves = new List<Wave>();
-    List<EnemyBD> keysToRemove = new List<EnemyBD>();
-    private bool waveStarted;
+    public bool waveStarted;
     private int activeWaveId = -1;
-    private int aliveEnemys = 0;
-    private Wave activeWave;
+    public int aliveEnemys = 0;
+    public Wave activeWave;
 
     private void Start()
     {
         ReadWavesFile();
-        
+
     }
 
     private void Update()
@@ -41,12 +40,25 @@ public class WaveController : MonoBehaviour
         if (waveStarted)
         {
             activeWave = waves[activeWaveId];
-            if (activeWave.currentEnemysIndex < activeWave.enemysPerWave.Count)
+
+            if (!activeWave.startedWave && activeWave.currentEnemysIndex < activeWave.enemysPerWave.Count)
             {
-                activeWave.currentEnemysIndex++;
-                KeyValuePair<EnemyBD, int> waveDict = activeWave.enemysPerWave.ElementAt(activeWave.currentEnemysIndex);
-                StartCoroutine(SpawnEnemyWithDelay(waveDict.Key, waveDict.Value));
-                
+                activeWave.startedWave = true;
+                var enemyDict = activeWave.enemysPerWave[activeWave.currentEnemysIndex];
+                foreach (var kvp in enemyDict)
+                {
+                    EnemyBD enemy = kvp.Key;
+                    int count = kvp.Value;
+                    StartCoroutine(SpawnEnemyWithDelay(enemy, count));
+                }
+            }
+            else if (activeWave.currentEnemysIndex >= activeWave.enemysPerWave.Count)
+            {
+                if (aliveEnemys == 0)
+                {
+                    waveStarted = false;
+                    StartCoroutine(StartWaves());
+                }
             }
         }
     }
@@ -60,50 +72,43 @@ public class WaveController : MonoBehaviour
 
         while (reader.Read())
         {
-
             if (reader.IsStartElement(WAVE_OBJECT_VAR)) // Build reading
             {
                 int _waveId = Convert.ToInt32(reader.GetAttribute(WAVE_ID_ATTRIBUTE_VAR));
-
                 Wave _wave = new Wave(_waveId);
 
+                _wave.enemysPerWave = new Dictionary<int, Dictionary<EnemyBD, int>>();
+
                 XmlReader inner = reader.ReadSubtree();
-                while (inner.Read())
+                int index = 0;
+                while (inner.Read()) // Require to build read
                 {
                     if (inner.IsStartElement(ENEMY_OBJECT_VAR))
                     {
                         string _enemyType = inner.GetAttribute(ENEMY_TYPE_ATTRIBUTE_VAR);
                         int _enemyCount = Convert.ToInt32(inner.GetAttribute(ENEMY_COUNT_ATTRIBUTE_VAR));
-
+                        
                         foreach (EnemyBD _enemy in gridObjects.enemys)
                         {
                             if (_enemy.enemyName == _enemyType)
                             {
-                                _wave.enemysPerWave.TryAdd(_enemy, _enemyCount);
+                                _wave.enemysPerWave.Add(index, new Dictionary<EnemyBD, int>());
+                                _wave.enemysPerWave[index].Add(_enemy, _enemyCount);
                                 Debug.Log("[Core] [Waves] Added new enemy: %" + _enemy.enemyName + "% to Wave: %" + _wave.id + "%");
+                                index++;
                             }
                         }
                     }
-
                 }
-                
                 inner.Close();
-                Debug.Log("[Core] [Waves] Loaded New Wave: %" + _wave + "%. With enemys count: %" + _wave.enemysPerWave.Count + "%");
+
+                Debug.Log("[Core] [Waves] Loaded New Wave: %" + _wave.id + "%. With enemys count: %" + _wave.enemysPerWave.Count + "%");
                 waves.Add(_wave);
             }
         }
         reader.Close();
         Debug.Log("[Core] [Waves] Reading Finished, loaded: %" + waves.Count + "%" + " waves!");
         StartCoroutine(StartWaves());
-    }
-
-    private IEnumerator SpawnEnemyWithDelay(EnemyBD enemy, int count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            gridObjects.Spawn(enemy, count);
-            yield return new WaitForSeconds(.3f);
-        }
     }
 
     IEnumerator StartWaves()
@@ -114,22 +119,33 @@ public class WaveController : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
         }
         waveCounter.text = "";
-        activeWaveId = 0;
+        activeWaveId++;
         waveStarted = true;
     }
 
-    
+    private IEnumerator SpawnEnemyWithDelay(EnemyBD enemy, int count)
+    {
+        activeWave.currentEnemysIndex++;
+        for (int i = 0; i < 1; i++)
+        {
+            StartCoroutine(gridObjects.Spawn(enemy, count));
+
+            yield return new WaitForSeconds(.3f);
+        }
+        
+    }
+
 }
 
 public class Wave
 {
     public int id;
-    public Dictionary<EnemyBD, int> enemysPerWave = new Dictionary<EnemyBD, int>();
-    public int currentEnemysIndex = -1;
+    public Dictionary<int, Dictionary<EnemyBD, int>> enemysPerWave = new Dictionary<int, Dictionary<EnemyBD, int>>();
+    public int currentEnemysIndex = 0;
+    public bool startedWave;
 
     public Wave(int _id)
     {
         id = _id;
     }
 }
-
