@@ -50,7 +50,10 @@ public class PathController : MonoBehaviour
     }
 }
 
-    Debug.Log("[Core] [Path] Reading Finished. Paths count: " + path.Count);
+    foreach (Path pathInstance in path)
+{
+    Debug.Log("Path ID: " + pathInstance.id + ", x: " + pathInstance.x + ", y: " + pathInstance.y);
+}
 
 }
 }
