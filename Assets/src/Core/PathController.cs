@@ -34,23 +34,24 @@ public class PathController : MonoBehaviour
     XmlNodeList roadNodes = xmlDoc.SelectNodes("//road");
     path.Clear();
 
-    foreach (XmlNode roadNode in roadNodes)
+   foreach (XmlNode roadNode in roadNodes)
+{
+    int roadId = int.Parse(roadNode.Attributes[PATH_ID_ATTRIBUTE_VAR].Value);
+
+    XmlNodeList pathPoints = roadNode.SelectNodes("pathPoint");
+    
+    foreach (XmlNode pointNode in pathPoints)
     {
-        int roadId = int.Parse(roadNode.Attributes["id"].Value);
-        Path pathInstance = new Path(roadId);
+        int x = int.Parse(pointNode.Attributes["x"].Value);
+        int y = int.Parse(pointNode.Attributes["y"].Value);
 
-        XmlNodeList pathPoints = roadNode.SelectNodes("pathPoint");
-        
-        foreach (XmlNode pointNode in pathPoints)
-        {
-            int x = int.Parse(pointNode.Attributes["x"].Value);
-            int y = int.Parse(pointNode.Attributes["y"].Value);
-        }
-
+        Path pathInstance = new Path(roadId, x, y);
         path.Add(pathInstance);
     }
+}
 
-    Debug.Log("[Core] [Path] Reading Finished" + path + path.x + path.y);
+    Debug.Log("[Core] [Path] Reading Finished. Paths count: " + path.Count);
+
 }
 }
 
@@ -58,11 +59,14 @@ public class PathController : MonoBehaviour
 public class Path
 {
     public int id;
+    public int x; 
+    public int y; 
     public Dictionary<int, Dictionary<EnemyBD, int>> enemysPerWave = new Dictionary<int, Dictionary<EnemyBD, int>>();
 
-    public Path(int _id)
+    public Path(int _id, int _x, int _y) 
     {
         id = _id;
+        x = _x;
+        y = _y;
     }
 }
-
