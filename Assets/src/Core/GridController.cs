@@ -19,62 +19,52 @@ public class GridController : MonoBehaviour
         GenerateGrid();
     }
 
-    void GenerateGrid()
+void GenerateGrid()
+{
+    grid = new GameObject[gridSizeX, gridSizeY];
+
+    List<Path> pathList = PathController.path;
+
+    for (int x = 0; x < gridSizeX; x++)
     {
-        grid = new GameObject[gridSizeX, gridSizeY];
-
-        List<Vector2Int> path = FindPath(); 
-
-        for (int x = 0; x < gridSizeX; x++)
+        for (int y = 0; y < gridSizeY; y++)
         {
-            for (int y = 0; y < gridSizeY; y++)
+            Vector3 nodePosition = new Vector3(x-9, y-5, 0); 
+            GameObject newNode = Instantiate(nodePrefab, nodePosition, Quaternion.identity);
+            Node nodeComponent = newNode.AddComponent<Node>();
+
+            Vector2Int currentPos = new Vector2Int(x, y);
+
+            bool isPath = false;
+
+            foreach (Path pathInstance in pathList)
             {
-                Vector3 nodePosition = new Vector3(x-9, y-5, 0); 
-                GameObject newNode = Instantiate(nodePrefab, nodePosition, Quaternion.identity);
-                Node nodeComponent = newNode.AddComponent<Node>();
-
-                if (path.Contains(new Vector2Int(x, y)))
+                if (pathInstance.x == currentPos.x && pathInstance.y == currentPos.y)
                 {
-                    nodeComponent.spriteRenderer.sprite = sprites[0];
-                    waypoints.Add(newNode.transform);
-                    nodeComponent.haveSomething = true;
+                    isPath = true;
+                    break;
                 }
-                else
-                {
-                    nodeComponent.spriteRenderer.sprite = sprites[1]; 
-                }
-
-                newNode.gameObject.name = "X: " + x + " Y: " + y;
-                nodeComponent.x = x;
-                nodeComponent.y = y;
-                newNode.transform.SetParent(gameObject.transform);
-
-                grid[x, y] = newNode;
             }
+
+            if (isPath)
+            {
+                nodeComponent.spriteRenderer.sprite = sprites[0];
+                waypoints.Add(newNode.transform);
+                nodeComponent.haveSomething = true;
+            }
+            else
+            {
+                nodeComponent.spriteRenderer.sprite = sprites[1]; 
+            }
+
+            newNode.gameObject.name = "X: " + x + " Y: " + y;
+            nodeComponent.x = x;
+            nodeComponent.y = y;
+            newNode.transform.SetParent(gameObject.transform);
+
+            grid[x, y] = newNode;
         }
     }
+}
 
-    List<Vector2Int> FindPath()
-    {
-        List<Vector2Int> path = new List<Vector2Int>();
-        int currentX = 0;
-        int currentY = 0;
-
-        while (currentX < gridSizeX - 1 || currentY < gridSizeY - 1)
-        {
-            path.Add(new Vector2Int(currentX, currentY));
-
-            if (Random.value > 0.5f && currentX < gridSizeX - 1)
-            {
-                currentX++;
-            }
-            else if (currentY < gridSizeY - 1)
-            {
-                currentY++;
-            }
-        }
-
-        path.Add(new Vector2Int(gridSizeX - 1, gridSizeY - 1));
-        return path;
-    }
 }

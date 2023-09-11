@@ -19,7 +19,7 @@ public class PathController : MonoBehaviour
     private const string PATH_OBJECT_VAR = "path";
 
 
-     public List<Path> path = new List<Path>();
+     public static List<Path> path = new List<Path>();
 
     void Start()
     {
