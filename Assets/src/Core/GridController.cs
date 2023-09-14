@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class GridController : MonoBehaviour
 {
     public List<Sprite> sprites;
+    public List<Sprite> decor;
     public GameObject nodePrefab;
     public int gridSizeX, gridSizeY;
 
@@ -99,7 +100,24 @@ void GenerateGrid()
             }
             else
             {
-                nodeComponent.spriteRenderer.sprite = sprites[1];
+              nodeComponent.spriteRenderer.sprite = sprites[1];
+
+               bool applyOverlay = Random.Range(0f, 1f) < 0.2f;
+
+               if (applyOverlay)
+                {
+                    int randomDecorIndex = Random.Range(0, decor.Count);
+                    Sprite selectedDecor = decor[randomDecorIndex];
+
+                    GameObject overlaySprite = new GameObject("OverlaySprite");
+                    SpriteRenderer overlayRenderer = overlaySprite.AddComponent<SpriteRenderer>();
+                    overlayRenderer.sprite = selectedDecor;
+                    overlayRenderer.sortingOrder = 1;
+                    overlaySprite.transform.SetParent(newNode.transform);
+                    overlaySprite.transform.localPosition = Vector3.zero;
+                }
+
+   
             }
 
             newNode.gameObject.name = "X: " + x + " Y: " + y;
