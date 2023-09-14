@@ -676,6 +676,14 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: 4d8438af5de29c947b5a0d4f463f06cb, type: 3}
   - {fileID: 21300000, guid: 6c9c4451ad918aa46abe1e7e2516a078, type: 3}
+  - {fileID: 21300000, guid: 2360790c648d4c84d93a225906d9f271, type: 3}
+  - {fileID: 21300000, guid: af2cd3e8116f34d489a92636a7ccdb6c, type: 3}
+  - {fileID: 21300000, guid: 0322712ae80b48749b59c80735ba99fc, type: 3}
+  - {fileID: 21300000, guid: e1fc1e93ce7bcd74c83a5d0fe7b90c70, type: 3}
+  - {fileID: 21300000, guid: a5b77483a17ec4b43bacd25e8c47ba69, type: 3}
+  - {fileID: 21300000, guid: 31babf595e1ae8349a8ab8260504935e, type: 3}
+  - {fileID: 21300000, guid: ecd5204012fcabe40b711addf0e70b58, type: 3}
+  - {fileID: 21300000, guid: dafe231bc7220374da75911e0d62793a, type: 3}
   nodePrefab: {fileID: 404020808292773295, guid: 5679d3326e58f4645b623b57abf681cf, type: 3}
   gridSizeX: 20
   gridSizeY: 12
