@@ -104,7 +104,7 @@ public class GridController : MonoBehaviour
                 {
                     nodeComponent.spriteRenderer.sprite = sprites[1];
 
-                    bool applyOverlay = Random.Range(0f, 1f) < 0.2f;
+                    bool applyOverlay = Random.Range(0f, 1f) > 0.7f;
 
                     if (applyOverlay)
                     {
@@ -117,7 +117,6 @@ public class GridController : MonoBehaviour
                         overlayRenderer.sortingOrder = 1;
                         overlaySprite.transform.SetParent(newNode.transform);
                         overlaySprite.transform.localPosition = Vector3.zero;
-                        nodeComponent.haveSomething = true;
                     }
 
 
@@ -141,6 +140,38 @@ public class GridController : MonoBehaviour
             nodeComponent.spriteRenderer.sprite = sprites[0];
             waypoints.Add(grid[x, y].transform);
         }
+    }
+
+    public List<Node> GetNodeNeighbors(Node _node)
+    {
+        List<Node> nodes = new List<Node>();
+
+        if (grid[_node.x + 1, _node.y] != null)
+            nodes.Add(grid[_node.x + 1, _node.y].GetComponent<Node>());
+
+        if (grid[_node.x - 1, _node.y] != null)
+            nodes.Add(grid[_node.x - 1, _node.y].GetComponent<Node>());
+
+        if (grid[_node.x, _node.y + 1] != null)
+            nodes.Add(grid[_node.x, _node.y + 1].GetComponent<Node>());
+
+        if (grid[_node.x, _node.y - 1] != null)
+            nodes.Add(grid[_node.x, _node.y - 1].GetComponent<Node>());
+
+        if (grid[_node.x + 1, _node.y + 1] != null)
+            nodes.Add(grid[_node.x + 1, _node.y + 1].GetComponent<Node>());
+
+        if (grid[_node.x + 1, _node.y - 1] != null)
+            nodes.Add(grid[_node.x + 1, _node.y - 1].GetComponent<Node>());
+
+        if (grid[_node.x - 1, _node.y + 1] != null)
+            nodes.Add(grid[_node.x - 1, _node.y + 1].GetComponent<Node>());
+
+        if (grid[_node.x - 1, _node.y - 1] != null)
+            nodes.Add(grid[_node.x - 1, _node.y - 1].GetComponent<Node>());
+
+
+        return nodes;
     }
 
 }

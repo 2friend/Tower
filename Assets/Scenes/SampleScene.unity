@@ -366,10 +366,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2093861101}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -224.50356, y: 0}
-  m_SizeDelta: {x: 118.9929, y: 320}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 47.41388, y: -0.000015259}
+  m_SizeDelta: {x: 93.81781, y: 357}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &365663304
 MonoBehaviour:
@@ -388,7 +388,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 64, y: 64}
@@ -726,7 +726,7 @@ Transform:
   m_GameObject: {fileID: 687157830}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -746,10 +746,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c436eea5264a8b74bbd5898581714cdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMove: 1
   swipeSpeed: 17
-  minX: -10
+  minX: -0.5
   maxX: 10
-  minY: -6
+  minY: -0.5
   maxY: 6
 --- !u!1 &812643768
 GameObject:
@@ -928,24 +929,29 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c37dfe7b24dcb1a4c834b21179254ea7, type: 3}
   decor:
   - {fileID: 21300000, guid: c37dfe7b24dcb1a4c834b21179254ea7, type: 3}
-  - {fileID: 21300000, guid: d81d1a24e20f3ad4a85a890782f79067, type: 3}
-  - {fileID: 21300000, guid: 2117d85db6628944788123b51d7e6260, type: 3}
-  - {fileID: 21300000, guid: 8d779ddfd98a69241b9b7cdc232160a2, type: 3}
-  - {fileID: 21300000, guid: 3227ac8901ab2314980cb6da9e96ee91, type: 3}
-  - {fileID: 21300000, guid: 05e83522d1fc44140a08d49930906a98, type: 3}
-  - {fileID: 21300000, guid: e8e79284fa0f0044c880c461b5dd9f71, type: 3}
-  - {fileID: 21300000, guid: 2774f7d3280a8f44b8e961c1c8416bb9, type: 3}
+  - {fileID: 21300000, guid: 6518cdf72d499c04e96c9a54c376be55, type: 3}
+  - {fileID: 21300000, guid: f5017b7972cbfd542b0138185809c9c5, type: 3}
+  - {fileID: 21300000, guid: 1e01da1ef9fb5c34c8d41e66dcb7c696, type: 3}
+  - {fileID: 21300000, guid: 02c2d5fe79934f94ea46ec2ae44ee6c9, type: 3}
+  - {fileID: 21300000, guid: 5ba7e87b7cf7d8f4084d6fba785c3a48, type: 3}
+  - {fileID: 21300000, guid: 16390babaa6e8f24baf5679f705130ad, type: 3}
+  - {fileID: 21300000, guid: f8788ce1e3cfd774099bf07783bd476a, type: 3}
   - {fileID: 21300000, guid: 3d074e2c1cea9c34db6feac19c272ac6, type: 3}
-  - {fileID: 21300000, guid: 87b53652216a84f4c9d914f8dd0dd482, type: 3}
-  - {fileID: 21300000, guid: d4621a28475ac424b970295b133b72e6, type: 3}
-  - {fileID: 21300000, guid: 4b72b6ff7eccf7a429d7cc419f5c78fe, type: 3}
-  - {fileID: 21300000, guid: ad393a5c10b9f9c49b83c6d08ca24bd2, type: 3}
-  - {fileID: 21300000, guid: f10c8c23ce1020144b2f646aa9f0d478, type: 3}
-  - {fileID: 21300000, guid: 7853845ed61113d4f83952c6325b78e4, type: 3}
-  - {fileID: 21300000, guid: 040834f718264504baa892ff2c4814fc, type: 3}
-  - {fileID: 21300000, guid: 4053608f7a046794ca287d4548a9b19f, type: 3}
-  - {fileID: 21300000, guid: 9c5625937e5c0fe4c96f8929019a2dcb, type: 3}
-  - {fileID: 21300000, guid: 9c5c5b693cdbd4b4e91fdd756ac5ac70, type: 3}
+  - {fileID: 21300000, guid: a58d0bd77114fc945b2c15a50ab9104c, type: 3}
+  - {fileID: 21300000, guid: 50b80f02dbba8aa44bfd7f1ea48f170c, type: 3}
+  - {fileID: 21300000, guid: eebd6ed6bd7639643b0e1efbb08172e2, type: 3}
+  - {fileID: 21300000, guid: 3227ac8901ab2314980cb6da9e96ee91, type: 3}
+  - {fileID: 21300000, guid: 179416d7caad93b4cabd97055321d950, type: 3}
+  - {fileID: 21300000, guid: d67ca51c7916d294da65bb51845b5e1b, type: 3}
+  - {fileID: 21300000, guid: fb514c549adf9d44bbb5f7940e42bd23, type: 3}
+  - {fileID: 21300000, guid: ceb24864ab1c83a409c84502730a58aa, type: 3}
+  - {fileID: 21300000, guid: dd2662f560c7ff74aabda10ec81c8758, type: 3}
+  - {fileID: 21300000, guid: ddc1eb8bbb646334ba75b796bc12e79b, type: 3}
+  - {fileID: 21300000, guid: a1bf610901ab86f4180f8544c9b7c0bb, type: 3}
+  - {fileID: 21300000, guid: ccd7372b115ac8241b104c78e2335942, type: 3}
+  - {fileID: 21300000, guid: 2774f7d3280a8f44b8e961c1c8416bb9, type: 3}
+  - {fileID: 21300000, guid: e8e79284fa0f0044c880c461b5dd9f71, type: 3}
+  - {fileID: 21300000, guid: 3ec49eb0e1e50d942b800ea2b4e919fc, type: 3}
   nodePrefab: {fileID: 404020808292773295, guid: 5679d3326e58f4645b623b57abf681cf, type: 3}
   gridSizeX: 20
   gridSizeY: 12

@@ -73,10 +73,15 @@ public class GridObjects : MonoBehaviour
         {
             Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);
+
             if (hit.collider != null && !hit.collider.GetComponent<Node>().haveSomething)
             {
                 isBuilding = false;
                 hit.collider.GetComponent<Node>().haveSomething = true;
+                foreach(Node _node in grid.GetNodeNeighbors(hit.collider.GetComponent<Node>()))
+                {
+                    _node.haveSomething = true;
+                }
                 currentBuilding.GetComponent<SpriteRenderer>().color = Color.white;
                 currentBuilding.GetComponent<Animator>().SetBool("Placed", true);
                 currentBuilding = null;
@@ -189,6 +194,7 @@ public class GridObjects : MonoBehaviour
     public void OnShopButtonClick(Tower _tower)
     {
         currentBuilding = Instantiate(tower);
+        currentBuilding.GetComponent<SpriteRenderer>().sortingOrder = 2;
         isBuilding = true;
         Tower towerType = currentBuilding.AddComponent<Tower>();
         towerType.InitializeFrom(_tower);

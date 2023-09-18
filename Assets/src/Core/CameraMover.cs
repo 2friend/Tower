@@ -9,9 +9,9 @@ public class CameraMover : MonoBehaviour
     public bool canMove = true;
 
     public float swipeSpeed = 17.0f;
-    public float minX = -6.0f;
+    public float minX = -0.5f;
     public float maxX = 6.0f;
-    public float minY = 2.0f;
+    public float minY = -.5f;
     public float maxY = 10.0f;
 
     void Update()

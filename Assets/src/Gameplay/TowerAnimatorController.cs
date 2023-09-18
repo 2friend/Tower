@@ -30,7 +30,7 @@ public class TowerAnimatorController : MonoBehaviour
             GameObject _effect = Instantiate(effects.GetEffect(BUILDING_EFFECT_NAME), gameObject.transform);
             Vector3 _newPosition = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
             _effect.transform.position = _newPosition;
-            _effect.GetComponent<SpriteRenderer>().sortingOrder = 2;
+            _effect.GetComponent<SpriteRenderer>().sortingOrder = 3;
            _effect.GetComponent<EffectsController>().PlaySound(BUILDING_SOUND_NAME);
             yield return new WaitForSeconds(0.8f);
         }
