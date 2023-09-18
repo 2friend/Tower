@@ -61,8 +61,6 @@ public class GridObjects : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("f"))
-            StartCoroutine(Spawn(enemys[UnityEngine.Random.Range(0, enemys.Count)], 10));
 
         if (Input.GetMouseButtonDown(0) && isBuilding)
         {
@@ -74,6 +72,7 @@ public class GridObjects : MonoBehaviour
                 isBuilding = false;
                 hit.collider.GetComponent<Node>().haveSomething = true;
                 currentBuilding.GetComponent<SpriteRenderer>().color = Color.white;
+                currentBuilding.GetComponent<Animator>().SetBool("Placed", true);
                 currentBuilding = null;
             }
             
