@@ -37,6 +37,7 @@ public class GridObjects : MonoBehaviour
     private Camera mainCamera;
     private List<Tower> towers = new List<Tower>();
     public List<EnemyBD> enemys = new List<EnemyBD>();
+    private CameraMover cameraMover;
 
     [SerializeField] private GridController grid;
     [SerializeField] private WaveController waveController;
@@ -55,6 +56,7 @@ public class GridObjects : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        cameraMover = GameObject.Find("CameraController").GetComponent<CameraMover>();
         ReadEnemysFile();
         ReadTowersFile();
     }
@@ -62,11 +64,15 @@ public class GridObjects : MonoBehaviour
     private void Update()
     {
 
+        if(isBuilding)
+            cameraMover.canMove = false;
+        else
+            cameraMover.canMove = true;
+
         if (Input.GetMouseButtonDown(0) && isBuilding)
         {
             Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);
-
             if (hit.collider != null && !hit.collider.GetComponent<Node>().haveSomething)
             {
                 isBuilding = false;

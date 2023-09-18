@@ -6,20 +6,39 @@ using UnityEngine.EventSystems;
 public class EditButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GridCreator gridCreator;
+    public CameraMover cameraMover;
+
+    public bool inEditorMode;
 
     private void Start()
     {
-        gridCreator = GameObject.Find("GridCreator").GetComponent<GridCreator>();
+        inEditorMode = false;
+        if (inEditorMode)
+            gridCreator = GameObject.Find("GridCreator").GetComponent<GridCreator>();
+        cameraMover = GameObject.Find("CameraController").GetComponent<CameraMover>();
+        
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        gridCreator.canBePressed = false;
+        if (inEditorMode)
+        {
+            gridCreator.canBePressed = false;
+            cameraMover.canMove = false;
+        }
+        else
+            cameraMover.canMove = false;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        gridCreator.canBePressed = true;
+        if (inEditorMode)
+        {
+            gridCreator.canBePressed = true;
+            cameraMover.canMove = true;
+        }
+        else
+            cameraMover.canMove = true;
     }
 
     public void OpenEditorMenu()

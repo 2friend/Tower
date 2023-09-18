@@ -6,6 +6,7 @@ public class CameraMover : MonoBehaviour
 {
     private Vector2 swipeStartPos;
     private bool isSwiping = false;
+    public bool canMove = true;
 
     public float swipeSpeed = 17.0f;
     public float minX = -6.0f;
@@ -15,12 +16,12 @@ public class CameraMover : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && canMove)
         {
             swipeStartPos = Input.mousePosition;
             isSwiping = true;
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0) && canMove)
         {
             isSwiping = false;
         }

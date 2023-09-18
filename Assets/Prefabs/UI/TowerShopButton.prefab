@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7599992627506270909}
   - component: {fileID: 3064295652028567457}
   - component: {fileID: 3202866629395279283}
+  - component: {fileID: 1446658670547406768}
   m_Layer: 5
   m_Name: TowerShopButton
   m_TagString: Untagged
@@ -120,3 +121,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1446658670547406768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3859293001068440817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e395556a3e5675840a5a742c04f2d945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridCreator: {fileID: 0}
