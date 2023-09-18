@@ -11,37 +11,59 @@ public class GridCreator : MonoBehaviour
     public List<Transform> path = new List<Transform>();
 
     public bool rememberPath;
+    [SerializeField] private GameObject savePathButton;
+    public bool canBePressed = true;
+    public int pathId;
 
     public void SaveGrid()
     {
-        XmlWriterSettings settings = new XmlWriterSettings();
-        settings.Indent = true;
+        string filePath = FOLDEDR_PATH + "/" + PATH_FILE_PATH + ".xml";
 
-        using (XmlWriter writer = XmlWriter.Create(FOLDEDR_PATH + "/" + PATH_FILE_PATH + ".xml", settings))
+        XmlDocument doc = new XmlDocument();
+        if (File.Exists(filePath))
         {
-            writer.WriteStartDocument();
-            writer.WriteStartElement("root");
-
-            writer.WriteStartElement("road");
-            writer.WriteAttributeString("id", "1");
-            for (int i = 0; i < path.Count; i++)
-            {
-                writer.WriteStartElement("pathPoint");
-                writer.WriteAttributeString("x", (path[i].position.x).ToString());
-                writer.WriteAttributeString("y", (path[i].position.y).ToString());
-                writer.WriteEndElement();
-            }
-            writer.WriteEndElement();
-            writer.WriteEndElement();
-            writer.WriteEndDocument();
+            doc.Load(filePath);
         }
+        else
+        {
+            XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+            XmlElement root = doc.CreateElement("root");
+            doc.AppendChild(xmlDeclaration);
+            doc.AppendChild(root);
+        }
+
+        string pathIdString = pathId.ToString();
+        XmlNode existingRoad = doc.SelectSingleNode($"//road[@id='{pathIdString}']");
+
+        XmlElement roadElement = doc.CreateElement("road");
+        roadElement.SetAttribute("id", pathIdString);
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            XmlElement pathPointElement = doc.CreateElement("pathPoint");
+            pathPointElement.SetAttribute("x", (path[i].position.x + 9).ToString());
+            pathPointElement.SetAttribute("y", (path[i].position.y + 5).ToString());
+            roadElement.AppendChild(pathPointElement);
+        }
+
+        if (existingRoad != null)
+        {
+            doc.DocumentElement.ReplaceChild(roadElement, existingRoad);
+        }
+        else
+        {
+            doc.DocumentElement.AppendChild(roadElement);
+        }
+
+        doc.Save(filePath);
     }
 
     private void Update()
     {
         if (rememberPath)
         {
-            if (Input.GetMouseButtonDown(0))
+            savePathButton.SetActive(true);
+            if (Input.GetMouseButtonDown(0) && canBePressed)
             {
                 Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -49,10 +71,22 @@ public class GridCreator : MonoBehaviour
 
                 if (hitCollider != null)
                 {
-                    hitCollider.gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
-                    path.Add(hitCollider.gameObject.transform);
+                    if (path.Contains(hitCollider.gameObject.transform))
+                    {
+                        path.Remove(hitCollider.gameObject.transform);
+                        hitCollider.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+                    }
+                    else
+                    {
+                        path.Add(hitCollider.gameObject.transform);
+                        hitCollider.gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+                    }
                 }
             }
+        }
+        else
+        {
+            savePathButton.SetActive(false);
         }
     }
 }

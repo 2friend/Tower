@@ -19,56 +19,61 @@ public class PathController : MonoBehaviour
     private const string PATH_OBJECT_VAR = "path";
 
 
-     public static List<Path> path = new List<Path>();
+    public static List<Path> paths = new List<Path>();
 
     void Start()
     {
-        ReadPathFile();  
+        ReadPathFile();
     }
- private void ReadPathFile()
-{
-    TextAsset xmlFile = Resources.Load<TextAsset>(FOLDER_PATH + "/" + PATH_FILE_PATH);
-    XmlDocument xmlDoc = new XmlDocument();
-    xmlDoc.LoadXml(xmlFile.text);
-
-    XmlNodeList roadNodes = xmlDoc.SelectNodes("//road");
-    path.Clear();
-
-   foreach (XmlNode roadNode in roadNodes)
-{
-    int roadId = int.Parse(roadNode.Attributes[PATH_ID_ATTRIBUTE_VAR].Value);
-
-    XmlNodeList pathPoints = roadNode.SelectNodes("pathPoint");
-    
-    foreach (XmlNode pointNode in pathPoints)
+    private void ReadPathFile()
     {
-        int x = int.Parse(pointNode.Attributes["x"].Value);
-        int y = int.Parse(pointNode.Attributes["y"].Value);
+        TextAsset xmlFile = Resources.Load<TextAsset>(FOLDER_PATH + "/" + PATH_FILE_PATH);
+        XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml(xmlFile.text);
 
-        Path pathInstance = new Path(roadId, x, y);
-        path.Add(pathInstance);
+        XmlNodeList roadNodes = xmlDoc.SelectNodes("//road");
+        paths.Clear();
+
+        foreach (XmlNode roadNode in roadNodes)
+        {
+            int roadId = int.Parse(roadNode.Attributes[PATH_ID_ATTRIBUTE_VAR].Value);
+            Path pathInstance = new Path(roadId);
+            
+            XmlNodeList pathPoints = roadNode.SelectNodes("pathPoint");
+
+            foreach (XmlNode pointNode in pathPoints)
+            {
+                int x = int.Parse(pointNode.Attributes["x"].Value);
+                int y = int.Parse(pointNode.Attributes["y"].Value);
+                PathPoint pathPoint = new PathPoint(x, y);
+                pathInstance.pathPoints.Add(pathPoint);
+            }
+            paths.Add(pathInstance);
+            Debug.Log("[Core] [Paths] Readed new Path ID: %" + pathInstance.id + "% with count of points: %" + pathInstance.pathPoints.Count + "%");
+        }
+
     }
-}
-
-    foreach (Path pathInstance in path)
-{
-    Debug.Log("Path ID: " + pathInstance.id + ", x: " + pathInstance.x + ", y: " + pathInstance.y);
-}
-
-}
 }
 
 
 public class Path
 {
     public int id;
-    public int x; 
-    public int y; 
-    public Dictionary<int, Dictionary<EnemyBD, int>> enemysPerWave = new Dictionary<int, Dictionary<EnemyBD, int>>();
+    public List<PathPoint> pathPoints = new List<PathPoint>();
 
-    public Path(int _id, int _x, int _y) 
+    public Path(int _id)
     {
         id = _id;
+    }
+}
+
+public class PathPoint
+{
+    public int x;
+    public int y;
+
+    public PathPoint(int _x, int _y)
+    {
         x = _x;
         y = _y;
     }

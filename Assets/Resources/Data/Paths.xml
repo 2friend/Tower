@@ -1,46 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <road id="1">
-    <pathPoint x="0" y="0" />
-    <pathPoint x="0" y="1" />
-    <pathPoint x="0" y="2" />
-    <pathPoint x="0" y="3" />
-    <pathPoint x="0" y="4" />
-    <pathPoint x="0" y="5" />
-    <pathPoint x="0" y="6" />
-    <pathPoint x="0" y="7" />
-    <pathPoint x="1" y="7" />
-    <pathPoint x="2" y="7" />
-    <pathPoint x="3" y="7" />
-    <pathPoint x="4" y="7" />
-    <pathPoint x="4" y="6" />
-    <pathPoint x="4" y="5" />
-    <pathPoint x="4" y="4" />
+  <road id="0">
+    <pathPoint x="2" y="0" />
+    <pathPoint x="2" y="1" />
+    <pathPoint x="2" y="2" />
+    <pathPoint x="2" y="3" />
+    <pathPoint x="3" y="3" />
     <pathPoint x="4" y="3" />
-    <pathPoint x="4" y="2" />
-    <pathPoint x="5" y="2" />
-    <pathPoint x="6" y="2" />
-    <pathPoint x="7" y="2" />
-    <pathPoint x="8" y="2" />
-    <pathPoint x="9" y="2" />
-    <pathPoint x="9" y="3" />
-    <pathPoint x="9" y="4" />
-    <pathPoint x="9" y="5" />
+    <pathPoint x="4" y="4" />
+    <pathPoint x="4" y="5" />
+    <pathPoint x="4" y="6" />
+    <pathPoint x="5" y="6" />
+    <pathPoint x="6" y="6" />
+    <pathPoint x="7" y="6" />
+    <pathPoint x="8" y="6" />
     <pathPoint x="9" y="6" />
-    <pathPoint x="9" y="7" />
-    <pathPoint x="9" y="8" />
-    <pathPoint x="9" y="9" />
-    <pathPoint x="10" y="9" />
-    <pathPoint x="11" y="9" />
-    <pathPoint x="12" y="9" />
-    <pathPoint x="13" y="9" />
-    <pathPoint x="14" y="9" />
-    <pathPoint x="15" y="9" />
-    <pathPoint x="16" y="9" />
-    <pathPoint x="17" y="9" />
-    <pathPoint x="18" y="9" />
-    <pathPoint x="19" y="9" />
-    <pathPoint x="19" y="10" />
-    <pathPoint x="19" y="11" />
+    <pathPoint x="10" y="6" />
+    <pathPoint x="10" y="5" />
+    <pathPoint x="10" y="4" />
+    <pathPoint x="10" y="3" />
+    <pathPoint x="11" y="3" />
+    <pathPoint x="12" y="3" />
+    <pathPoint x="13" y="3" />
+    <pathPoint x="14" y="3" />
+    <pathPoint x="15" y="3" />
+    <pathPoint x="15" y="2" />
+    <pathPoint x="15" y="1" />
+    <pathPoint x="16" y="1" />
+    <pathPoint x="17" y="1" />
+    <pathPoint x="18" y="1" />
   </road>
 </root>
