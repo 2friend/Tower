@@ -336,6 +336,7 @@ public class EnemyBD : MonoBehaviour
     public string enemyName;
     public int maxHp;
     public int currHp;
+    private bool isDead = false;
     public string sprite;
     public float speed;
     public int money;
@@ -377,27 +378,31 @@ public class EnemyBD : MonoBehaviour
 
     private void Update()
     {
-        if (currentWaypointIndex < grid.waypoints.Count)
+        if (!isDead)  
         {
-            Transform targetWaypoint = grid.waypoints[currentWaypointIndex];
-
-            Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
-
-            animator.SetFloat("X", moveDirection.x);
-            animator.SetFloat("Y", moveDirection.y);
-
-            transform.Translate(moveDirection * speed * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
+            if (currentWaypointIndex < grid.waypoints.Count)
             {
-                currentWaypointIndex++;
+                Transform targetWaypoint = grid.waypoints[currentWaypointIndex];
+
+                Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
+
+                animator.SetFloat("X", moveDirection.x);
+                animator.SetFloat("Y", moveDirection.y);
+
+                transform.Translate(moveDirection * speed * Time.deltaTime);
+
+                if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
+                {
+                    currentWaypointIndex++;
+                }
+            }
+            else
+            {
+                waveController.aliveEnemys--;
+                Destroy(this.gameObject);
             }
         }
-        else
-        {
-            waveController.aliveEnemys--;
-            Destroy(this.gameObject);
-        }
+
     }
 
     public void TakingDamage(int _dmg)
@@ -415,11 +420,14 @@ public class EnemyBD : MonoBehaviour
     private void Die()
     {
         animator.SetTrigger("Die");
+         isDead = true;
+        StartCoroutine(DestroyAfterAnimation());
     }
 
-    public void DestroyEnemy()
+    private IEnumerator DestroyAfterAnimation()
     {
-
+        yield return new WaitForSeconds(1.0f); 
+        Destroy(gameObject);
     }
 
     void InitializeEnemyType()
