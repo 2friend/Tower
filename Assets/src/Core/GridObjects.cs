@@ -21,6 +21,7 @@ public class GridObjects : MonoBehaviour
     private const string TOWER_ID_ATTRIBUTE_VAR = "id";
     private const string TOWER_NAME_ATTRIBUTE_VAR = "name";
 
+    private const string TOWER_ATTACK_RANGE = "attackRange";
     private const string BULLET_OBJECT_VAR = "bullet";
     private const string BULLET_DAMAGE_ATTRIBUTE_VAR = "damage";
     private const string BULLET_SPEED_ATTRIBUTE_VAR = "speed";
@@ -147,8 +148,8 @@ public class GridObjects : MonoBehaviour
                 string _towerName = reader.GetAttribute(TOWER_NAME_ATTRIBUTE_VAR);
                 float _towerSpeed = float.Parse(reader.GetAttribute(ENEMY_SPEED_ATTRIBUTE_VAR), CultureInfo.InvariantCulture);
                 string _towerSprite = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
-
-                Tower _tower = new Tower(_towerId, _towerName, _towerSprite, _towerSpeed);
+                float _attackRange = float.Parse(reader.GetAttribute(TOWER_ATTACK_RANGE), CultureInfo.InvariantCulture); 
+                Tower _tower = new Tower(_towerId, _towerName, _towerSprite, _towerSpeed, _attackRange);
 
                 XmlReader inner = reader.ReadSubtree();
                 while (inner.Read())
@@ -208,13 +209,69 @@ public class Tower : MonoBehaviour
     public Bullet bulletType;
     public string sprite;
     public float atkspd;
+    public float attackRange;
 
-    public Tower(int _id, string _name, string _sprite, float _spd)
+    public Tower(int _id, string _name, string _sprite, float _spd, float _attackRange)
     {
         id = _id;
         towerName = _name;
         sprite = _sprite;
         atkspd = _spd;
+        attackRange = _attackRange;
+    }
+
+    void Update()
+    {
+        EnemyBD targetEnemy = FindNearestEnemy();
+
+        if (targetEnemy != null)
+        {
+            Attack(targetEnemy);
+        }
+    }
+
+    private EnemyBD FindNearestEnemy()
+    {
+        float closestDistance = Mathf.Infinity;
+        EnemyBD nearestEnemy = null;
+
+        foreach (EnemyBD enemy in FindObjectsOfType<EnemyBD>())
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                nearestEnemy = enemy;
+            }
+        }
+
+        return nearestEnemy;
+    }
+
+    public void Attack(EnemyBD enemy)
+    {
+        if (enemy != null)
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance <= attackRange)
+            {
+                Shoot(enemy); 
+            }
+        }
+    }
+
+    public void Shoot(EnemyBD enemy)
+    {
+        Bullet bullet = bulletType; 
+
+        GameObject bulletObject = new GameObject("Bullet");
+        BulletComponent bulletComponent = bulletObject.AddComponent<BulletComponent>();
+        bulletComponent.InitializeFrom(bullet);
+
+        bulletObject.transform.position = transform.position;
+
+        bulletComponent.SetTarget(enemy.transform.position);
     }
 
     public void InitializeFrom(Tower other)
@@ -223,13 +280,51 @@ public class Tower : MonoBehaviour
         towerName = other.towerName;
         bulletType = other.bulletType;
         sprite = other.sprite;
-        sprite = other.sprite;
         atkspd = other.atkspd;
+        attackRange = other.attackRange;
+    }
+}
+
+
+public class BulletComponent : MonoBehaviour
+{
+    private int damage;
+    private float speed;
+    private Vector3 targetPosition;
+
+    public void InitializeFrom(Bullet bullet)
+    {
+        damage = bullet.dmg;
+        speed = bullet.speed;
     }
 
-    void Attack()
+    public void SetTarget(Vector3 target)
     {
-        
+        targetPosition = target;
+    }
+
+    void Update()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        {
+            HitEnemy();
+            Destroy(gameObject);
+        }
+    }
+
+    void HitEnemy()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+        foreach (var collider in colliders)
+        {
+            EnemyBD enemy = collider.GetComponent<EnemyBD>();
+            if (enemy != null)
+            {
+                enemy.TakingDamage(damage);
+            }
+        }
     }
 }
 
@@ -349,7 +444,7 @@ public class EnemyBD : MonoBehaviour
 public class Bullet
 {
     public int dmg;
-    float speed;
+    public float speed;
     string sprite;
 
     public Bullet(int _dmg, float _spd, string _sprite)
