@@ -44,7 +44,8 @@ public class GridController : MonoBehaviour
 
                 if (currentPos == new Vector2Int(35, 22))
                 {
-                    Instantiate(playerHp, nodePosition, Quaternion.identity);
+                    GameObject player = Instantiate(playerHp, nodePosition, Quaternion.identity);
+                    player.name = "Player";
                 }
 
                 bool isPath = false;

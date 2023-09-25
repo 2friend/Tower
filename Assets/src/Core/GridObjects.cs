@@ -369,7 +369,7 @@ public class EnemyBD : MonoBehaviour
     private int currentWaypointIndex = 0;
 
     private Animator animator;
-
+    private PlayerTower player;
     public GridController grid;
     public WaveController waveController;
 
@@ -398,6 +398,7 @@ public class EnemyBD : MonoBehaviour
     {
         grid = GameObject.Find("Grid").GetComponent<GridController>();
         waveController = GameObject.Find("MainCamera").GetComponent<WaveController>();
+        player = GameObject.Find("Player").GetComponent<PlayerTower>();
         animator = GetComponent<Animator>();
         InitializeEnemyType();
     }
@@ -427,7 +428,7 @@ public class EnemyBD : MonoBehaviour
                 else
                 {
                     waveController.aliveEnemys--;
-                    Debug.Log("[Gameplay] [Enemys] Enemy: %" + enemyName + "% Finished Way And Be Destroyed!");
+                    waveController.enemysToKill--;
                     Destroy(this.gameObject);
                 }
             }
@@ -436,6 +437,8 @@ public class EnemyBD : MonoBehaviour
         {
             waveController.aliveEnemys--;
             waveController.enemysToKill--;
+            player.TakingDamage(1); // TO DO: «робити парсинг урона €кий наносить той чи ≥нший ворог
+            Debug.Log("[Gameplay] [Enemys] Enemy: %" + enemyName + "% Finished Way And Be Destroyed!");
             Destroy(this.gameObject);
         }
     }

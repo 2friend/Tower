@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 330964980650378356}
   - component: {fileID: 2167429733531695376}
+  - component: {fileID: 7697035557529123523}
   m_Layer: 0
   m_Name: PlayerHp
   m_TagString: Untagged
@@ -84,3 +85,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7697035557529123523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207669810519366096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2ece8cb53626244a10e8e035e2934d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  money: 0
+  livesCurrent: 0
+  livesMax: 30

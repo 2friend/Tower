@@ -338,6 +338,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &309209231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 309209233}
+  - component: {fileID: 309209232}
+  m_Layer: 0
+  m_Name: Tutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &309209232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309209231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8eac70305959af4d985605fb9cead22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 687157830}
+  helperObject: {fileID: 1980397375}
+  towerShop: {fileID: 365663302}
+  waves: {fileID: 519420034}
+  helperText: {fileID: 1980397377}
+--- !u!4 &309209233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309209231}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.881711, y: 2.5305388, z: -4.007859}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &365663302
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +945,7 @@ MonoBehaviour:
   minX: -0.5
   maxX: 10
   minY: -0.5
-  maxY: 6
+  maxY: 9.5
 --- !u!114 &687157833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1757,3 +1806,4 @@ SceneRoots:
   - {fileID: 1138220427}
   - {fileID: 406201351}
   - {fileID: 971903457}
+  - {fileID: 309209233}

@@ -31,11 +31,9 @@ public class CameraMover : MonoBehaviour
             Vector2 swipeEndPos = Input.mousePosition;
             Vector2 swipeDirection = (swipeEndPos - swipeStartPos).normalized;
 
-            // Перемещение камеры по осям X и Y.
             float newX = transform.position.x - swipeDirection.x * swipeSpeed * Time.deltaTime;
             float newY = transform.position.y - swipeDirection.y * swipeSpeed * Time.deltaTime;
 
-            // Ограничение позиции камеры по осям X и Y.
             newX = Mathf.Clamp(newX, minX, maxX);
             newY = Mathf.Clamp(newY, minY, maxY);
 
