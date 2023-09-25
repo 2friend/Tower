@@ -42,6 +42,7 @@ public class GridObjects : MonoBehaviour
 
     [SerializeField] private GridController grid;
     [SerializeField] private WaveController waveController;
+    [SerializeField] private EffectHolder effectHolder;
 
     [SerializeField] private List<GameObject> shopsObjects = new List<GameObject>();
     [SerializeField] private Transform shopParent;
@@ -79,15 +80,26 @@ public class GridObjects : MonoBehaviour
             {
                 isBuilding = false;
                 hit.collider.GetComponent<Node>().haveSomething = true;
-                foreach(Node _node in grid.GetNodeNeighbors(hit.collider.GetComponent<Node>()))
+                Debug.Log("[Core] [Towers] Builded tower: %" + currentBuilding.GetComponent<Tower>().id + "%. On Node X: %" + hit.collider.GetComponent<Node>().x + "% Y: %" + hit.collider.GetComponent<Node>().y + "%");
+                foreach (Node _node in grid.GetNodeNeighbors(hit.collider.GetComponent<Node>()))
                 {
                     _node.haveSomething = true;
                 }
                 currentBuilding.GetComponent<SpriteRenderer>().color = Color.white;
                 currentBuilding.GetComponent<Animator>().SetBool("Placed", true);
+                currentBuilding.GetComponent<BoxCollider2D>().enabled = true;
                 currentBuilding = null;
             }
             
+        }
+        else if (Input.GetMouseButtonDown(0) && !isBuilding)
+        {
+            Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);
+            if (hit.collider != null && hit.collider.GetComponent<Tower>())
+            {
+                Debug.Log("Clicked on tower!");
+            }
         }
     }
 
@@ -97,9 +109,11 @@ public class GridObjects : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject enemyObj = Instantiate(enemy, grid.waypoints[0]);
+            Instantiate(effectHolder.GetEffect("VFX_Enemy_Spawn"), grid.waypoints[0]);
             EnemyBD enemyComp = enemyObj.AddComponent<EnemyBD>();
             enemyComp.InitializeFrom(_enemy);
             waveController.aliveEnemys++;
+            
             yield return new WaitForSeconds(1.1f);
         }
         waveController.activeWave.startedWave = false;
@@ -199,6 +213,7 @@ public class GridObjects : MonoBehaviour
         isBuilding = true;
         Tower towerType = currentBuilding.AddComponent<Tower>();
         towerType.InitializeFrom(_tower);
+        currentBuilding.GetComponent<BoxCollider2D>().enabled = false;
     }
 }
 
@@ -378,19 +393,26 @@ public class EnemyBD : MonoBehaviour
 
     private void Update()
     {
+        if (currentWaypointIndex < grid.waypoints.Count)
         if (!isDead)  
         {
+            Transform targetWaypoint = grid.waypoints[currentWaypointIndex];
             if (currentWaypointIndex < grid.waypoints.Count)
             {
                 Transform targetWaypoint = grid.waypoints[currentWaypointIndex];
 
+            Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
                 Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
 
+            animator.SetFloat("X", moveDirection.x);
+            animator.SetFloat("Y", moveDirection.y);
                 animator.SetFloat("X", moveDirection.x);
                 animator.SetFloat("Y", moveDirection.y);
 
+            transform.Translate(moveDirection * speed * Time.deltaTime);
                 transform.Translate(moveDirection * speed * Time.deltaTime);
 
+            if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
                 if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
                 {
                     currentWaypointIndex++;
@@ -398,11 +420,17 @@ public class EnemyBD : MonoBehaviour
             }
             else
             {
+                currentWaypointIndex++;
                 waveController.aliveEnemys--;
                 Destroy(this.gameObject);
             }
         }
-
+        else
+        {
+            waveController.aliveEnemys--;
+            waveController.enemysToKill--;
+            Destroy(this.gameObject);
+        }
     }
 
     public void TakingDamage(int _dmg)

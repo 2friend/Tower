@@ -25,14 +25,14 @@ public class WaveController : MonoBehaviour
 
     public List<Wave> waves = new List<Wave>();
     public bool waveStarted;
-    private int activeWaveId = -1;
+    [SerializeField] private int activeWaveId = -1;
     public int aliveEnemys = 0;
+    public int enemysToKill = 0;
     public Wave activeWave;
 
     private void Start()
     {
         ReadWavesFile();
-
     }
 
     private void Update()
@@ -54,10 +54,14 @@ public class WaveController : MonoBehaviour
             }
             else if (activeWave.currentEnemysIndex >= activeWave.enemysPerWave.Count)
             {
-                if (aliveEnemys == 0)
+                if (aliveEnemys == 0 && activeWaveId + 1 <= waves.Count - 1) 
                 {
                     waveStarted = false;
                     StartCoroutine(StartWaves());
+                }
+                else if (aliveEnemys == 0 && activeWaveId + 1 > waves.Count - 1)
+                {
+                    Debug.Log("GAME ENDED");
                 }
             }
         }
@@ -94,6 +98,7 @@ public class WaveController : MonoBehaviour
                             {
                                 _wave.enemysPerWave.Add(index, new Dictionary<EnemyBD, int>());
                                 _wave.enemysPerWave[index].Add(_enemy, _enemyCount);
+                                _wave.waveEnemysToKill += _enemyCount;
                                 Debug.Log("[Core] [Waves] Added new enemy: %" + _enemy.enemyName + "% to Wave: %" + _wave.id + "%");
                                 index++;
                             }
@@ -119,8 +124,14 @@ public class WaveController : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
         }
         waveCounter.text = "";
-        activeWaveId++;
-        waveStarted = true;
+        if (activeWaveId+1<= waves.Count - 1)
+        {
+            activeWaveId++;
+            waveStarted = true;
+            enemysToKill = waves[activeWaveId].waveEnemysToKill;
+            Debug.Log("[Core] [Waves] Started Wave: %" + activeWaveId + "%");
+        }
+        
     }
 
     private IEnumerator SpawnEnemyWithDelay(EnemyBD enemy, int count)
@@ -142,6 +153,7 @@ public class Wave
     public int id;
     public Dictionary<int, Dictionary<EnemyBD, int>> enemysPerWave = new Dictionary<int, Dictionary<EnemyBD, int>>();
     public int currentEnemysIndex = 0;
+    public int waveEnemysToKill;
     public bool startedWave;
 
     public Wave(int _id)

@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 24
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,10 +126,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_0
       rect:
         serializedVersion: 2
-        x: 157
-        y: 571
-        width: 51
-        height: 57
+        x: 120
+        y: 542
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,10 +147,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_1
       rect:
         serializedVersion: 2
-        x: 268
-        y: 568
-        width: 60
-        height: 59
+        x: 240
+        y: 542
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,10 +168,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_2
       rect:
         serializedVersion: 2
-        x: 383
-        y: 567
-        width: 66
-        height: 62
+        x: 360
+        y: 542
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,10 +189,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_3
       rect:
         serializedVersion: 2
-        x: 500
-        y: 563
-        width: 76
-        height: 69
+        x: 480
+        y: 542
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -210,10 +210,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_4
       rect:
         serializedVersion: 2
-        x: 613
-        y: 560
-        width: 85
-        height: 78
+        x: 600
+        y: 542
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,10 +231,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_5
       rect:
         serializedVersion: 2
-        x: 730
-        y: 560
-        width: 95
-        height: 85
+        x: 720
+        y: 542
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -252,10 +252,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_6
       rect:
         serializedVersion: 2
-        x: 5
-        y: 449
-        width: 99
-        height: 90
+        x: 0
+        y: 430
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -273,10 +273,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_8
       rect:
         serializedVersion: 2
-        x: 128
-        y: 447
-        width: 104
-        height: 93
+        x: 240
+        y: 430
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -294,10 +294,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_10
       rect:
         serializedVersion: 2
-        x: 244
-        y: 444
-        width: 105
-        height: 96
+        x: 480
+        y: 430
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -315,10 +315,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_12
       rect:
         serializedVersion: 2
-        x: 363
-        y: 441
-        width: 109
-        height: 99
+        x: 720
+        y: 430
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -336,10 +336,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_14
       rect:
         serializedVersion: 2
-        x: 484
-        y: 441
-        width: 110
-        height: 102
+        x: 120
+        y: 318
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -357,10 +357,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_16
       rect:
         serializedVersion: 2
-        x: 616
-        y: 438
-        width: 88
-        height: 83
+        x: 360
+        y: 318
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -378,10 +378,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_17
       rect:
         serializedVersion: 2
-        x: 734
-        y: 452
-        width: 78
-        height: 71
+        x: 480
+        y: 318
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -399,10 +399,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_18
       rect:
         serializedVersion: 2
-        x: 13
-        y: 341
-        width: 80
-        height: 74
+        x: 600
+        y: 318
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -420,10 +420,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_19
       rect:
         serializedVersion: 2
-        x: 132
-        y: 340
-        width: 82
-        height: 76
+        x: 720
+        y: 318
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -441,10 +441,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_20
       rect:
         serializedVersion: 2
-        x: 252
-        y: 340
-        width: 82
-        height: 76
+        x: 0
+        y: 206
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -462,10 +462,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_21
       rect:
         serializedVersion: 2
-        x: 371
-        y: 338
-        width: 83
-        height: 79
+        x: 120
+        y: 206
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -483,10 +483,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_22
       rect:
         serializedVersion: 2
-        x: 491
-        y: 337
-        width: 84
-        height: 80
+        x: 240
+        y: 206
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -504,10 +504,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_23
       rect:
         serializedVersion: 2
-        x: 611
-        y: 337
-        width: 83
-        height: 81
+        x: 360
+        y: 206
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -525,10 +525,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_24
       rect:
         serializedVersion: 2
-        x: 732
-        y: 336
-        width: 82
-        height: 83
+        x: 480
+        y: 206
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -546,10 +546,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_25
       rect:
         serializedVersion: 2
-        x: 12
-        y: 227
-        width: 82
-        height: 83
+        x: 600
+        y: 206
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -567,10 +567,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_26
       rect:
         serializedVersion: 2
-        x: 134
-        y: 225
-        width: 80
-        height: 86
+        x: 720
+        y: 206
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -588,10 +588,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_27
       rect:
         serializedVersion: 2
-        x: 254
-        y: 224
-        width: 79
-        height: 86
+        x: 0
+        y: 94
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -609,10 +609,10 @@ TextureImporter:
       name: Effect_PuffAndStars_1_120x109_28
       rect:
         serializedVersion: 2
-        x: 375
-        y: 224
-        width: 78
-        height: 86
+        x: 120
+        y: 94
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -627,13 +627,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Effect_PuffAndStars_1_120x109_29
+      name: Effect_PuffAndStars_1_120x109_7
       rect:
         serializedVersion: 2
-        x: 495
-        y: 225
-        width: 78
-        height: 84
+        x: 120
+        y: 430
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -641,20 +641,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57f7f28e21337734eb22b17d1dc65d1b
-      internalID: -1231092044
+      spriteID: 6c7a2a06a3c53bb4bb3d01d5eb0aa4cf
+      internalID: -378926043
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Effect_PuffAndStars_1_120x109_30
+      name: Effect_PuffAndStars_1_120x109_9
       rect:
         serializedVersion: 2
-        x: 616
-        y: 225
-        width: 77
-        height: 83
+        x: 360
+        y: 430
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -662,20 +662,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e7264de523fdc3447858000cc5e6ef0c
-      internalID: 1332034875
+      spriteID: d813cf5bb4c5a7549bb1e2b22947dfec
+      internalID: 1205703707
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Effect_PuffAndStars_1_120x109_31
+      name: Effect_PuffAndStars_1_120x109_11
       rect:
         serializedVersion: 2
-        x: 735
-        y: 225
-        width: 78
-        height: 83
+        x: 600
+        y: 430
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -683,20 +683,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: baf5b92b46232224f9ca5347141ff694
-      internalID: 406077905
+      spriteID: 1499ec0a13502d24197e35910a6875de
+      internalID: 1849838665
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Effect_PuffAndStars_1_120x109_32
+      name: Effect_PuffAndStars_1_120x109_13
       rect:
         serializedVersion: 2
-        x: 15
-        y: 117
-        width: 78
-        height: 81
+        x: 0
+        y: 318
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -704,20 +704,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 32f8e776b7b846343ab464023cd07753
-      internalID: 1333626528
+      spriteID: e7a0a14af075ad1449fee39e42d03d3a
+      internalID: -636621702
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Effect_PuffAndStars_1_120x109_33
+      name: Effect_PuffAndStars_1_120x109_15
       rect:
         serializedVersion: 2
-        x: 135
-        y: 118
-        width: 78
-        height: 79
+        x: 240
+        y: 318
+        width: 120
+        height: 112
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -725,8 +725,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 03a630fbde49af0468e88b5f3e47763a
-      internalID: -644876144
+      spriteID: 907565e3ebed1ba4d9352e3bfa96e563
+      internalID: 867109573
       vertices: []
       indices: 
       edges: []
@@ -764,12 +764,7 @@ TextureImporter:
       Effect_PuffAndStars_1_120x109_26: -703548204
       Effect_PuffAndStars_1_120x109_27: 1941942494
       Effect_PuffAndStars_1_120x109_28: 260644810
-      Effect_PuffAndStars_1_120x109_29: -1231092044
       Effect_PuffAndStars_1_120x109_3: 443536200
-      Effect_PuffAndStars_1_120x109_30: 1332034875
-      Effect_PuffAndStars_1_120x109_31: 406077905
-      Effect_PuffAndStars_1_120x109_32: 1333626528
-      Effect_PuffAndStars_1_120x109_33: -644876144
       Effect_PuffAndStars_1_120x109_4: 978594071
       Effect_PuffAndStars_1_120x109_5: 693832885
       Effect_PuffAndStars_1_120x109_6: 1714331172

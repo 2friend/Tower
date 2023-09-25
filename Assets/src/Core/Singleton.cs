@@ -1,23 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Singleton : MonoBehaviour
 {
     public int money;
+    public int wave;
+
+    [SerializeField] private TextMeshProUGUI waveText;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
 
-    public void LoadProgress()
+    private void Update()
     {
-
-    }
-
-    public void SaveProgress()
-    {
-
+        waveText.text = wave.ToString();
     }
 }

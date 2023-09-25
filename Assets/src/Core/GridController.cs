@@ -9,6 +9,7 @@ public class GridController : MonoBehaviour
     public List<Sprite> sprites;
     public List<Sprite> decor;
     public GameObject nodePrefab;
+    public GameObject playerHp;
     public int gridSizeX, gridSizeY;
 
     public List<Transform> waypoints;
@@ -33,11 +34,18 @@ public class GridController : MonoBehaviour
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 nodePosition = new Vector3(x - 9, y - 5, 0);
+                Vector3 nodePosition = new Vector3(x - 15, y - 8, 0);
                 GameObject newNode = Instantiate(nodePrefab, nodePosition, Quaternion.identity);
                 Node nodeComponent = newNode.AddComponent<Node>();
 
+                
+
                 Vector2Int currentPos = new Vector2Int(x, y);
+
+                if (currentPos == new Vector2Int(35, 22))
+                {
+                    Instantiate(playerHp, nodePosition, Quaternion.identity);
+                }
 
                 bool isPath = false;
 
@@ -140,6 +148,8 @@ public class GridController : MonoBehaviour
             nodeComponent.spriteRenderer.sprite = sprites[0];
             waypoints.Add(grid[x, y].transform);
         }
+
+        Debug.Log("[Core] [Grid] Grid generated!");
     }
 
     public List<Node> GetNodeNeighbors(Node _node)

@@ -5,8 +5,10 @@ using UnityEngine;
 public class TowerAnimatorController : MonoBehaviour
 {
     private const string BUILDING_EFFECT_NAME = "VFX_Puff";
+    private const string BUILDING_UNIT_EFFECT_NAME = "VFX_Unit_Spawn";
     private const string BUILDING_SOUND_NAME = "SND_Build";
 
+    [SerializeField] private GameObject unit;
     private Animator animator;
     public EffectHolder effects;
     public MusicHolder sounds;
@@ -36,11 +38,16 @@ public class TowerAnimatorController : MonoBehaviour
         }
     }
 
-    
+    public void SpawnUnit()
+    {
+        Instantiate(effects.GetEffect(BUILDING_UNIT_EFFECT_NAME), unit.transform);
+        unit.SetActive(true);
+    }
 
     public void Builded()
     {
         animator.SetBool("Builded", true);
         animator.SetBool("Placed", false);
+        SpawnUnit();
     }
 }
