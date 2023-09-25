@@ -28,11 +28,16 @@ public class Tutorials : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI  helperText;
 
+    public int maxStages = 0;
+    public int currStage = 0;
+    private Tutorial currTutor;
+
     private List<Tutorial> tutors = new List<Tutorial>();
 
     private void Start()
     {
         ReadTutorsFile();
+        StartTutorial(tutors[0]);
     }
 
     private void ReadTutorsFile()
@@ -92,14 +97,17 @@ public class Tutorials : MonoBehaviour
         return cameraPosition;
     }
 
-    public void StartTutorial()
+    public void StartTutorial(Tutorial _tut)
     {
         foreach (Button button in GetButtonsInChildrenRecursive(towerShop.gameObject.transform))
         {
             button.interactable = false;
         }
+        currTutor = _tut;
         cam.GetComponent<CameraMover>().canMove = false;
-        StartCoroutine(MoveCamera(new Vector3(20f, 9.5f)));
+        maxStages = _tut.stages.Count-1;
+        Debug.Log("[Gameplay] [Tutorials] Started Tutorial: %" + currTutor.tutorial_id + "%");
+        StartCoroutine(MoveCamera(_tut.stages[currStage].camPos));
     }
 
     IEnumerator MoveCamera(Vector3 targetPosition)
@@ -116,9 +124,60 @@ public class Tutorials : MonoBehaviour
             cam.transform.position = Vector3.Lerp(initialPosition, targetPosition, fractionOfJourney);
             yield return null;
         }
-
+        if (currTutor.stages[currStage].helpText!=null)
+        {
+            helperText.text = currTutor.stages[currStage].helpText;
+            StartCoroutine(FadeInText());
+        }
         cam.transform.position = targetPosition;
-        StartCoroutine(MoveCamera(new Vector3(0-.5f,-.5f)));
+        yield return new WaitForSeconds(2f);
+        
+        if (currStage<maxStages)
+        {
+            currStage++;
+            StartCoroutine(MoveCamera(currTutor.stages[currStage].camPos));
+        }
+        else if(currStage == maxStages && currTutor==tutors[0])
+        {
+            StartCoroutine(waves.StartWaves());
+        }
+        
+    }
+
+    private IEnumerator FadeInText()
+    {
+        float fadeInDuration = 1.0f;
+        float elapsedTime = 0f;
+        Color originalColor = helperText.color;
+
+        while (elapsedTime < fadeInDuration)
+        {
+            helperText.alpha = Mathf.Lerp(0f, 1f, elapsedTime / fadeInDuration);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+
+        }
+        helperText.alpha = 1f;
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(FadeOutText());
+    }
+
+    private IEnumerator FadeOutText()
+    {
+        float fadeOutDuration = 1.0f;
+        float elapsedTime = 0f;
+        Color originalColor = helperText.color;
+
+        while (elapsedTime < fadeOutDuration)
+        {
+            helperText.alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeOutDuration);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        helperText.alpha = 0f;
     }
 
     Button[] GetButtonsInChildrenRecursive(Transform parent)
@@ -143,6 +202,7 @@ public class Tutorial
 {
     public string tutorial_id;
     public Dictionary<int, TutorialStage> stages = new Dictionary<int, TutorialStage>();
+    
 
     public Tutorial(string _id)
     {

@@ -1,8 +1,8 @@
 <root>
   <tutorial id="starting_tutor">
-    <stage id="0" camera_pos="0,0" help_text="Defend your house!"/>
+    <stage id="0" camera_pos="20,12" help_text="Defend your house!"/>
     <stage id="1" camera_pos="0,0" help_text="Here is enemy spawn!"/>
-    <stage id="2" camera_pos="0,0"/>
+    <stage id="2" camera_pos="20,12"/>
   </tutorial>
   <tutorial id="22starting_tutor">
     <stage id="0" camera_pos="0,0" help_text="Defend your house!"/>

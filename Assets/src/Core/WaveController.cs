@@ -113,10 +113,9 @@ public class WaveController : MonoBehaviour
         }
         reader.Close();
         Debug.Log("[Core] [Waves] Reading Finished, loaded: %" + waves.Count + "%" + " waves!");
-        StartCoroutine(StartWaves());
     }
 
-    IEnumerator StartWaves()
+    public IEnumerator StartWaves()
     {
         for (int i = 3; i >= 0; i--)
         {
