@@ -140,6 +140,11 @@ public class Tutorials : MonoBehaviour
         else if(currStage == maxStages && currTutor==tutors[0])
         {
             StartCoroutine(waves.StartWaves());
+            Debug.Log("[Gameplay] [Tutorials] Finished Tutorial: %" + currTutor.tutorial_id + "%");
+        }
+        else if(currStage == maxStages)
+        {
+            Debug.Log("[Gameplay] [Tutorials] Finished Tutorial: %" + currTutor.tutorial_id + "%");
         }
         
     }

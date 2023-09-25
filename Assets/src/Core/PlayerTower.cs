@@ -8,9 +8,12 @@ public class PlayerTower : MonoBehaviour
     public int livesCurrent;
     public int livesMax = 30;
 
+    [SerializeField] private WaveController wave;
+
     private void Start()
     {
         livesCurrent = livesMax;
+        wave = GameObject.Find("MainCamera").GetComponent<WaveController>();
     }
 
     public void TakingDamage(int _dmg)
@@ -29,6 +32,6 @@ public class PlayerTower : MonoBehaviour
 
     private void Die()
     {
-
+        wave.enabled = false;
     }
 }

@@ -22,6 +22,7 @@ public class WaveController : MonoBehaviour
     [SerializeField] private GridObjects gridObjects;
 
     [SerializeField] private TextMeshProUGUI waveCounter;
+    [SerializeField] private PlayerTower player;
 
     public List<Wave> waves = new List<Wave>();
     public bool waveStarted;
@@ -33,6 +34,7 @@ public class WaveController : MonoBehaviour
     private void Start()
     {
         ReadWavesFile();
+        player = GameObject.Find("Player").GetComponent<PlayerTower>();
     }
 
     private void Update()
@@ -41,7 +43,7 @@ public class WaveController : MonoBehaviour
         {
             activeWave = waves[activeWaveId];
 
-            if (!activeWave.startedWave && activeWave.currentEnemysIndex < activeWave.enemysPerWave.Count)
+            if (!activeWave.startedWave && activeWave.currentEnemysIndex < activeWave.enemysPerWave.Count && player.livesCurrent > 0)
             {
                 activeWave.startedWave = true;
                 var enemyDict = activeWave.enemysPerWave[activeWave.currentEnemysIndex];
@@ -52,7 +54,7 @@ public class WaveController : MonoBehaviour
                     StartCoroutine(SpawnEnemyWithDelay(enemy, count));
                 }
             }
-            else if (activeWave.currentEnemysIndex >= activeWave.enemysPerWave.Count)
+            else if (activeWave.currentEnemysIndex >= activeWave.enemysPerWave.Count && player.livesCurrent > 0)
             {
                 if (aliveEnemys == 0 && activeWaveId + 1 <= waves.Count - 1) 
                 {

@@ -118,7 +118,7 @@ public class GridObjects : MonoBehaviour
             {
                 Debug.LogError("[!] [Gameplay] [VFX] NO SUCH EFFECT: %VFX_Enemy_Spawn%!");
             }
-            
+
             EnemyBD enemyComp = enemyObj.AddComponent<EnemyBD>();
             enemyComp.InitializeFrom(_enemy);
             waveController.aliveEnemys++;
@@ -219,10 +219,10 @@ public class GridObjects : MonoBehaviour
     public void OnShopButtonClick(Tower _tower)
     {
         currentBuilding = Instantiate(tower);
-        currentBuilding.GetComponent<SpriteRenderer>().sortingOrder = 2;
-        isBuilding = true;
         Tower towerType = currentBuilding.AddComponent<Tower>();
         towerType.InitializeFrom(_tower);
+        currentBuilding.GetComponent<SpriteRenderer>().sortingOrder = 2;
+        isBuilding = true;
         currentBuilding.GetComponent<BoxCollider2D>().enabled = false;
         Debug.Log("[Gameplay] [Building] Tower: %" + _tower.towerName + "% Selected For Build!");
     }
