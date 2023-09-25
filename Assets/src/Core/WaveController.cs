@@ -131,6 +131,10 @@ public class WaveController : MonoBehaviour
             enemysToKill = waves[activeWaveId].waveEnemysToKill;
             Debug.Log("[Core] [Waves] Started Wave: %" + activeWaveId + "%");
         }
+        else
+        {
+            Debug.LogWarning("[?] [Core] [Waves] The waves is ended, no more waves left!");
+        }
         
     }
 

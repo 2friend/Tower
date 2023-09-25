@@ -80,7 +80,7 @@ public class GridObjects : MonoBehaviour
             {
                 isBuilding = false;
                 hit.collider.GetComponent<Node>().haveSomething = true;
-                Debug.Log("[Core] [Towers] Builded tower: %" + currentBuilding.GetComponent<Tower>().id + "%. On Node X: %" + hit.collider.GetComponent<Node>().x + "% Y: %" + hit.collider.GetComponent<Node>().y + "%");
+                Debug.Log("[Gameplay] [Building] Builded tower: %" + currentBuilding.GetComponent<Tower>().id + "%. On Node X: %" + hit.collider.GetComponent<Node>().x + "% Y: %" + hit.collider.GetComponent<Node>().y + "%");
                 foreach (Node _node in grid.GetNodeNeighbors(hit.collider.GetComponent<Node>()))
                 {
                     _node.haveSomething = true;
@@ -109,7 +109,16 @@ public class GridObjects : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject enemyObj = Instantiate(enemy, grid.waypoints[0]);
-            Instantiate(effectHolder.GetEffect("VFX_Enemy_Spawn"), grid.waypoints[0]);
+            if (effectHolder.GetEffect("VFX_Enemy_Spawn"))
+            {
+                Debug.Log("[Gameplay] [VFX] Started effect: %VFX_Enemy_Spawn% in node: %" + grid.waypoints[0].name + "%");
+                Instantiate(effectHolder.GetEffect("VFX_Enemy_Spawn"), grid.waypoints[0]);
+            }
+            else
+            {
+                Debug.LogError("[!] [Gameplay] [VFX] NO SUCH EFFECT: %VFX_Enemy_Spawn%!");
+            }
+            
             EnemyBD enemyComp = enemyObj.AddComponent<EnemyBD>();
             enemyComp.InitializeFrom(_enemy);
             waveController.aliveEnemys++;
@@ -183,6 +192,7 @@ public class GridObjects : MonoBehaviour
                 Debug.Log("[Core] [Towers] Loaded New Tower: %" + _towerName + "%");
                 towers.Add(_tower);
                 AddToShop(_tower);
+                Debug.Log("[Core] [UI] Added new tower button: %" + _towerName + "%");
             }
         }
         reader.Close();
@@ -214,6 +224,7 @@ public class GridObjects : MonoBehaviour
         Tower towerType = currentBuilding.AddComponent<Tower>();
         towerType.InitializeFrom(_tower);
         currentBuilding.GetComponent<BoxCollider2D>().enabled = false;
+        Debug.Log("[Gameplay] [Building] Tower: %" + _tower.towerName + "% Selected For Build!");
     }
 }
 
@@ -394,35 +405,31 @@ public class EnemyBD : MonoBehaviour
     private void Update()
     {
         if (currentWaypointIndex < grid.waypoints.Count)
-        if (!isDead)  
         {
-            Transform targetWaypoint = grid.waypoints[currentWaypointIndex];
-            if (currentWaypointIndex < grid.waypoints.Count)
+            if (!isDead)
             {
                 Transform targetWaypoint = grid.waypoints[currentWaypointIndex];
-
-            Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
-                Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
-
-            animator.SetFloat("X", moveDirection.x);
-            animator.SetFloat("Y", moveDirection.y);
-                animator.SetFloat("X", moveDirection.x);
-                animator.SetFloat("Y", moveDirection.y);
-
-            transform.Translate(moveDirection * speed * Time.deltaTime);
-                transform.Translate(moveDirection * speed * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
-                if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
+                if (currentWaypointIndex < grid.waypoints.Count)
                 {
-                    currentWaypointIndex++;
+
+                    Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
+
+                    animator.SetFloat("X", moveDirection.x);
+                    animator.SetFloat("Y", moveDirection.y);
+
+                    transform.Translate(moveDirection * speed * Time.deltaTime);
+
+                    if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
+                    {
+                        currentWaypointIndex++;
+                    }
                 }
-            }
-            else
-            {
-                currentWaypointIndex++;
-                waveController.aliveEnemys--;
-                Destroy(this.gameObject);
+                else
+                {
+                    waveController.aliveEnemys--;
+                    Debug.Log("[Gameplay] [Enemys] Enemy: %" + enemyName + "% Finished Way And Be Destroyed!");
+                    Destroy(this.gameObject);
+                }
             }
         }
         else
@@ -437,6 +444,7 @@ public class EnemyBD : MonoBehaviour
     {
         if (currHp - _dmg > 0)
         {
+            Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking Damage: %" + (currHp - _dmg).ToString() + "%");
             currHp -= _dmg;
         }
         else
@@ -448,7 +456,8 @@ public class EnemyBD : MonoBehaviour
     private void Die()
     {
         animator.SetTrigger("Die");
-         isDead = true;
+        Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Die!");
+        isDead = true;
         StartCoroutine(DestroyAfterAnimation());
     }
 
@@ -469,6 +478,7 @@ public class EnemyBD : MonoBehaviour
             }
             else
             {
+                Debug.LogError("[!] [Core] [Enemys] NO SUCH ENEMY: %" + enemyName + "% ANIMATION CONTROLLER FOUND!");
             }
         }
         else

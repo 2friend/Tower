@@ -30,18 +30,30 @@ public class TowerAnimatorController : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject _effect = Instantiate(effects.GetEffect(BUILDING_EFFECT_NAME), gameObject.transform);
+            Debug.Log("[Gameplay] [VFX] Started effect: %" + BUILDING_EFFECT_NAME +"%!");
             Vector3 _newPosition = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
             _effect.transform.position = _newPosition;
             _effect.GetComponent<SpriteRenderer>().sortingOrder = 3;
            _effect.GetComponent<EffectsController>().PlaySound(BUILDING_SOUND_NAME);
+            Debug.Log("[Gameplay] [Sounds] Started Sound: %" + BUILDING_SOUND_NAME + "%");
             yield return new WaitForSeconds(0.8f);
         }
     }
 
     public void SpawnUnit()
     {
-        Instantiate(effects.GetEffect(BUILDING_UNIT_EFFECT_NAME), unit.transform);
-        unit.SetActive(true);
+        if (unit != null)
+        {
+            Instantiate(effects.GetEffect(BUILDING_UNIT_EFFECT_NAME), unit.transform);
+            Debug.Log("[Gameplay] [VFX] Started effect: %" + BUILDING_UNIT_EFFECT_NAME + "%");
+            unit.SetActive(true);
+            Debug.Log("[Gameplay] [Towers] Spawned Unit: %" + unit.name + "%. For Tower: %" + gameObject.GetComponent<Tower>().towerName + "%");
+        }
+        else
+        {
+            Debug.LogError("[!] [Gameplay] [Towers] Cant Find Unit For Tower: %" + gameObject.GetComponent<Tower>().towerName + "%");
+        }
+        
     }
 
     public void Builded()

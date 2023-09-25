@@ -19,6 +19,7 @@ public class EnemyAnimationController : MonoBehaviour
     public void PlaySound(string name)
     {
         audioSource.clip = musicHolder.GetSound(name);
-        audioSource.Play();
+        if (audioSource.clip != null)
+            audioSource.Play();
     }
 }

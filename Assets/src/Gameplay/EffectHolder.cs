@@ -18,7 +18,7 @@ public class EffectHolder : MonoBehaviour
         }
 
         if (effect == null)
-            Debug.LogWarning("[Core] [Errors] Wrong Effect ID called or no such Effect: %" + name + "%");
+            Debug.LogError("[!] [Gameplay] [Effects] WRONG EFFECT ID CALLED OR NO SUCH EFFECT: %" + name + "%");
 
         return effect;
     }

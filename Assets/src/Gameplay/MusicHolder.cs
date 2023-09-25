@@ -19,7 +19,7 @@ public class MusicHolder : MonoBehaviour
         }
 
         if(_audio == null)
-            Debug.LogWarning("[Core] [Errors] WRONG Audio ID called or NO SUCH Audio: %" + name + "%");
+            Debug.LogError("[!] [Gameplay] [Sounds] NO SUCH AUDIO: %" + name + "% FOUND!");
 
         return _audio;
     }

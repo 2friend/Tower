@@ -445,7 +445,7 @@ MonoBehaviour:
   effectsList:
   - {fileID: 6163875466535042148, guid: 161161ca5e0308d45a2cefb4cabff14a, type: 3}
   - {fileID: 516177812664889171, guid: ff4eaf08428aa564d9377b3b7df2eb35, type: 3}
-  - {fileID: 6162550334456845847, guid: 1aa24b98d892aed4ca54730b0cce76d7, type: 3}
+  - {fileID: 516177812664889171, guid: 3e7e733666a937241a91688af944ddcd, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,6 +1278,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 928975065}
   m_CullTransparentMesh: 1
+--- !u!1 &971903455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 971903457}
+  - component: {fileID: 971903456}
+  m_Layer: 0
+  m_Name: Logger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &971903456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971903455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33d722dc6dd4cf2438e5d696452e88de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &971903457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971903455}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.589627, y: -6.145806, z: -3.8620057}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1138220426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1712,3 +1756,4 @@ SceneRoots:
   - {fileID: 240668796}
   - {fileID: 1138220427}
   - {fileID: 406201351}
+  - {fileID: 971903457}

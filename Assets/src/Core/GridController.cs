@@ -26,7 +26,7 @@ public class GridController : MonoBehaviour
     void GenerateGrid()
     {
         grid = new GameObject[gridSizeX, gridSizeY];
-        List<Path> pathList = PathController.paths;
+        List<WavePath> pathList = PathController.paths;
         activeRoad = Random.Range(0, pathList.Count);
         Debug.Log("[Core] [Grid] Selected new Path for generating road ID: %" + activeRoad + "%");
 
