@@ -12,7 +12,10 @@ public class EnemyAnimationController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         musicHolder = GameObject.Find("MusicHolder").GetComponent<MusicHolder>();
     }
-
+    public void Die () 
+    {
+        Destroy(gameObject);
+    }
     public void PlaySound(string name)
     {
         audioSource.clip = musicHolder.GetSound(name);
