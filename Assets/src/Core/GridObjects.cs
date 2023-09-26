@@ -306,6 +306,7 @@ public class Tower : MonoBehaviour
 
 public class BulletComponent : MonoBehaviour
 {
+    private const string BULLET_SPRITE_PATH = "Sprites\\Bullets\\";
     private int damage;
     private float speed;
     private Vector3 targetPosition;
@@ -328,7 +329,7 @@ public class BulletComponent : MonoBehaviour
         projectile = GetComponent<SpriteRenderer>();
         if (projectile != null)
         {
-            projectile.sprite = Resources.Load<Sprite>("Sprites\\Towers\\Units\\Arrow\\1");
+            projectile.sprite = Resources.Load<Sprite>(BULLET_SPRITE_PATH + sprite);
         }
         else
         {
