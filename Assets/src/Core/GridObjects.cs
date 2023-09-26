@@ -287,6 +287,7 @@ public class Tower : MonoBehaviour
         GameObject bulletObject = new GameObject("Bullet");
         BulletComponent bulletComponent = bulletObject.AddComponent<BulletComponent>();
         bulletObject.AddComponent<SpriteRenderer>();
+        bulletObject.GetComponent<SpriteRenderer>().sortingOrder = 4;
         bulletComponent.InitializeFrom(bullet);
         bulletObject.transform.position = transform.position;
         bulletComponent.SetTarget(enemy.transform.position);
@@ -358,11 +359,13 @@ public class BulletComponent : MonoBehaviour
         foreach (var collider in colliders)
         {
             EnemyBD enemy = collider.GetComponent<EnemyBD>();
-            if (enemy != null)
+            if (enemy != null && !enemy.isDead)
             {
                 enemy.TakingDamage(damage);
             }
         }
+        Destroy(gameObject);
+
     }
 }
 
@@ -374,7 +377,7 @@ public class EnemyBD : MonoBehaviour
     public string enemyName;
     public int maxHp;
     public int currHp;
-    private bool isDead = false;
+    public bool isDead = false;
     public string sprite;
     public float speed;
     public int money;
@@ -437,12 +440,6 @@ public class EnemyBD : MonoBehaviour
                     currentWaypointIndex++;
                 }
             }
-            else
-            {
-                waveController.aliveEnemys--;
-                    waveController.enemysToKill--;
-                Destroy(this.gameObject);
-            }
         }
         }
         else
@@ -457,29 +454,30 @@ public class EnemyBD : MonoBehaviour
 
     public void TakingDamage(int _dmg)
     {
-        if (currHp - _dmg > 0)
+        if (!isDead)
         {
-            Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking Damage: %" + (currHp - _dmg).ToString() + "%");
-            currHp -= _dmg;
-        }
-        else
-        {
-            Die();
+            if (currHp - _dmg > 0)
+            {
+                Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking Damage: %" + (currHp - _dmg).ToString() + "%");
+                currHp -= _dmg;
+            }
+            else if (currHp - _dmg <= 0)
+            {
+                Die();
+            }
         }
     }
 
     private void Die()
     {
-        animator.SetTrigger("Die");
-        Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Die!");
-        isDead = true;
-        StartCoroutine(DestroyAfterAnimation());
-    }
-
-    private IEnumerator DestroyAfterAnimation()
-    {
-        yield return new WaitForSeconds(1.0f);
-        Destroy(gameObject);
+        if (!isDead)
+        {
+            isDead = true;
+            animator.SetTrigger("Die");
+            Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Die!");
+            waveController.aliveEnemys -= 1;
+            waveController.enemysToKill -= 1;
+        }
     }
 
     void InitializeEnemyType()
