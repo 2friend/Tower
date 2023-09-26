@@ -209,6 +209,7 @@ public class Tutorials : MonoBehaviour
             {
                 StartCoroutine(waves.StartWaves());
             }
+            helperText.text = "";
             currTutor = null;
             ActivateButtons();
         }

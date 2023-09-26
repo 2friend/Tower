@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerTower : MonoBehaviour
 {
-    public int money = 100;
+    public int money;
     public int livesCurrent;
     public int livesMax = 30;
 
