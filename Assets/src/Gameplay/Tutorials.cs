@@ -99,10 +99,10 @@ public class Tutorials : MonoBehaviour
 
     public void StartTutorial(Tutorial _tut)
     {
-        foreach (Button button in GetButtonsInChildrenRecursive(towerShop.gameObject.transform))
-        {
-            button.interactable = false;
-        }
+        // foreach (Button button in GetButtonsInChildrenRecursive(towerShop.gameObject.transform))
+        // {
+        //     button.interactable = false;
+        // }
         currTutor = _tut;
         cam.GetComponent<CameraMover>().canMove = false;
         maxStages = _tut.stages.Count-1;

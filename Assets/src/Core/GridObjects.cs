@@ -32,7 +32,7 @@ public class GridObjects : MonoBehaviour
     private const string ENEMY_NAME_ATTRIBUTE_VAR = "name";
     private const string ENEMY_HP_ATTRIBUTE_VAR = "hp";
     private const string ENEMY_SPEED_ATTRIBUTE_VAR = "speed";
-    private const string ENEMY_SPRITE_ATTRIBUTE_VAR = "sprite"; 
+    private const string ENEMY_SPRITE_ATTRIBUTE_VAR = "sprite";
     private const string ENEMY_MONEY_ATTRIBUTE_VAR = "money";
 
     private Camera mainCamera;
@@ -87,10 +87,9 @@ public class GridObjects : MonoBehaviour
                 }
                 currentBuilding.GetComponent<SpriteRenderer>().color = Color.white;
                 currentBuilding.GetComponent<Animator>().SetBool("Placed", true);
-                currentBuilding.GetComponent<BoxCollider2D>().enabled = true;
                 currentBuilding = null;
             }
-            
+           
         }
         else if (Input.GetMouseButtonDown(0) && !isBuilding)
         {
@@ -109,20 +108,9 @@ public class GridObjects : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject enemyObj = Instantiate(enemy, grid.waypoints[0]);
-            if (effectHolder.GetEffect("VFX_Enemy_Spawn"))
-            {
-                Debug.Log("[Gameplay] [VFX] Started effect: %VFX_Enemy_Spawn% in node: %" + grid.waypoints[0].name + "%");
-                Instantiate(effectHolder.GetEffect("VFX_Enemy_Spawn"), grid.waypoints[0]);
-            }
-            else
-            {
-                Debug.LogError("[!] [Gameplay] [VFX] NO SUCH EFFECT: %VFX_Enemy_Spawn%!");
-            }
-
             EnemyBD enemyComp = enemyObj.AddComponent<EnemyBD>();
             enemyComp.InitializeFrom(_enemy);
             waveController.aliveEnemys++;
-            
             yield return new WaitForSeconds(1.1f);
         }
         waveController.activeWave.startedWave = false;
@@ -171,7 +159,7 @@ public class GridObjects : MonoBehaviour
                 string _towerName = reader.GetAttribute(TOWER_NAME_ATTRIBUTE_VAR);
                 float _towerSpeed = float.Parse(reader.GetAttribute(ENEMY_SPEED_ATTRIBUTE_VAR), CultureInfo.InvariantCulture);
                 string _towerSprite = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
-                float _attackRange = float.Parse(reader.GetAttribute(TOWER_ATTACK_RANGE), CultureInfo.InvariantCulture); 
+                float _attackRange = float.Parse(reader.GetAttribute(TOWER_ATTACK_RANGE), CultureInfo.InvariantCulture);
                 Tower _tower = new Tower(_towerId, _towerName, _towerSprite, _towerSpeed, _attackRange);
 
                 XmlReader inner = reader.ReadSubtree();
@@ -186,7 +174,7 @@ public class GridObjects : MonoBehaviour
                         Bullet _bullet = new Bullet(_bulletDamage, _bulletSpeed, _bulletSprite);
                         _tower.bulletType = _bullet;
                     }
-    
+   
                 }
                 inner.Close();
                 Debug.Log("[Core] [Towers] Loaded New Tower: %" + _towerName + "%");
@@ -219,12 +207,10 @@ public class GridObjects : MonoBehaviour
     public void OnShopButtonClick(Tower _tower)
     {
         currentBuilding = Instantiate(tower);
-        Tower towerType = currentBuilding.AddComponent<Tower>();
-        towerType.InitializeFrom(_tower);
         currentBuilding.GetComponent<SpriteRenderer>().sortingOrder = 2;
         isBuilding = true;
-        currentBuilding.GetComponent<BoxCollider2D>().enabled = false;
-        Debug.Log("[Gameplay] [Building] Tower: %" + _tower.towerName + "% Selected For Build!");
+        Tower towerType = currentBuilding.AddComponent<Tower>();
+        towerType.InitializeFrom(_tower);
     }
 }
 
@@ -236,6 +222,7 @@ public class Tower : MonoBehaviour
     public string sprite;
     public float atkspd;
     public float attackRange;
+    private float atkspdTimer = 0;
 
     public Tower(int _id, string _name, string _sprite, float _spd, float _attackRange)
     {
@@ -248,13 +235,20 @@ public class Tower : MonoBehaviour
 
     void Update()
     {
-        EnemyBD targetEnemy = FindNearestEnemy();
-
-        if (targetEnemy != null)
+        atkspdTimer += Time.deltaTime; 
+        if (atkspdTimer >= 1 / atkspd) 
         {
-            Attack(targetEnemy);
+            EnemyBD targetEnemy = FindNearestEnemy();
+
+            if (targetEnemy != null)
+            {
+                Attack(targetEnemy);
+
+                atkspdTimer = 0; 
+            }
         }
     }
+
 
     private EnemyBD FindNearestEnemy()
     {
@@ -282,21 +276,19 @@ public class Tower : MonoBehaviour
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
             if (distance <= attackRange)
             {
-                Shoot(enemy); 
+                Shoot(enemy);
             }
         }
     }
 
     public void Shoot(EnemyBD enemy)
     {
-        Bullet bullet = bulletType; 
-
+        Bullet bullet = bulletType;
         GameObject bulletObject = new GameObject("Bullet");
         BulletComponent bulletComponent = bulletObject.AddComponent<BulletComponent>();
+        bulletObject.AddComponent<SpriteRenderer>();
         bulletComponent.InitializeFrom(bullet);
-
         bulletObject.transform.position = transform.position;
-
         bulletComponent.SetTarget(enemy.transform.position);
     }
 
@@ -317,18 +309,32 @@ public class BulletComponent : MonoBehaviour
     private int damage;
     private float speed;
     private Vector3 targetPosition;
+    public SpriteRenderer projectile;
+    private string sprite;
 
     public void InitializeFrom(Bullet bullet)
     {
         damage = bullet.dmg;
         speed = bullet.speed;
+        sprite = bullet.sprite;
     }
 
     public void SetTarget(Vector3 target)
     {
         targetPosition = target;
     }
-
+    void Start ()
+    {
+        projectile = GetComponent<SpriteRenderer>();
+        if (projectile != null)
+        {
+            projectile.sprite = Resources.Load<Sprite>("Sprites\\Towers\\Units\\Arrow\\1");
+        }
+        else
+        {
+            Debug.LogError("SpriteRenderer is missing on the Bullet object!");
+        }
+    }
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
@@ -413,31 +419,31 @@ public class EnemyBD : MonoBehaviour
                 if (currentWaypointIndex < grid.waypoints.Count)
                 {
 
-                    Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
+                Vector3 moveDirection = (targetWaypoint.position - transform.position).normalized;
 
-                    animator.SetFloat("X", moveDirection.x);
-                    animator.SetFloat("Y", moveDirection.y);
+                animator.SetFloat("X", moveDirection.x);
+                animator.SetFloat("Y", moveDirection.y);
 
-                    transform.Translate(moveDirection * speed * Time.deltaTime);
+                transform.Translate(moveDirection * speed * Time.deltaTime);
 
-                    if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
-                    {
-                        currentWaypointIndex++;
-                    }
-                }
-                else
+                if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
                 {
-                    waveController.aliveEnemys--;
-                    waveController.enemysToKill--;
-                    Destroy(this.gameObject);
+                    currentWaypointIndex++;
                 }
             }
+            else
+            {
+                waveController.aliveEnemys--;
+                    waveController.enemysToKill--;
+                Destroy(this.gameObject);
+            }
+        }
         }
         else
         {
             waveController.aliveEnemys--;
             waveController.enemysToKill--;
-            player.TakingDamage(1); // TO DO: Зробити парсинг урона який наносить той чи інший ворог
+            player.TakingDamage(1); // TO DO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             Debug.Log("[Gameplay] [Enemys] Enemy: %" + enemyName + "% Finished Way And Be Destroyed!");
             Destroy(this.gameObject);
         }
@@ -466,7 +472,7 @@ public class EnemyBD : MonoBehaviour
 
     private IEnumerator DestroyAfterAnimation()
     {
-        yield return new WaitForSeconds(1.0f); 
+        yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
     }
 
@@ -494,7 +500,7 @@ public class Bullet
 {
     public int dmg;
     public float speed;
-    string sprite;
+    public string sprite;
 
     public Bullet(int _dmg, float _spd, string _sprite)
     {
