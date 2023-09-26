@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Xml;
 using System.IO;
+using TMPro;
+using System;
 
 public class GridCreator : MonoBehaviour
 {
     private const string FOLDEDR_PATH = "Assets\\Resources\\Data";
     private const string PATH_FILE_PATH = "Paths";
     public List<Transform> path = new List<Transform>();
+    public TMP_InputField idText;
 
-    public bool rememberPath;
-    [SerializeField] private GameObject savePathButton;
-    public bool canBePressed = true;
+    public bool canBePressed;
+
     public int pathId;
+
+    private void Start()
+    {
+        canBePressed = true;
+    }
 
     public void SaveGrid()
     {
@@ -60,33 +67,30 @@ public class GridCreator : MonoBehaviour
 
     private void Update()
     {
-        if (rememberPath)
+        if (Input.GetMouseButtonDown(0) && canBePressed)
         {
-            savePathButton.SetActive(true);
-            if (Input.GetMouseButtonDown(0) && canBePressed)
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            Collider2D hitCollider = Physics2D.OverlapPoint(mousePosition);
+
+            if (hitCollider != null)
             {
-                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                Collider2D hitCollider = Physics2D.OverlapPoint(mousePosition);
-
-                if (hitCollider != null)
+                if (path.Contains(hitCollider.gameObject.transform))
                 {
-                    if (path.Contains(hitCollider.gameObject.transform))
-                    {
-                        path.Remove(hitCollider.gameObject.transform);
-                        hitCollider.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-                    }
-                    else
-                    {
-                        path.Add(hitCollider.gameObject.transform);
-                        hitCollider.gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
-                    }
+                    path.Remove(hitCollider.gameObject.transform);
+                    hitCollider.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+                }
+                else
+                {
+                    path.Add(hitCollider.gameObject.transform);
+                    hitCollider.gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
                 }
             }
         }
-        else
-        {
-            savePathButton.SetActive(false);
-        }
+    }
+
+    public void ChangePathId()
+    {
+        pathId = Convert.ToInt32(idText.text);
     }
 }

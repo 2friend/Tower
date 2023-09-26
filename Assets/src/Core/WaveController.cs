@@ -151,6 +151,12 @@ public class WaveController : MonoBehaviour
         
     }
 
+
+    public void ForceStopWaves()
+    {
+        StopAllCoroutines();
+
+    }
 }
 
 public class Wave

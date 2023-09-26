@@ -99,15 +99,12 @@ public class Tutorials : MonoBehaviour
 
     public void StartTutorial(Tutorial _tut)
     {
-        // foreach (Button button in GetButtonsInChildrenRecursive(towerShop.gameObject.transform))
-        // {
-        //     button.interactable = false;
-        // }
         currTutor = _tut;
         cam.GetComponent<CameraMover>().canMove = false;
         maxStages = _tut.stages.Count-1;
         Debug.Log("[Gameplay] [Tutorials] Started Tutorial: %" + currTutor.tutorial_id + "%");
         StartCoroutine(MoveCamera(_tut.stages[currStage].camPos));
+        DeactivateButtons();
     }
 
     IEnumerator MoveCamera(Vector3 targetPosition)
@@ -145,6 +142,8 @@ public class Tutorials : MonoBehaviour
         else if(currStage == maxStages)
         {
             Debug.Log("[Gameplay] [Tutorials] Finished Tutorial: %" + currTutor.tutorial_id + "%");
+            ActivateButtons();
+            currTutor = null;
         }
         
     }
@@ -199,6 +198,36 @@ public class Tutorials : MonoBehaviour
         }
 
         return buttonList.ToArray();
+    }
+
+    public void ForceStopAllTutorials()
+    {
+        if (currTutor != null)
+        {
+            StopAllCoroutines();
+            if (currTutor == tutors[0])
+            {
+                StartCoroutine(waves.StartWaves());
+            }
+            currTutor = null;
+            ActivateButtons();
+        }
+    }
+
+    void DeactivateButtons()
+    {
+        foreach (Button button in GetButtonsInChildrenRecursive(towerShop.gameObject.transform))
+        {
+            button.interactable = false;
+        }
+    }
+
+    void ActivateButtons()
+    {
+        foreach (Button button in GetButtonsInChildrenRecursive(towerShop.gameObject.transform))
+        {
+            button.interactable = true;
+        }
     }
 }
 
