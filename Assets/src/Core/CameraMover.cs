@@ -16,12 +16,12 @@ public class CameraMover : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canMove)
+        if (Input.GetMouseButtonDown(0) && canMove || Input.GetMouseButtonDown(1) && canMove)
         {
             swipeStartPos = Input.mousePosition;
             isSwiping = true;
         }
-        else if (Input.GetMouseButtonUp(0) && canMove)
+        else if (Input.GetMouseButtonUp(0) && canMove || Input.GetMouseButtonUp(1) && canMove)
         {
             isSwiping = false;
         }
