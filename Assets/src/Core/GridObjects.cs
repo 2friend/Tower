@@ -51,6 +51,8 @@ public class GridObjects : MonoBehaviour
     [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject tower;
 
+    private PlayerTower player;
+
     public GameObject currentBuilding;
 
     public bool isBuilding = false;
@@ -59,12 +61,18 @@ public class GridObjects : MonoBehaviour
     {
         mainCamera = Camera.main;
         cameraMover = GameObject.Find("CameraController").GetComponent<CameraMover>();
+        
         ReadEnemysFile();
         ReadTowersFile();
     }
 
     private void Update()
     {
+
+        if (player == null)
+        {
+            player = grid.player.GetComponent<PlayerTower>();
+        }
 
         if(isBuilding)
             cameraMover.canMove = false;
@@ -78,6 +86,7 @@ public class GridObjects : MonoBehaviour
 
             if (hit.collider != null && !hit.collider.GetComponent<Node>().haveSomething)
             {
+                
                 isBuilding = false;
                 hit.collider.GetComponent<Node>().haveSomething = true;
                 Debug.Log("[Gameplay] [Building] Builded tower: %" + currentBuilding.GetComponent<Tower>().id + "%. On Node X: %" + hit.collider.GetComponent<Node>().x + "% Y: %" + hit.collider.GetComponent<Node>().y + "%");
@@ -206,11 +215,20 @@ public class GridObjects : MonoBehaviour
 
     public void OnShopButtonClick(Tower _tower)
     {
-        currentBuilding = Instantiate(tower);
-        currentBuilding.GetComponent<SpriteRenderer>().sortingOrder = 2;
-        isBuilding = true;
-        Tower towerType = currentBuilding.AddComponent<Tower>();
-        towerType.InitializeFrom(_tower);
+        if (player.money - 25 >= 0)
+        {
+            Debug.Log("[Gameplay] [Building] Buyed Tower: %" + _tower.towerName + "%!");
+            player.money -= 25;
+            currentBuilding = Instantiate(tower);
+            currentBuilding.GetComponent<SpriteRenderer>().sortingOrder = 2;
+            isBuilding = true;
+            Tower towerType = currentBuilding.AddComponent<Tower>();
+            towerType.InitializeFrom(_tower);
+        }
+        else
+        {
+            Debug.Log("[Gameplay] [Building] Not Enought Money To Build: %" + _tower.towerName + "%!");
+        }
     }
 }
 
@@ -472,6 +490,7 @@ public class EnemyBD : MonoBehaviour
     {
         if (!isDead)
         {
+            player.money += 5;
             isDead = true;
             animator.SetTrigger("Die");
             Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Die!");

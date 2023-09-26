@@ -15,6 +15,7 @@ public class GridController : MonoBehaviour
     public List<Transform> waypoints;
 
     public GameObject[,] grid;
+    public GameObject player;
 
     private int activeRoad;
 
@@ -44,8 +45,9 @@ public class GridController : MonoBehaviour
 
                 if (currentPos == new Vector2Int(35, 22))
                 {
-                    GameObject player = Instantiate(playerHp, nodePosition, Quaternion.identity);
-                    player.name = "Player";
+                    GameObject _player = Instantiate(playerHp, nodePosition, Quaternion.identity);
+                    _player.name = "Player";
+                    player = _player;
                 }
 
                 bool isPath = false;
