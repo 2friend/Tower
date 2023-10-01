@@ -260,9 +260,13 @@ public class Tower : MonoBehaviour
 
             if (targetEnemy != null)
             {
-                Attack(targetEnemy);
+                float distance = Vector3.Distance(transform.position, targetEnemy.transform.position);
 
-                atkspdTimer = 0; 
+                if (distance <= attackRange)
+                {
+                    Attack(targetEnemy);
+                    atkspdTimer = 0; 
+                }
             }
         }
     }
@@ -295,6 +299,18 @@ public class Tower : MonoBehaviour
             if (distance <= attackRange)
             {
                 Shoot(enemy);
+            }
+            else
+            {
+                EnemyBD newTarget = FindNearestEnemy();
+                if (newTarget != null)
+                {
+                    float newDistance = Vector3.Distance(transform.position, newTarget.transform.position);
+                    if (newDistance <= attackRange)
+                    {
+                        Attack(newTarget); 
+                    }
+                }
             }
         }
     }
