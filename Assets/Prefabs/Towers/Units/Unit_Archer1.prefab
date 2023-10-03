@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4017574597181642692}
   - component: {fileID: 197391880132120611}
   - component: {fileID: 4429542867625107096}
+  - component: {fileID: 6674064255022077582}
   m_Layer: 0
   m_Name: Unit_Archer1
   m_TagString: Untagged
@@ -106,3 +107,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6674064255022077582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188737094920397761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b071fd567f98384982e5f529f03be14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,8 +1,8 @@
 <root>
   <tower id="0" name="Archer1" speed="2.0" sprite="orc_1" attackRange="5">
-    <bullet damage="2" speed="2.0" sprite="Arrow"/>
+    <bullet damage="2" speed="5.0" sprite="Arrow"/>
   </tower>
   <tower id="1" name="Archer2" speed="1.0" sprite="orc_2" attackRange="5">
-    <bullet damage="2" speed="2.0" sprite="Arrow"/>
+    <bullet damage="2" speed="5.0" sprite="Arrow"/>
   </tower>
 </root>

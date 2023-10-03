@@ -298,7 +298,10 @@ public class Tower : MonoBehaviour
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
             if (distance <= attackRange)
             {
-                Shoot(enemy);
+                if(gameObject.GetComponent<TowerAnimatorController>().unit.active) 
+                {
+                     Shoot(enemy);
+                }
             }
             else
             {
@@ -317,6 +320,7 @@ public class Tower : MonoBehaviour
 
     public void Shoot(EnemyBD enemy)
     {
+        gameObject.GetComponent<TowerAnimatorController>().unit.GetComponent<UnitAnimationController>().Attack();
         Bullet bullet = bulletType;
         GameObject bulletObject = new GameObject("Bullet");
         BulletComponent bulletComponent = bulletObject.AddComponent<BulletComponent>();
@@ -324,7 +328,7 @@ public class Tower : MonoBehaviour
         bulletObject.GetComponent<SpriteRenderer>().sortingOrder = 4;
         bulletComponent.InitializeFrom(bullet);
         bulletObject.transform.position = transform.position;
-        bulletComponent.SetTarget(enemy.transform.position);
+        bulletComponent.SetTarget(enemy.gameObject);
     }
 
     public void InitializeFrom(Tower other)
@@ -344,7 +348,7 @@ public class BulletComponent : MonoBehaviour
     private const string BULLET_SPRITE_PATH = "Sprites\\Bullets\\";
     private int damage;
     private float speed;
-    private Vector3 targetPosition;
+    private GameObject targetPosition;
     public SpriteRenderer projectile;
     private string sprite;
 
@@ -355,7 +359,7 @@ public class BulletComponent : MonoBehaviour
         sprite = bullet.sprite;
     }
 
-    public void SetTarget(Vector3 target)
+    public void SetTarget(GameObject target)
     {
         targetPosition = target;
     }
@@ -373,16 +377,22 @@ public class BulletComponent : MonoBehaviour
     }
     void Update()
     {
-        Vector3 direction = targetPosition - transform.position;
+        Vector3 direction = targetPosition.transform.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction.normalized);
 
         transform.rotation = rotation;
 
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition.transform.position, speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (Vector3.Distance(transform.position, targetPosition.transform.position) < 0.1f && !targetPosition.GetComponent<EnemyBD>().isDead )
         {
             HitEnemy();
+            Destroy(gameObject);
+        } 
+        else if (Vector3.Distance(transform.position, targetPosition.transform.position) < 0.1f && targetPosition.GetComponent<EnemyBD>().isDead || 
+        Vector3.Distance(transform.position, targetPosition.transform.position) >= 0.1f && targetPosition.GetComponent<EnemyBD>().isDead
+        ) 
+        {
             Destroy(gameObject);
         }
     }
