@@ -2268,6 +2268,7 @@ MonoBehaviour:
   gridSizeX: 40
   gridSizeY: 26
   waypoints: []
+  player: {fileID: 0}
 --- !u!4 &905250957
 Transform:
   m_ObjectHideFlags: 0
