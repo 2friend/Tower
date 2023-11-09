@@ -349,7 +349,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: Y
-    m_EventTreshold: 0
+    m_EventTreshold: 0.1
   - m_ConditionMode: 1
     m_ConditionEvent: Die
     m_EventTreshold: 0

@@ -16,7 +16,7 @@ public class PathController : MonoBehaviour
     private const string PATH_FILE_PATH = "Paths";
     private const string PATH_ID_ATTRIBUTE_VAR = "id";
 
-    private const string PATH_OBJECT_VAR = "path";
+    private const string PATH_OBJECT_VAR = "pathPoint";
 
 
     public static List<WavePath> paths = new List<WavePath>();
@@ -39,7 +39,7 @@ public class PathController : MonoBehaviour
             int roadId = int.Parse(roadNode.Attributes[PATH_ID_ATTRIBUTE_VAR].Value);
             WavePath pathInstance = new WavePath(roadId);
             
-            XmlNodeList pathPoints = roadNode.SelectNodes("pathPoint");
+            XmlNodeList pathPoints = roadNode.SelectNodes(PATH_OBJECT_VAR);
 
             foreach (XmlNode pointNode in pathPoints)
             {

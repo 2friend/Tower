@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 330964980650378356}
   - component: {fileID: 2167429733531695376}
   - component: {fileID: 7697035557529123523}
+  - component: {fileID: 9099342529883684400}
   m_Layer: 0
   m_Name: PlayerHp
   m_TagString: Untagged
@@ -100,3 +101,50 @@ MonoBehaviour:
   money: 0
   livesCurrent: 0
   livesMax: 30
+  moneyCountText: {fileID: 0}
+  wave: {fileID: 0}
+--- !u!61 &9099342529883684400
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207669810519366096}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -1.84}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.9375, y: 3.96875}
+    newSize: {x: 1.9375, y: 3.96875}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.9375, y: 0.9}
+  m_EdgeRadius: 0

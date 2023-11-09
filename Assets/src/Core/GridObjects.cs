@@ -298,7 +298,7 @@ public class Tower : MonoBehaviour
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
             if (distance <= attackRange)
             {
-                if(gameObject.GetComponent<TowerAnimatorController>().unit.active) 
+                if(gameObject.GetComponent<TowerAnimatorController>().unit.activeSelf) 
                 {
                      Shoot(enemy);
                 }
