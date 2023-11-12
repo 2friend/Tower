@@ -36,7 +36,7 @@ public class GridObjects : MonoBehaviour
     private const string ENEMY_MONEY_ATTRIBUTE_VAR = "money";
 
     private Camera mainCamera;
-    private List<Tower> towers = new List<Tower>();
+    public List<Tower> towers = new List<Tower>();
     public List<EnemyBD> enemys = new List<EnemyBD>();
     private CameraMover cameraMover;
 
