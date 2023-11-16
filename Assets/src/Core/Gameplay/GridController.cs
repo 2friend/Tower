@@ -19,17 +19,12 @@ public class GridController : MonoBehaviour
 
     private int activeRoad;
 
-    private void Start()
-    {
-        GenerateGrid();
-    }
-
-    void GenerateGrid()
+    public void GenerateGrid()
     {
         grid = new GameObject[gridSizeX, gridSizeY];
         List<WavePath> pathList = PathController.paths;
         activeRoad = Random.Range(0, pathList.Count);
-        Debug.Log("[Core] [Grid] Selected new Path for generating road ID: %" + activeRoad + "%");
+        Debug.Log("[Loading] [Grid] Selected new Path for generating road ID: %" + activeRoad + "%");
 
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -38,8 +33,6 @@ public class GridController : MonoBehaviour
                 Vector3 nodePosition = new Vector3(x - 15, y - 8, 0);
                 GameObject newNode = Instantiate(nodePrefab, nodePosition, Quaternion.identity);
                 Node nodeComponent = newNode.AddComponent<Node>();
-
-                
 
                 Vector2Int currentPos = new Vector2Int(x, y);
 
@@ -147,12 +140,14 @@ public class GridController : MonoBehaviour
             int y = _pathPoint.y;
 
             Node nodeComponent = grid[x, y].GetComponent<Node>();
+
             nodeComponent.haveSomething = true;
             nodeComponent.spriteRenderer.sprite = sprites[0];
+
             waypoints.Add(grid[x, y].transform);
         }
 
-        Debug.Log("[Core] [Grid] Grid generated!");
+        Debug.Log("[Loading] [Grid] Grid generated!");
     }
 
     public List<Node> GetNodeNeighbors(Node _node)

@@ -31,7 +31,7 @@ public class LocalisationManager : MonoBehaviour
         {
             _localesFiles.Add(resource.name);
 
-            Debug.Log("[Core] [Locales] Added New Local: %" + resource.name + "%");
+            Debug.Log("[Loading] [Locales] Added New Local: %" + resource.name + "%");
         }
     }
 
@@ -41,13 +41,13 @@ public class LocalisationManager : MonoBehaviour
 
         if (binary == null)
         {
-            Debug.LogError("[!] [Core] [Texts] No Such Text File: %" + local + "%");
+            Debug.LogError("[!] [Loading] [Texts] No Such Text File: %" + local + "%");
             return;
         }
 
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
 
-        Debug.Log("[Core] [Texts] Reading Texts File: %" + TEXT_FILE_PATH + "%.xml");
+        Debug.Log("[Loading] [Texts] Reading Texts File: %" + TEXT_FILE_PATH + "%.xml");
 
         _texts.Clear();
         int index = 0;
@@ -59,7 +59,7 @@ public class LocalisationManager : MonoBehaviour
                 string _textId = reader.GetAttribute("id");
                 if (_textId == "")
                 {
-                    Debug.LogWarning("[?] [Core] [Texts] String Number: %" + index.ToString() + "% Dont Have Id!");
+                    Debug.LogWarning("[?] [Loading] [Texts] String Number: %" + index.ToString() + "% Dont Have Id!");
                     continue;
                 }
                 string _textValue = reader.ReadInnerXml();
@@ -67,12 +67,12 @@ public class LocalisationManager : MonoBehaviour
                 _texts.TryAdd(_textId, _textValue);
 
                 if(_extendedLogs)
-                    Debug.Log("[Core] [Texts] Loaded New Text: %" + _textId + "%. Text Value: %" + _textValue + "%");
+                    Debug.Log("[Loading] [Texts] Loaded New Text: %" + _textId + "%. Text Value: %" + _textValue + "%");
             }
         }
         reader.Close();
         
-        Debug.Log("[Core] [Texts] Reading Finished, Loaded: %" + _texts.Keys.Count + "%" + " Texts!");
+        Debug.Log("[Loading] [Texts] Reading Finished, Loaded: %" + _texts.Keys.Count + "%" + " Texts!");
     }
 
     public void ChangeLocale(string local)
@@ -84,7 +84,7 @@ public class LocalisationManager : MonoBehaviour
             text.text = GetTextByKey(text.text);
         }
 
-        Debug.Log("[Core] [Locales] Locale Changed To: %" + local + "%");
+        Debug.Log("[Gameplay] [Locales] Locale Changed To: %" + local + "%");
     }
 
     public string GetTextByKey(string key)

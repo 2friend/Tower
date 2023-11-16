@@ -21,15 +21,21 @@ public class PathController : MonoBehaviour
 
     public static List<WavePath> paths = new List<WavePath>();
 
-    void Start()
-    {
-        ReadPathFile();
-    }
-    private void ReadPathFile()
+
+    public void ReadPathFile()
     {
         TextAsset xmlFile = Resources.Load<TextAsset>(FOLDER_PATH + "/" + PATH_FILE_PATH);
+
+        if (xmlFile == null)
+        {
+            Debug.LogError("[!] [Loading] [Paths] No Such File: %" + FOLDER_PATH + "/" + PATH_FILE_PATH + "% To Read!");
+            return;
+        }
+
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(xmlFile.text);
+
+        Debug.Log("[Loading] [Paths] Start Reading Paths File!");
 
         XmlNodeList roadNodes = xmlDoc.SelectNodes("//road");
         paths.Clear();
@@ -49,8 +55,9 @@ public class PathController : MonoBehaviour
                 pathInstance.pathPoints.Add(pathPoint);
             }
             paths.Add(pathInstance);
-            Debug.Log("[Core] [Paths] Readed new Path ID: %" + pathInstance.id + "% with count of points: %" + pathInstance.pathPoints.Count + "%");
+            Debug.Log("[Loading] [Paths] Readed new Path ID: %" + pathInstance.id + "% with count of points: %" + pathInstance.pathPoints.Count + "%");
         }
+        Debug.Log("[Loading] [Paths] End Reading Paths File!");
 
     }
 }

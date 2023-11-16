@@ -40,7 +40,7 @@ public class CardManager : MonoBehaviour
         TextAsset binary = Resources.Load<TextAsset>(XML_PATH);
         if (binary==null)
         {
-            Debug.LogError("[!] [Core] [Cards] No Such File To Read: %" + XML_PATH + "%");
+            Debug.LogError("[!] [Loading] [Cards] No Such File To Read: %" + XML_PATH + "%");
             return;
         }
 
@@ -51,7 +51,7 @@ public class CardManager : MonoBehaviour
         {
             if (reader.IsStartElement(ROOT_NODE))
             {
-                Debug.Log("[Core] [Cards] Reading Cards File: %" + XML_PATH + ".xml%");
+                Debug.Log("[Loading] [Cards] Reading Cards File: %" + XML_PATH + ".xml%");
 
                 XmlReader inner = reader.ReadSubtree();
 
@@ -61,23 +61,23 @@ public class CardManager : MonoBehaviour
 
                     string _cardID = reader.GetAttribute(ID_ATT);
                     if (_cardID == "")
-                        Debug.LogError("[!] [Core] [Cards] Card With Index: %" + index.ToString() + "% Have No ID!");
+                        Debug.LogError("[!] [Loading] [Cards] Card With Index: %" + index.ToString() + "% Have No ID!");
 
                     string _cardName = reader.GetAttribute(NAME_ATT);
                     if (_cardName == "")
-                        Debug.LogError("[!] [Core] [Cards] Card With ID: %" + _cardID + "% Have No Name!");
+                        Debug.LogError("[!] [Loading] [Cards] Card With ID: %" + _cardID + "% Have No Name!");
 
                     string _cardBackground = reader.GetAttribute(BACKGROUND_ATT);
                     if (_cardBackground == "")
-                        Debug.LogError("[!] [Core] [Cards] Card With ID: %" + _cardID + "% Have No Background!");
+                        Debug.LogError("[!] [Loading] [Cards] Card With ID: %" + _cardID + "% Have No Background!");
 
                     string _cardSprite = reader.GetAttribute(SPRITE_ATT);
                     if (_cardSprite == "")
-                        Debug.LogError("[!] [Core] [Cards] Card With ID: %" + _cardID + "% Have No Sprite!");
+                        Debug.LogError("[!] [Loading] [Cards] Card With ID: %" + _cardID + "% Have No Sprite!");
 
                     string _cardType = reader.GetAttribute(TYPE_ATT);
                     if (_cardType == "")
-                        Debug.LogError("[!] [Core] [Cards] Card With ID: %" + _cardID + "% Have No Type!");
+                        Debug.LogError("[!] [Loading] [Cards] Card With ID: %" + _cardID + "% Have No Type!");
 
                     int _cardRare = Convert.ToInt32(reader.GetAttribute(RARE_ATT));
 
@@ -114,16 +114,16 @@ public class CardManager : MonoBehaviour
                     Card card = new Card(_cardID, _cardName, _cardBackground, _cardSprite, _cardMoneycost, _cardType, _cardRare, _enemyCard, _towerCard);
 
                     if (extendedLogs)
-                        Debug.Log("[Core] [Cards] Loaded New Card: %" + _cardName + "%");
+                        Debug.Log("[Loading] [Cards] Loaded New Card: %" + _cardName + "%");
 
                     CardDB.AllCards.Add(card);
                 }
                 inner.Close();
             }
         }
-        Debug.Log("[Core] [Cards] Loaded Cards Count %" + CardDB.AllCards.Count + "%");
+        Debug.Log("[Loading] [Cards] Loaded Cards Count %" + CardDB.AllCards.Count + "%");
 
-        Debug.Log("[Core] [Cards] End of Reading Cards File: %" + XML_PATH + ".xml%");
+        Debug.Log("[Loading] [Cards] End of Reading Cards File: %" + XML_PATH + ".xml%");
     }
 }
 
