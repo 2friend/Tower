@@ -2,6 +2,8 @@
 
 cd ..
 
+git config core.hooksPath .githooks
+
 REM Creating Virtual Env
 python -m venv .venv
 
