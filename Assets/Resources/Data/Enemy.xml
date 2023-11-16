@@ -3,4 +3,4 @@
   <enemy id="1" name="Bee" hp="10" speed="2.0" sprite="orc_1" money="5"/>
   <enemy id="2" name="Slime" hp="10" speed="2.0" sprite="orc_1" money="5"/>
   <enemy id="3" name="Cat" hp="10" speed="2.0" sprite="orc_1" money="5"/>
-</root>
+</root>E
