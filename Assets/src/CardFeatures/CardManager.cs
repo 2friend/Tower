@@ -31,11 +31,10 @@ public class CardManager : MonoBehaviour
 
     private void Awake()
     {
-        gridObjects = FindObjectOfType<GridObjects>();
-        LoadCards();
+        gridObjects = GameConstant._gridObjects;
     }
 
-    private void LoadCards()
+    public void LoadCards()
     {
         TextAsset binary = Resources.Load<TextAsset>(XML_PATH);
         if (binary==null)

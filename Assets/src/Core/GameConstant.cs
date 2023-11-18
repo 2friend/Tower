@@ -9,6 +9,8 @@ public class GameConstant : MonoBehaviour
     public static WaveController _waveController;
     public static GridController _gridController;
 
+    public static bool extendedLogs;
+
     public void AssignValues()
     {
         _gridController = GameObject.Find("Grid").GetComponent<GridController>();

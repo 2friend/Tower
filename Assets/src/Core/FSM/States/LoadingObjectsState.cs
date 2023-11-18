@@ -10,7 +10,7 @@ public class LoadingObjectsState : IGameState
     private readonly WaveController _waveController;
     private readonly GridController _gridController;
     private readonly Tutorials _tutorials;
-    //private readonly CardManager _cardManager;
+    private readonly CardManager _cardManager;
 
     public LoadingObjectsState(GameStateMachine gameStateMachine)
     {
@@ -22,7 +22,7 @@ public class LoadingObjectsState : IGameState
         _gridObjects = GameObject.Find("GridObjects").GetComponent<GridObjects>();
         _waveController = GameObject.Find("WaveController").GetComponent<WaveController>();
         _tutorials = GameObject.Find("Tutorial").GetComponent<Tutorials>();
-        //_cardManager = GameObject.Find("").GetComponent<CardManager>();
+        _cardManager = GameObject.Find("Cards").GetComponent<CardManager>();
     }
 
     public void Enter()
@@ -43,8 +43,10 @@ public class LoadingObjectsState : IGameState
 
         _waveController.ReadWavesFile();
 
-        _tutorials.ReadTutorsFile();
+        _cardManager.LoadCards();
 
+        _tutorials.ReadTutorsFile();
+        
         _gameStateMachine.EnterIn<InitializeLevelState>();
     }
 
