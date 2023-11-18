@@ -15,6 +15,7 @@
 /[Mm]emoryCaptures/
 /.venv/
 /utils/
+/.githooks/
 # Recordings can get excessive in size
 /[Rr]ecordings/
 
