@@ -13,4 +13,7 @@ call .venv\Scripts\activate
 REM Install Req
 pip install -r requirements.txt
 
+REM Update Submodules
+git submodule update --init --recursive
+
 call .venv\Scripts\deactivate
