@@ -43,16 +43,13 @@ public class Logger : MonoBehaviour
 
     void HandleLog(string logText, string stackTrace, LogType type)
     {
-        // Формируем строку с логом без указания типа лога
         string logMessage = string.Format("{0}: {1}\n", DateTime.Now, logText);
 
-        // Записываем лог в файл
         WriteLog(logMessage);
     }
 
     void WriteLog(string logMessage)
     {
-        // Дописываем лог в файл или создаем новый файл, если он не существует
         using (StreamWriter writer = new StreamWriter(logFilePath, true))
         {
             writer.Write(logMessage);
@@ -61,10 +58,8 @@ public class Logger : MonoBehaviour
 
     void DeleteOldLogFiles(string[] files, int keepCount)
     {
-        // Сортируем файлы по дате создания, чтобы удалить старые файлы
         Array.Sort(files, (a, b) => File.GetCreationTime(b).CompareTo(File.GetCreationTime(a)));
 
-        // Удаляем лишние файлы, начиная с индекса keepCount
         for (int i = keepCount; i < files.Length; i++)
         {
             File.Delete(files[i]);
