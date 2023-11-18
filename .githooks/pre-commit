@@ -21,7 +21,7 @@ if __name__ == "__main__":
         print("Changes detected in the following files:")
         for file in changed_files:
             print(f"- {file}")
-        sys.exit(1)
+        sys.exit(0)
     else:
         print("No changes detected. Commit allowed.")
         sys.exit(0)

@@ -43,8 +43,15 @@ public class Tutorials : MonoBehaviour
     private void ReadTutorsFile()
     {
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + TUTORIAL_FILE_PATH);
+
+        if (binary == null)
+        {
+            Debug.LogError("[!] [Loading] [Tutorials] No Such File: %" + FOLDER_PATH + "/" + TUTORIAL_FILE_PATH + "% To Read!");
+            return;
+        }
+
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
-        Debug.Log("[Gameplay] [Tutorials] Reading Tutorials File: " + FOLDER_PATH + "/" + TUTORIAL_FILE_PATH + ".xml");
+        Debug.Log("[Loading] [Tutorials] Reading Tutorials File: " + FOLDER_PATH + "/" + TUTORIAL_FILE_PATH + ".xml");
         tutors.Clear();
 
         string currentTutorialId = null;
@@ -74,14 +81,14 @@ public class Tutorials : MonoBehaviour
             }
             else if (reader.NodeType == XmlNodeType.EndElement && reader.Name == TUTORIAL_OBJECT_VAR && currentTutorial != null)
             {
-                Debug.Log("[Gameplay] [Tutorials] Loaded New Tutorial: " + currentTutorialId + " With Stages: " + currentTutorial.stages.Keys.Count);
+                Debug.Log("[Loading] [Tutorials] Loaded New Tutorial: " + currentTutorialId + " With Stages: " + currentTutorial.stages.Keys.Count);
                 tutors.Add(currentTutorial);
                 currentTutorial = null;
             }
         }
 
         reader.Close();
-        Debug.Log("[Gameplay] [Tutorials] Reading Finished, Loaded: " + tutors.Count + " Tutorials!");
+        Debug.Log("[Loading] [Tutorials] Reading Finished, Loaded: " + tutors.Count + " Tutorials!");
     }
 
     private Vector3 ParseCameraPosition(string cameraPosAttr)
@@ -102,7 +109,9 @@ public class Tutorials : MonoBehaviour
         currTutor = _tut;
         cam.GetComponent<CameraMover>().canMove = false;
         maxStages = _tut.stages.Count-1;
+
         Debug.Log("[Gameplay] [Tutorials] Started Tutorial: %" + currTutor.tutorial_id + "%");
+
         StartCoroutine(MoveCamera(_tut.stages[currStage].camPos));
         DeactivateButtons();
     }

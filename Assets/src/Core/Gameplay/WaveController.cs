@@ -5,7 +5,6 @@ using System.Xml;
 using System.IO;
 using System;
 using TMPro;
-using System.Linq;
 
 public class WaveController : MonoBehaviour
 {
@@ -33,7 +32,6 @@ public class WaveController : MonoBehaviour
 
     private void Start()
     {
-        ReadWavesFile();
         player = GameObject.Find("Player").GetComponent<PlayerTower>();
     }
 
@@ -69,7 +67,7 @@ public class WaveController : MonoBehaviour
         }
     }
 
-    private void ReadWavesFile()
+    public void ReadWavesFile()
     {
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + WAVES_FILE_PATH);
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));

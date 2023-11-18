@@ -61,9 +61,6 @@ public class GridObjects : MonoBehaviour
     {
         mainCamera = Camera.main;
         cameraMover = GameObject.Find("CameraController").GetComponent<CameraMover>();
-        
-        ReadEnemysFile();
-        ReadTowersFile();
     }
 
     private void Update()
@@ -125,9 +122,16 @@ public class GridObjects : MonoBehaviour
         waveController.activeWave.startedWave = false;
     }
 
-    private void ReadEnemysFile()
+    public void ReadEnemysFile()
     {
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + ENEMY_FILE_PATH);
+
+        if (binary == null)
+        {
+            Debug.LogError("[!] [Loading] [Enemys] No Such File: %" + FOLDER_PATH + "/" + ENEMY_FILE_PATH + "% To Read!");
+            return;
+        }
+
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
         Debug.Log("[Loading] [Enemys] Reading Enemys File: " + FOLDER_PATH + "/" + ENEMY_FILE_PATH + ".xml");
 
@@ -152,9 +156,16 @@ public class GridObjects : MonoBehaviour
         Debug.Log("[Loading] [Enemys] Reading Finished, loaded: %" + enemys.Count + "%" + " enemys!");
     }
 
-    private void ReadTowersFile()
+    public void ReadTowersFile()
     {
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + TOWER_FILE_PATH);
+
+        if(binary==null)
+        {
+            Debug.LogError("[!] [Loading] [Towers] No Such File: %" + FOLDER_PATH + "/" + TOWER_FILE_PATH + "% To Read!");
+            return;
+        }
+
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
         Debug.Log("[Loading] [Towers] Reading Towers File: " + FOLDER_PATH + "/" + TOWER_FILE_PATH + ".xml");
         towers.Clear();
@@ -455,8 +466,8 @@ public class EnemyBD : MonoBehaviour
 
     private void Start()
     {
-        grid = GameObject.Find("Grid").GetComponent<GridController>();
-        waveController = GameObject.Find("MainCamera").GetComponent<WaveController>();
+        grid = GameConstant._gridController;
+        waveController = GameConstant._waveController;
         player = GameObject.Find("Player").GetComponent<PlayerTower>();
         animator = GetComponent<Animator>();
         InitializeEnemyType();
@@ -537,20 +548,13 @@ public class EnemyBD : MonoBehaviour
             else
             {
                 Debug.LogError("[!] [Gameplay] [Enemys] NO SUCH ENEMY: %" + enemyName + "% ANIMATION CONTROLLER FOUND!");
+                return;
             }
         }
         else
         {
         }
     }
-}
-
-public class Magic
-{
-    public bool isGlobal;
-    public int damage;
-    public GameObject target;
-
 }
 
 public class Bullet
@@ -566,4 +570,3 @@ public class Bullet
         sprite = _sprite;
     }
 }
-
