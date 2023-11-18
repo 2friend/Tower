@@ -71,12 +71,12 @@ public class WaveController : MonoBehaviour
     {
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + WAVES_FILE_PATH);
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
-        Debug.Log("[Core] [Waves] Reading Waves File: " + FOLDER_PATH + "/" + WAVES_FILE_PATH + ".xml");
+        Debug.Log("[Loading] [Waves] Reading Waves File: " + FOLDER_PATH + "/" + WAVES_FILE_PATH + ".xml");
         waves.Clear();
 
         while (reader.Read())
         {
-            if (reader.IsStartElement(WAVE_OBJECT_VAR)) // Build reading
+            if (reader.IsStartElement(WAVE_OBJECT_VAR))
             {
                 int _waveId = Convert.ToInt32(reader.GetAttribute(WAVE_ID_ATTRIBUTE_VAR));
                 Wave _wave = new Wave(_waveId);
@@ -85,7 +85,7 @@ public class WaveController : MonoBehaviour
 
                 XmlReader inner = reader.ReadSubtree();
                 int index = 0;
-                while (inner.Read()) // Require to build read
+                while (inner.Read())
                 {
                     if (inner.IsStartElement(ENEMY_OBJECT_VAR))
                     {
@@ -99,7 +99,8 @@ public class WaveController : MonoBehaviour
                                 _wave.enemysPerWave.Add(index, new Dictionary<EnemyBD, int>());
                                 _wave.enemysPerWave[index].Add(_enemy, _enemyCount);
                                 _wave.waveEnemysToKill += _enemyCount;
-                                Debug.Log("[Core] [Waves] Added new enemy: %" + _enemy.enemyName + "% to Wave: %" + _wave.id + "%");
+                                
+                                Debug.Log("[Loading] [Waves] Added new enemy: %" + _enemy.enemyName + "% to Wave: %" + _wave.id + "%");
                                 index++;
                             }
                         }
@@ -107,12 +108,12 @@ public class WaveController : MonoBehaviour
                 }
                 inner.Close();
 
-                Debug.Log("[Core] [Waves] Loaded New Wave: %" + _wave.id + "%. With enemys count: %" + _wave.enemysPerWave.Count + "%");
+                Debug.Log("[Loading] [Waves] Loaded New Wave: %" + _wave.id + "%. With enemys count: %" + _wave.enemysPerWave.Count + "%");
                 waves.Add(_wave);
             }
         }
         reader.Close();
-        Debug.Log("[Core] [Waves] Reading Finished, loaded: %" + waves.Count + "%" + " waves!");
+        Debug.Log("[Loading] [Waves] Reading Finished, loaded: %" + waves.Count + "%" + " waves!");
     }
 
     public IEnumerator StartWaves()

@@ -32,15 +32,9 @@ public class Tutorials : MonoBehaviour
     public int currStage = 0;
     private Tutorial currTutor;
 
-    private List<Tutorial> tutors = new List<Tutorial>();
+    public List<Tutorial> tutors = new List<Tutorial>();
 
-    private void Start()
-    {
-        ReadTutorsFile();
-        StartTutorial(tutors[0]);
-    }
-
-    private void ReadTutorsFile()
+    public void ReadTutorsFile()
     {
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + TUTORIAL_FILE_PATH);
 

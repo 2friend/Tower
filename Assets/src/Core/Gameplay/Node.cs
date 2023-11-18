@@ -6,7 +6,7 @@ public class Node : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
 
-    private GridObjects _gridObjects;
+    public GridObjects _gridObjects;
 
     public int x = 0;
     public int y = 0;

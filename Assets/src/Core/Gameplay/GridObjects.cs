@@ -61,6 +61,7 @@ public class GridObjects : MonoBehaviour
     {
         mainCamera = Camera.main;
         cameraMover = GameObject.Find("CameraController").GetComponent<CameraMover>();
+        grid = GameConstant._gridController;
     }
 
     private void Update()

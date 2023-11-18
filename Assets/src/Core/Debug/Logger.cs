@@ -7,7 +7,7 @@ public class Logger : MonoBehaviour
     private string logFilePath;
     private string logsFolder;
 
-    void Awake()
+    public void StartWritingLogs()
     {
         string projectRootPath = Directory.GetParent(Application.dataPath).FullName;
 
@@ -27,13 +27,9 @@ public class Logger : MonoBehaviour
         string fileName = string.Format("log_{0:yyyyMMdd_HHmmss}_{1}.log", DateTime.Now, Application.version);
 
         logFilePath = Path.Combine(logsFolder, fileName);
+        Application.logMessageReceived += HandleLog;
 
         WriteLog("[!] GAME STARTED [!]\n");
-    }
-
-    void OnEnable()
-    {
-        Application.logMessageReceived += HandleLog;
     }
 
     void OnDisable()

@@ -9,11 +9,11 @@ public class GameConstant : MonoBehaviour
     public static WaveController _waveController;
     public static GridController _gridController;
 
-    private void Awake()
+    public void AssignValues()
     {
+        _gridController = GameObject.Find("Grid").GetComponent<GridController>();
         _gridObjects = GameObject.Find("GridObjects").GetComponent<GridObjects>();
         _pathController = GameObject.Find("PathController").GetComponent<PathController>();
         _waveController = GameObject.Find("WaveController").GetComponent<WaveController>();
-        _gridController = GameObject.Find("Grid").GetComponent<GridController>();
     }
 }
