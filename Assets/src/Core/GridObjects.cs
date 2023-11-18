@@ -113,7 +113,7 @@ public class GridObjects : MonoBehaviour
 
     public IEnumerator Spawn(EnemyBD _enemy, int count)
     {
-        Debug.Log("[Core] [Spawning] Start Spawning enemy: %" + _enemy.enemyName + "%. Count: %" + count + "%");
+        Debug.Log("[Gameplay] [Spawning] Start Spawning enemy: %" + _enemy.enemyName + "%. Count: %" + count + "%");
         for (int i = 0; i < count; i++)
         {
             GameObject enemyObj = Instantiate(enemy, grid.waypoints[0]);
@@ -129,7 +129,7 @@ public class GridObjects : MonoBehaviour
     {
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + ENEMY_FILE_PATH);
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
-        Debug.Log("[Core] [Enemys] Reading Enemys File: " + FOLDER_PATH + "/" + ENEMY_FILE_PATH + ".xml");
+        Debug.Log("[Loading] [Enemys] Reading Enemys File: " + FOLDER_PATH + "/" + ENEMY_FILE_PATH + ".xml");
 
         while (reader.Read())
         {
@@ -143,20 +143,20 @@ public class GridObjects : MonoBehaviour
                 int _enemyMoney = Convert.ToInt32(reader.GetAttribute(ENEMY_MONEY_ATTRIBUTE_VAR));
 
                 EnemyBD _enemy = new EnemyBD(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney);
-                Debug.Log("[Core] [Enemys] Loaded New Enemy: %" + _enemyName + "%");
+                Debug.Log("[Loading] [Enemys] Loaded New Enemy: %" + _enemyName + "%");
 
                 enemys.Add(_enemy);
             }
         }
         reader.Close();
-        Debug.Log("[Core] [Enemys] Reading Finished, loaded: %" + enemys.Count + "%" + " enemys!");
+        Debug.Log("[Loading] [Enemys] Reading Finished, loaded: %" + enemys.Count + "%" + " enemys!");
     }
 
     private void ReadTowersFile()
     {
         TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + TOWER_FILE_PATH);
         XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
-        Debug.Log("[Core] [Towers] Reading Towers File: " + FOLDER_PATH + "/" + TOWER_FILE_PATH + ".xml");
+        Debug.Log("[Loading] [Towers] Reading Towers File: " + FOLDER_PATH + "/" + TOWER_FILE_PATH + ".xml");
         towers.Clear();
 
         while (reader.Read())
@@ -186,14 +186,14 @@ public class GridObjects : MonoBehaviour
    
                 }
                 inner.Close();
-                Debug.Log("[Core] [Towers] Loaded New Tower: %" + _towerName + "%");
+                Debug.Log("[Loading] [Towers] Loaded New Tower: %" + _towerName + "%");
                 towers.Add(_tower);
                 AddToShop(_tower);
-                Debug.Log("[Core] [UI] Added new tower button: %" + _towerName + "%");
+                Debug.Log("[Loading] [UI] Added new tower button: %" + _towerName + "%");
             }
         }
         reader.Close();
-        Debug.Log("[Core] [Towers] Reading Finished, loaded: %" + towers.Count + "%" + " towers!");
+        Debug.Log("[Loading] [Towers] Reading Finished, loaded: %" + towers.Count + "%" + " towers!");
     }
 
     private void AddToShop(Tower _type)
@@ -536,13 +536,21 @@ public class EnemyBD : MonoBehaviour
             }
             else
             {
-                Debug.LogError("[!] [Core] [Enemys] NO SUCH ENEMY: %" + enemyName + "% ANIMATION CONTROLLER FOUND!");
+                Debug.LogError("[!] [Gameplay] [Enemys] NO SUCH ENEMY: %" + enemyName + "% ANIMATION CONTROLLER FOUND!");
             }
         }
         else
         {
         }
     }
+}
+
+public class Magic
+{
+    public bool isGlobal;
+    public int damage;
+    public GameObject target;
+
 }
 
 public class Bullet
@@ -558,3 +566,4 @@ public class Bullet
         sprite = _sprite;
     }
 }
+
