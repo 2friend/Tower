@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class GameConstant : MonoBehaviour
 {
-    public static GridObjects _gridObjects;
-    public static PathController _pathController;
-    public static WaveController _waveController;
-    public static GridController _gridController;
+    public static ResourcesLoader resourcesLoader;
+    public static GridObjects gridObjects;
+    public static PathController pathController;
+    public static WaveController waveController;
+    public static GridController gridController;
+    public static Tutorials tutorials;
+    //public static CardManager cardManager;
 
     public static bool extendedLogs;
 
     public void AssignValues()
     {
-        _gridController = GameObject.Find("Grid").GetComponent<GridController>();
-        _gridObjects = GameObject.Find("GridObjects").GetComponent<GridObjects>();
-        _pathController = GameObject.Find("PathController").GetComponent<PathController>();
-        _waveController = GameObject.Find("WaveController").GetComponent<WaveController>();
+        resourcesLoader = GameObject.Find("Resources").GetComponent<ResourcesLoader>();
+        gridController = GameObject.Find("Grid").GetComponent<GridController>();
+        gridObjects = GameObject.Find("GridObjects").GetComponent<GridObjects>();
+        pathController = GameObject.Find("PathController").GetComponent<PathController>();
+        waveController = GameObject.Find("WaveController").GetComponent<WaveController>();
+        tutorials = GameObject.Find("Tutorial").GetComponent<Tutorials>();
     }
 }

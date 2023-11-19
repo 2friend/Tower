@@ -15,7 +15,7 @@ public class Node : MonoBehaviour
 
     private void Awake()
     {
-        _gridObjects = GameConstant._gridObjects;
+        _gridObjects = GameConstant.gridObjects;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 

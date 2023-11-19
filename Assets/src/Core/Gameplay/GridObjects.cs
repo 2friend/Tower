@@ -61,7 +61,7 @@ public class GridObjects : MonoBehaviour
     {
         mainCamera = Camera.main;
         cameraMover = GameObject.Find("CameraController").GetComponent<CameraMover>();
-        grid = GameConstant._gridController;
+        grid = GameConstant.gridController;
     }
 
     private void Update()
@@ -467,8 +467,8 @@ public class EnemyBD : MonoBehaviour
 
     private void Start()
     {
-        grid = GameConstant._gridController;
-        waveController = GameConstant._waveController;
+        grid = GameConstant.gridController;
+        waveController = GameConstant.waveController;
         player = GameObject.Find("Player").GetComponent<PlayerTower>();
         animator = GetComponent<Animator>();
         InitializeEnemyType();

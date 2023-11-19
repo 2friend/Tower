@@ -4,6 +4,7 @@ public class LoadingObjectsState : IGameState
 {
     private readonly GameStateMachine _gameStateMachine;
     private readonly Logger _logger;
+    private readonly ResourcesLoader _resourcesLoader;
     private readonly GameConstant _gameConstant;
     private readonly GridObjects _gridObjects;
     private readonly PathController _pathController;
@@ -16,6 +17,7 @@ public class LoadingObjectsState : IGameState
     {
         _gameStateMachine = gameStateMachine;
         _logger = GameObject.Find("Logger").GetComponent<Logger>();
+        _resourcesLoader = GameObject.Find("Resources").GetComponent<ResourcesLoader>();
         _gameConstant = GameObject.Find("Controllers").GetComponent<GameConstant>();
         _pathController = GameObject.Find("PathController").GetComponent<PathController>();
         _gridController = GameObject.Find("Grid").GetComponent<GridController>();
@@ -31,6 +33,8 @@ public class LoadingObjectsState : IGameState
 
         Debug.Log("[State] [Loading] Start Loading!");
 
+        _resourcesLoader.LoadSprites();
+
         _gameConstant.AssignValues();
 
         _pathController.ReadPathFile();
@@ -43,7 +47,7 @@ public class LoadingObjectsState : IGameState
 
         _waveController.ReadWavesFile();
 
-        _cardManager.LoadCards();
+        //_cardManager.LoadCards();
 
         _tutorials.ReadTutorsFile();
         

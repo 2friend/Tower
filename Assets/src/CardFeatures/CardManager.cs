@@ -31,7 +31,7 @@ public class CardManager : MonoBehaviour
 
     private void Awake()
     {
-        gridObjects = GameConstant._gridObjects;
+        gridObjects = GameConstant.gridObjects;
     }
 
     public void LoadCards()
