@@ -1,0 +1,3 @@
+<Root>
+  <Hero name="Orc" sprite="Orc" ability="Damage" hp="1"/>
+</Root>

@@ -1,0 +1,3 @@
+<Root>
+  <Ability name="Damage" sprite="Orc" type="Heal" isGlobal="false" value="1"/>
+</Root>

@@ -10,6 +10,7 @@ public class GameConstant : MonoBehaviour
     public static WaveController waveController;
     public static GridController gridController;
     public static Tutorials tutorials;
+    public static HeroesManager heroesManager;
     //public static CardManager cardManager;
 
     public static bool extendedLogs;

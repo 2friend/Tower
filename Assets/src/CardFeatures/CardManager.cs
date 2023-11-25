@@ -9,7 +9,7 @@ using System;
 
 public class CardManager : MonoBehaviour
 {
-    private const string XML_PATH = "Data/Cards";
+    private const string XML_PATH = "Data/Cards/Cards";
 
     private const string ROOT_NODE = "Root";
 
@@ -25,14 +25,6 @@ public class CardManager : MonoBehaviour
 
     [SerializeField]
     private bool extendedLogs;
-
-    [SerializeField]
-    private GridObjects gridObjects;
-
-    private void Awake()
-    {
-        gridObjects = GameConstant.gridObjects;
-    }
 
     public void LoadCards()
     {
@@ -89,23 +81,11 @@ public class CardManager : MonoBehaviour
 
                     if (_cardType == "Tower")
                     {
-                        foreach (var item in gridObjects.towers)
-                        {
-                            if (item.name == _cardTypeValue)
-                            {
-                                _towerCard = item;
-                            }
-                        };
+                        _towerCard = GameConstant.gridObjects.GetTowerByID(_cardTypeValue);
                     }
                     else if (_cardType == "Enemy")
                     {
-                        foreach (var item in gridObjects.enemys)
-                        {
-                            if (item.name == _cardTypeValue)
-                            {
-                                _enemyCard = item;
-                            }
-                        };
+                        _enemyCard = GameConstant.gridObjects.GetEnemyByID(_cardTypeValue);
                     }
 
                     reader.Read();

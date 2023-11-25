@@ -109,6 +109,38 @@ public class GridObjects : MonoBehaviour
         }
     }
 
+    public EnemyBD GetEnemyByID(string _name)
+    {
+        EnemyBD _enemy = null;
+
+        foreach(EnemyBD item in enemys)
+        {
+            if (item.enemyName == _name)
+                _enemy = item;
+        }
+
+        if (_enemy == null)
+            Debug.LogError("[!] [Loading] [Enemies] No Such Enemy Found: %" + _name + "%!");
+
+        return _enemy;
+    }
+
+    public Tower GetTowerByID(string _name)
+    {
+        Tower _tower = null;
+
+        foreach (Tower item in towers)
+        {
+            if (item.towerName == _name)
+                _tower = item;
+        }
+
+        if (_tower == null)
+            Debug.LogError("[!] [Loading] [Towers] No Such Tower Found: %" + _name + "%!");
+
+        return _tower;
+    }
+
     public IEnumerator Spawn(EnemyBD _enemy, int count)
     {
         Debug.Log("[Gameplay] [Spawning] Start Spawning enemy: %" + _enemy.enemyName + "%. Count: %" + count + "%");

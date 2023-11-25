@@ -30,9 +30,4 @@ public class Node : MonoBehaviour
                 _gridObjects.currentBuilding.GetComponent<SpriteRenderer>().color = Color.green;
         }
     }
-
-    private void OnMouseExit()
-    {
-        
-    }
 }
