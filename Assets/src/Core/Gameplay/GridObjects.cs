@@ -88,21 +88,23 @@ public class GridObjects : MonoBehaviour
         else
             cameraMover.canMove = true;
 
+        Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);
+
         if (Input.GetMouseButtonDown(0) && isBuilding)
         {
-            Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);
-
             if (hit.collider != null && !hit.collider.GetComponent<Node>().haveSomething)
             {
-                
                 isBuilding = false;
                 hit.collider.GetComponent<Node>().haveSomething = true;
+
                 Debug.Log("[Gameplay] [Building] Builded tower: %" + currentBuilding.GetComponent<Tower>().id + "%. On Node X: %" + hit.collider.GetComponent<Node>().x + "% Y: %" + hit.collider.GetComponent<Node>().y + "%");
+
                 foreach (Node _node in grid.GetNodeNeighbors(hit.collider.GetComponent<Node>()))
                 {
                     _node.haveSomething = true;
                 }
+
                 currentBuilding.GetComponent<SpriteRenderer>().color = Color.white;
                 currentBuilding.GetComponent<Animator>().SetBool("Placed", true);
                 currentBuilding = null;
@@ -111,11 +113,13 @@ public class GridObjects : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0) && !isBuilding)
         {
-            Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);
             if (hit.collider != null && hit.collider.GetComponent<Tower>())
             {
                 Debug.Log("Clicked on tower!");
+            }
+            else if (hit.collider != null && hit.collider.GetComponent<EnemyBD>())
+            {
+                Debug.Log("Clicked on enemy!");
             }
         }
     }
@@ -522,6 +526,8 @@ public class EnemyBD : MonoBehaviour, ICardType
     public string sprite;
     public float speed;
     public int money;
+    public bool isEnemy;
+
     private int currentWaypointIndex = 0;
 
     private Animator animator;
@@ -593,18 +599,34 @@ public class EnemyBD : MonoBehaviour, ICardType
         }
     }
 
-    public void TakingDamage(int _dmg)
+    public void TakingDamage(int _value)
     {
         if (!isDead)
         {
-            if (currHp - _dmg > 0)
+            if (currHp - _value > 0)
             {
-                Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking Damage: %" + (currHp - _dmg).ToString() + "%");
-                currHp -= _dmg;
+                Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking Damage: %" + (currHp - _value).ToString() + "%");
+                currHp -= _value;
             }
-            else if (currHp - _dmg <= 0)
+            else if (currHp - _value <= 0)
             {
                 Die();
+            }
+        }
+    }
+
+    public void TakingHeal(int _value)
+    {
+        if (!isDead)
+        {
+            if (currHp + _value <= maxHp)
+            {
+                Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking Heal: %" + (currHp - _value).ToString() + "%");
+                currHp += _value;
+            }
+            else if (currHp + _value > maxHp)
+            {
+                currHp = maxHp;
             }
         }
     }
@@ -639,6 +661,7 @@ public class EnemyBD : MonoBehaviour, ICardType
         }
         else
         {
+            Debug.LogError("[!] [Gameplay] [Enemys] ANIMATOR IN ENEMY: %" + enemyName + "% NOT FOUND!");
         }
     }
 }
@@ -680,6 +703,54 @@ public class Magic : MonoBehaviour, ICardType
         sound = _sound;
         typeMagic = _type;
         typeValue = _value;
+    }
+
+    public void UseMagic()
+    {
+        if (isGlobal)
+            switch(typeMagic)
+            {
+                case "heal":
+                    break;
+                case "damage_all":
+                    break;
+                case "damage_enemys":
+                    break;
+                case "buff_hp":
+                    break;
+            }    
+    }
+
+    private GameObject ChooseTarget()
+    {
+        GameObject _target = null;
+
+        return _target;
+    }
+
+    private void Magic_HealTarget()
+    {
+        GameObject _target = ChooseTarget();
+
+        EnemyBD _enemyComponent = _target.GetComponent<EnemyBD>();
+
+        if (_enemyComponent == null)
+            return;
+
+        if (_enemyComponent != null)
+            _enemyComponent.TakingHeal(typeValue);
+        else
+            Debug.LogError("[!] [Gameplay] [Magic] Cant Heal Object Because It Dont Have Type");
+    }
+
+    private void Magic_DamageAll()
+    {
+
+    }
+
+    private void Magic_HealAll()
+    {
+        
     }
 
 }
