@@ -1,0 +1,3 @@
+<root>
+  <tower id="priest_heal_50" name="priest_heal_50_Title" class="priest" isGlobal="true" effect="heal_eff1" sound="heal_snd" type="heal" typeValue="5"/>
+</root>

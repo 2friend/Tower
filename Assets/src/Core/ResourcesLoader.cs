@@ -107,7 +107,7 @@ public class ResourcesLoader : MonoBehaviour
         reader.Close();
         Debug.Log("[Loading] [Sounds] Reading Finished, Loaded: " + ResourcesDB.sounds.Count + " Sounds!");
     }
-
+    // TODO: Effects and Sounds Loading
     public Sprite GetSpriteByID(string _name)
     {
         Sprite _sprite = null;

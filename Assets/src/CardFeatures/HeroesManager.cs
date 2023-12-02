@@ -191,6 +191,8 @@ public class Ability
     public bool isGlobal;
     public int value;
 
+    private bool _isChoosing;
+
     public Ability(string _name, string _sprite, string _type, bool _isGlobal, int _value)
     {
         name = _name;
@@ -214,8 +216,31 @@ public class Ability
         value = _value;
     }
 
-    public void UseAbility()
+    // Main Ability using realisation
+    // Use ONLY THIS fuction in other classes
+    public void TryUseAbility()
+    {
+        if (isGlobal)
+            UseAbility();
+        else
+            UseAbility(ChooseTarget());
+    }
+
+    private GameObject ChooseTarget()
+    {
+        GameObject _target = null;
+
+        return _target; 
+    }
+
+    private void UseAbility()
     {
 
+    }
+
+    private void UseAbility(GameObject _target)
+    {
+        if (_target == null)
+            return;
     }
 }

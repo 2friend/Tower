@@ -16,6 +16,16 @@ public class GridObjects : MonoBehaviour
     private const string FOLDER_PATH = "Data";
     private const string ENEMY_FILE_PATH = "Enemy";
     private const string TOWER_FILE_PATH = "Tower";
+    private const string MAGIC_FILE_PATH = "Magic";
+
+    private const string MAGIC_OBJECT_VAR = "magic";
+    private const string MAGIC_NAME_ATT = "name";
+    private const string MAGIC_CLASS_ATT = "class";
+    private const string MAGIC_GLOBAL_ATT = "isGlobal";
+    private const string MAGIC_EFFECT_ATT = "effect";
+    private const string MAGIC_SOUND_ATT = "sound";
+    private const string MAGIC_TYPE_ATT = "type";
+    private const string MAGIC_TYPEVALUE_ATT = "typeValue";
 
     private const string TOWER_OBJECT_VAR = "tower";
     private const string TOWER_ID_ATTRIBUTE_VAR = "id";
@@ -38,6 +48,7 @@ public class GridObjects : MonoBehaviour
     private Camera mainCamera;
     public List<Tower> towers = new List<Tower>();
     public List<EnemyBD> enemys = new List<EnemyBD>();
+    public List<Magic> magics = new List<Magic>();
     private CameraMover cameraMover;
 
     [SerializeField] private GridController grid;
@@ -240,6 +251,48 @@ public class GridObjects : MonoBehaviour
         Debug.Log("[Loading] [Towers] Reading Finished, loaded: %" + towers.Count + "%" + " towers!");
     }
 
+    public void ReadMagicsFile()
+    {
+        TextAsset binary = Resources.Load<TextAsset>(FOLDER_PATH + "/" + MAGIC_FILE_PATH);
+
+        if (binary == null)
+        {
+            Debug.LogError("[!] [Loading] [Magics] No Such File: %" + FOLDER_PATH + "/" + MAGIC_FILE_PATH + "% To Read!");
+            return;
+        }
+
+        XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
+        Debug.Log("[Loading] [Magics] Reading Towers File: " + FOLDER_PATH + "/" + MAGIC_FILE_PATH + ".xml");
+        towers.Clear();
+        int index = 0;
+        while (reader.Read())
+        {
+            index++;
+
+            if (reader.IsStartElement(TOWER_OBJECT_VAR)) // Build reading
+            {
+                string _magicId = reader.GetAttribute(TOWER_ID_ATTRIBUTE_VAR);
+                if (_magicId == "")
+                    Debug.LogError("[!] [Loading] [Magic] Magic With Index: %" + index.ToString() + "% Have No ID!");
+
+                string _magicName = reader.GetAttribute(TOWER_NAME_ATTRIBUTE_VAR);
+                if (_magicName == "")
+                    Debug.LogError("[!] [Loading] [Magic] Magic With Id: %" + _magicId + "% Have No Name!");
+                string _magicClass = reader.GetAttribute(ENEMY_SPEED_ATTRIBUTE_VAR);
+                bool _magicIsGlobal = Convert.ToBoolean(reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR));
+                string _magicEffect = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
+                string _magicSound = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
+                string _magicType = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
+                int _magicTypeValue = Convert.ToInt32(reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR));
+                Magic _magic = new Magic(_magicId, _magicName, _magicClass, _magicIsGlobal, _magicEffect, _magicSound, _magicType, _magicTypeValue);
+                Debug.Log("[Loading] [Magics] Loaded New Magic: %" + _magicId + "%");
+                magics.Add(_magic);
+            }
+        }
+        reader.Close();
+        Debug.Log("[Loading] [Magics] Reading Finished, loaded: %" + towers.Count + "%" + " towers!");
+    }
+
     private void AddToShop(Tower _type)
     {
         UnityAction<Tower> clickAction = (_tower) =>
@@ -276,7 +329,7 @@ public class GridObjects : MonoBehaviour
     }
 }
 
-public class Tower : MonoBehaviour
+public class Tower : MonoBehaviour, ICardType
 {
     public int id;
     public string towerName;
@@ -457,7 +510,7 @@ public class BulletComponent : MonoBehaviour
     }
 }
 
-public class EnemyBD : MonoBehaviour
+public class EnemyBD : MonoBehaviour, ICardType
 {
     private const string ANIMATORS_PATH = "Animations\\Enemys\\";
 
@@ -602,4 +655,31 @@ public class Bullet
         speed = _spd;
         sprite = _sprite;
     }
+}
+
+public class Magic : MonoBehaviour, ICardType
+{
+    public string id;
+    public string Name;
+    public string clas;
+    public bool isGlobal;
+    // TODO: Effect as GameObject
+    public string effect;
+    //TODO: Sound as AudioClip
+    public string sound;
+    public string typeMagic;
+    public int typeValue;
+
+    public Magic(string _id, string _name, string _class, bool _global, string _effect, string _sound, string _type, int _value)
+    {
+        id = _id;
+        Name = _name;
+        clas = _class;
+        isGlobal = _global;
+        effect = _effect;
+        sound = _sound;
+        typeMagic = _type;
+        typeValue = _value;
+    }
+
 }

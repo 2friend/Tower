@@ -14,7 +14,6 @@ public class LocalisationManager : MonoBehaviour
     private const string TEXT_ELEMENT = "text";
 
     private List<string> _localesFiles = new List<string>();
-    private Dictionary<string, string> _texts = new Dictionary<string, string>();
     public List<TextMeshProUGUI> textObjects = new List<TextMeshProUGUI>();
 
     private void Awake()
@@ -49,7 +48,7 @@ public class LocalisationManager : MonoBehaviour
 
         Debug.Log("[Loading] [Texts] Reading Texts File: %" + TEXT_FILE_PATH + "%.xml");
 
-        _texts.Clear();
+        TextsBD._texts.Clear();
         int index = 0;
         while (reader.Read())
         {
@@ -64,7 +63,7 @@ public class LocalisationManager : MonoBehaviour
                 }
                 string _textValue = reader.ReadInnerXml();
 
-                _texts.TryAdd(_textId, _textValue);
+                TextsBD._texts.TryAdd(_textId, _textValue);
 
                 if(_extendedLogs)
                     Debug.Log("[Loading] [Texts] Loaded New Text: %" + _textId + "%. Text Value: %" + _textValue + "%");
@@ -72,7 +71,7 @@ public class LocalisationManager : MonoBehaviour
         }
         reader.Close();
         
-        Debug.Log("[Loading] [Texts] Reading Finished, Loaded: %" + _texts.Keys.Count + "%" + " Texts!");
+        Debug.Log("[Loading] [Texts] Reading Finished, Loaded: %" + TextsBD._texts.Keys.Count + "%" + " Texts!");
     }
 
     public void ChangeLocale(string local)
@@ -89,9 +88,14 @@ public class LocalisationManager : MonoBehaviour
 
     public string GetTextByKey(string key)
     {
-        if (_texts.ContainsKey(key))
-            return _texts.GetValueOrDefault(key);
+        if (TextsBD._texts.ContainsKey(key))
+            return TextsBD._texts.GetValueOrDefault(key);
         else
             return key;
     }
+}
+
+public static class TextsBD
+{
+    public static Dictionary<string, string> _texts = new Dictionary<string, string>();
 }

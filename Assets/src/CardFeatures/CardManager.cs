@@ -5,8 +5,6 @@ using System.Xml;
 using System.IO;
 using System;
 
-
-
 public class CardManager : MonoBehaviour
 {
     private const string XML_PATH = "Data/Cards/Cards";
@@ -78,14 +76,18 @@ public class CardManager : MonoBehaviour
 
                     Tower _towerCard = null;
                     EnemyBD _enemyCard = null;
+                    Magic _magicCard = null;
 
-                    if (_cardType == "Tower")
+                    switch(_cardType)
                     {
-                        _towerCard = GameConstant.gridObjects.GetTowerByID(_cardTypeValue);
-                    }
-                    else if (_cardType == "Enemy")
-                    {
-                        _enemyCard = GameConstant.gridObjects.GetEnemyByID(_cardTypeValue);
+                        case "Tower":
+                            _towerCard = GameConstant.gridObjects.GetTowerByID(_cardTypeValue);
+                            break;
+                        case "Enemy":
+                            _enemyCard = GameConstant.gridObjects.GetEnemyByID(_cardTypeValue);
+                            break;
+                        case "Magic":
+                            break;
                     }
 
                     reader.Read();
@@ -106,16 +108,20 @@ public class CardManager : MonoBehaviour
     }
 }
 
+public interface ICardType
+{
+
+}
+
 public struct Card
 {
     public string Id;
     public string Name;
     public Sprite Background;
     public Sprite sprite;
-    public EnemyBD enemy;
     public Tower tower;
+    public ICardType cardType;
     public int MoneyCost;
-    public string cardType;
     public int rare;
     public bool isPlaced;
 
@@ -126,15 +132,46 @@ public struct Card
         Background = Resources.Load<Sprite>(backgroundPath);
         sprite = Resources.Load<Sprite>(spritePath);
         MoneyCost = moneycost;
-        cardType = type;
-        enemy = cardEnemy;
+        cardType = cardEnemy;
         tower = cardTower;
         rare = stars;
         isPlaced = false;
     }
 }
 
+
+
 public static class CardDB
 {
     public static List<Card> AllCards = new List<Card>();
+
+    public static Card GetCardByID(string _id)
+    {
+        Card _card = new Card();
+
+        foreach(Card item in AllCards)
+        {
+            if (item.Id == _id)
+            {
+                _card = item;
+            }
+        }
+
+        return _card;
+    }
+
+    public static Card GetCardByName(string _name)
+    {
+        Card _card = new Card();
+
+        foreach (Card item in AllCards)
+        {
+            if (item.Name == _name)
+            {
+                _card = item;
+            }
+        }
+
+        return _card;
+    }
 }

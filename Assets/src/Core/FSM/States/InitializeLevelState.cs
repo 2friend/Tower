@@ -10,6 +10,7 @@ public class InitializeLevelState : IGameState
         _gameStateMachine = gameStateMachine;
         _tutorials = GameObject.Find("Tutorial").GetComponent<Tutorials>();
     }
+
     public void Enter()
     {
         _tutorials.StartTutorial(_tutorials.tutors[0]);
