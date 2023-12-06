@@ -46,9 +46,13 @@ public class GridObjects : MonoBehaviour
     private const string ENEMY_MONEY_ATTRIBUTE_VAR = "money";
 
     private Camera mainCamera;
+
     public List<Tower> towers = new List<Tower>();
     public List<EnemyBD> enemys = new List<EnemyBD>();
     public List<Magic> magics = new List<Magic>();
+
+    public List<GameObject> allObjectOnGrid = new List<GameObject>();
+
     private CameraMover cameraMover;
 
     [SerializeField] private GridController grid;
@@ -316,10 +320,10 @@ public class GridObjects : MonoBehaviour
 
     public void OnShopButtonClick(Tower _tower)
     {
-        if (player.money - 25 >= 0)
+        if (player.money - _tower.moneyCost >= 0)
         {
             Debug.Log("[Gameplay] [Building] Buyed Tower: %" + _tower.towerName + "%!");
-            player.money -= 25;
+            player.money -= _tower.moneyCost;
             currentBuilding = Instantiate(tower);
             currentBuilding.GetComponent<SpriteRenderer>().sortingOrder = 2;
             isBuilding = true;
@@ -341,6 +345,7 @@ public class Tower : MonoBehaviour, ICardType
     public string sprite;
     public float atkspd;
     public float attackRange;
+    public int moneyCost; // TODO: Parsing moneyCost att in xml
     private float atkspdTimer = 0;
 
     public Tower(int _id, string _name, string _sprite, float _spd, float _attackRange)
@@ -350,6 +355,7 @@ public class Tower : MonoBehaviour, ICardType
         sprite = _sprite;
         atkspd = _spd;
         attackRange = _attackRange;
+        moneyCost = 25;
     }
 
     void Update()
@@ -422,13 +428,17 @@ public class Tower : MonoBehaviour, ICardType
     public void Shoot(EnemyBD enemy)
     {
         gameObject.GetComponent<TowerAnimatorController>().unit.GetComponent<UnitAnimationController>().Attack();
+
         Bullet bullet = bulletType;
         GameObject bulletObject = new GameObject("Bullet");
         BulletComponent bulletComponent = bulletObject.AddComponent<BulletComponent>();
+
         bulletObject.AddComponent<SpriteRenderer>();
         bulletObject.GetComponent<SpriteRenderer>().sortingOrder = 4;
+
         bulletComponent.InitializeFrom(bullet);
         bulletObject.transform.position = transform.position;
+
         bulletComponent.SetTarget(enemy.gameObject);
     }
 
@@ -464,7 +474,8 @@ public class BulletComponent : MonoBehaviour
     {
         targetPosition = target;
     }
-    void Start ()
+
+    private void Start ()
     {
         projectile = GetComponent<SpriteRenderer>();
         if (projectile != null)
@@ -473,10 +484,11 @@ public class BulletComponent : MonoBehaviour
         }
         else
         {
-            Debug.LogError("SpriteRenderer is missing on the Bullet object!");
+            Debug.LogError("[!] [Gameplay] [Bullet] SpriteRenderer is missing on the Bullet object!");
         }
     }
-    void Update()
+
+    private void Update()
     {
         Vector3 direction = targetPosition.transform.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction.normalized);
@@ -498,7 +510,7 @@ public class BulletComponent : MonoBehaviour
         }
     }
 
-    void HitEnemy()
+    private void HitEnemy()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f);
         foreach (var collider in colliders)
@@ -526,6 +538,7 @@ public class EnemyBD : MonoBehaviour, ICardType
     public string sprite;
     public float speed;
     public int money;
+    public int playerDamage; // TODO: Parsing playerDamage att in xml
     public bool isEnemy;
 
     private int currentWaypointIndex = 0;
@@ -543,6 +556,7 @@ public class EnemyBD : MonoBehaviour, ICardType
         sprite = _spr;
         speed = _spd;
         money = _money;
+        playerDamage = 1; // TODO: Parsing playerDamage att in xml
     }
 
     public void InitializeFrom(EnemyBD other)
@@ -593,8 +607,11 @@ public class EnemyBD : MonoBehaviour, ICardType
         {
             waveController.aliveEnemys--;
             waveController.enemysToKill--;
-            player.TakingDamage(1); // TO DO: ������� ������� ����� ���� �������� ��� �� ����� �����
+
+            player.TakingDamage(playerDamage);
+
             Debug.Log("[Gameplay] [Enemys] Enemy: %" + enemyName + "% Finished Way And Be Destroyed!");
+
             Destroy(this.gameObject);
         }
     }
@@ -621,7 +638,7 @@ public class EnemyBD : MonoBehaviour, ICardType
         {
             if (currHp + _value <= maxHp)
             {
-                Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking Heal: %" + (currHp - _value).ToString() + "%");
+                Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking Heal: %" + (currHp + _value).ToString() + "%");
                 currHp += _value;
             }
             else if (currHp + _value > maxHp)
@@ -631,20 +648,35 @@ public class EnemyBD : MonoBehaviour, ICardType
         }
     }
 
+    public void BuffHp(int _value)
+    {
+        if (!isDead)
+        {
+            currHp += _value;
+            maxHp += _value;
+
+            Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Taking HP Buff: %" + _value.ToString() + "%");
+        }
+    }
+
     private void Die()
     {
         if (!isDead)
         {
-            player.money += 5;
+            player.money += money;
+
             isDead = true;
+
             animator.SetTrigger("Die");
+
             Debug.Log("[Gameplay] [Enemy] Enemy: %" + enemyName + "% Die!");
+
             waveController.aliveEnemys -= 1;
             waveController.enemysToKill -= 1;
         }
     }
 
-    void InitializeEnemyType()
+    private void InitializeEnemyType()
     {
         if (animator != null)
         {
@@ -710,13 +742,17 @@ public class Magic : MonoBehaviour, ICardType
         if (isGlobal)
             switch(typeMagic)
             {
-                case "heal":
+                case "heal_all":
+                    Magic_HealAll();
                     break;
                 case "damage_all":
+                    Magic_DamageAll();
                     break;
-                case "damage_enemys":
+                case "damage_enemies":
+                    Magic_DamageAllEnemies();
                     break;
                 case "buff_hp":
+                    Magic_BuffHpAll();
                     break;
             }    
     }
@@ -734,7 +770,7 @@ public class Magic : MonoBehaviour, ICardType
 
         EnemyBD _enemyComponent = _target.GetComponent<EnemyBD>();
 
-        if (_enemyComponent == null)
+        if (_target == null)
             return;
 
         if (_enemyComponent != null)
@@ -743,14 +779,63 @@ public class Magic : MonoBehaviour, ICardType
             Debug.LogError("[!] [Gameplay] [Magic] Cant Heal Object Because It Dont Have Type");
     }
 
+    private void Magic_DamageTarget()
+    {
+        GameObject _target = ChooseTarget();
+
+        EnemyBD _enemyComponent = _target.GetComponent<EnemyBD>();
+
+        if (_target == null)
+            return;
+
+        if (_enemyComponent != null)
+            _enemyComponent.TakingDamage(typeValue);
+        else
+            Debug.LogError("[!] [Gameplay] [Magic] Cant Damage Object Because It Dont Have Type");
+    }
+
+    private void Magic_DamageAllEnemies()
+    {
+        foreach (GameObject item in GameConstant.gridObjects.allObjectOnGrid)
+        {
+            if (item.GetComponent<EnemyBD>() != null && item.GetComponent<EnemyBD>().isEnemy)
+            {
+                item.GetComponent<EnemyBD>().TakingDamage(typeValue);
+            }
+        }
+    }
+
     private void Magic_DamageAll()
     {
-
+        foreach (GameObject item in GameConstant.gridObjects.allObjectOnGrid)
+        {
+            if (item.GetComponent<EnemyBD>() != null)
+            {
+                item.GetComponent<EnemyBD>().TakingDamage(typeValue);
+            }
+        }
     }
 
     private void Magic_HealAll()
     {
-        
+        foreach (GameObject item in GameConstant.gridObjects.allObjectOnGrid)
+        {
+            if (item.GetComponent<EnemyBD>() != null)
+            {
+                item.GetComponent<EnemyBD>().TakingHeal(typeValue);
+            }
+        }
+    }
+
+    private void Magic_BuffHpAll()
+    {
+        foreach (GameObject item in GameConstant.gridObjects.allObjectOnGrid)
+        {
+            if (item.GetComponent<EnemyBD>() != null && !item.GetComponent<EnemyBD>().isEnemy)
+            {
+                item.GetComponent<EnemyBD>().BuffHp(typeValue);
+            }
+        }
     }
 
 }

@@ -28,8 +28,10 @@ public class Tutorials : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI  helperText;
 
+    // TODO: Refactor. Change Tutorials Reallisation
     public int maxStages = 0;
     public int currStage = 0;
+
     private Tutorial currTutor;
 
     public List<Tutorial> tutors = new List<Tutorial>();
@@ -121,31 +123,39 @@ public class Tutorials : MonoBehaviour
         {
             float distanceCovered = (Time.time - startTime) * moveSpeed;
             float fractionOfJourney = distanceCovered / journeyLength;
+
             cam.transform.position = Vector3.Lerp(initialPosition, targetPosition, fractionOfJourney);
+
             yield return null;
         }
         if (currTutor.stages[currStage].helpText!=null)
         {
             helperText.text = currTutor.stages[currStage].helpText;
+
             StartCoroutine(FadeInText());
         }
         cam.transform.position = targetPosition;
+
         yield return new WaitForSeconds(2f);
         
         if (currStage<maxStages)
         {
             currStage++;
+
             StartCoroutine(MoveCamera(currTutor.stages[currStage].camPos));
         }
         else if(currStage == maxStages && currTutor==tutors[0])
         {
             StartCoroutine(waves.StartWaves());
+
             Debug.Log("[Gameplay] [Tutorials] Finished Tutorial: %" + currTutor.tutorial_id + "%");
         }
         else if(currStage == maxStages)
         {
             Debug.Log("[Gameplay] [Tutorials] Finished Tutorial: %" + currTutor.tutorial_id + "%");
+
             ActivateButtons();
+
             currTutor = null;
         }
         
@@ -208,12 +218,15 @@ public class Tutorials : MonoBehaviour
         if (currTutor != null)
         {
             StopAllCoroutines();
+
             if (currTutor == tutors[0])
             {
                 StartCoroutine(waves.StartWaves());
             }
+
             helperText.text = "";
             currTutor = null;
+
             ActivateButtons();
         }
     }
@@ -240,8 +253,6 @@ public class Tutorial
 {
     public string tutorial_id;
     public Dictionary<int, TutorialStage> stages = new Dictionary<int, TutorialStage>();
-    
-
     public Tutorial(string _id)
     {
         tutorial_id = _id;

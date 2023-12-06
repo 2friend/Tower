@@ -26,8 +26,11 @@ public class WaveController : MonoBehaviour
     public List<Wave> waves = new List<Wave>();
     public bool waveStarted;
     [SerializeField] private int activeWaveId = -1;
+
+    // TODO: Refactor. Move to GridObjects
     public int aliveEnemys = 0;
     public int enemysToKill = 0;
+
     public Wave activeWave;
 
     private void Start()
@@ -129,11 +132,12 @@ public class WaveController : MonoBehaviour
             activeWaveId++;
             waveStarted = true;
             enemysToKill = waves[activeWaveId].waveEnemysToKill;
-            Debug.Log("[Core] [Waves] Started Wave: %" + activeWaveId + "%");
+
+            Debug.Log("[Gameplay] [Waves] Started Wave: %" + activeWaveId + "%");
         }
         else
         {
-            Debug.LogWarning("[?] [Core] [Waves] The waves is ended, no more waves left!");
+            Debug.LogWarning("[?] [Core] [Gameplay] The Waves Is Ended, No More Waves Left!");
         }
         
     }

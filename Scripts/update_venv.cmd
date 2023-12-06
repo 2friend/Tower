@@ -5,15 +5,15 @@ cd ..
 git config core.hooksPath .githooks
 
 REM Creating Virtual Env
-python -m venv .venv
+python -m venv .\.venv
 
 REM Activate Virtual Env
-call .venv\Scripts\activate
+call .\.venv\Scripts\activate
 
 REM Install Req
-pip install -r requirements.txt
+call .\.venv\Scripts\pip install -r requirements.txt
 
 REM Update Submodules
 git submodule update --init --recursive
 
-call .venv\Scripts\deactivate
+call .\.venv\Scripts\deactivate

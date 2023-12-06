@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using UnityEngine;
 
+// TODO: Refactor. Finish Reallisation
 public class DeckManager : MonoBehaviour
 {
     private const int MAX_CARDS_IN_DECK = 30;
@@ -15,12 +16,7 @@ public class DeckManager : MonoBehaviour
     private const string CARD_NODE = "Card";
     private const string ID_ATT = "id";
     private const string NAME_ATT = "name";
-    private const string BACKGROUND_ATT = "background";
-    private const string SPRITE_ATT = "sprite";
-    private const string TYPE_ATT = "type";
-    private const string TYPE_VALUE_ATT = "typeValue";
-    private const string RARE_ATT = "rare";
-    private const string MONEYCOST_ATT = "moneycost";
+    private const string COUNT_ATT = "count";
 
     private int currCardsInDeck = 0;
 
@@ -59,6 +55,10 @@ public class DeckManager : MonoBehaviour
                     string _cardName = reader.GetAttribute(NAME_ATT);
                     if (_cardName == "")
                         Debug.LogError("[!] [Loading] [Decks] Card With ID: %" + _cardID + "% Have No Name!");
+
+                    int _cardCount = Convert.ToInt32(reader.GetAttribute(COUNT_ATT));
+                    if (_cardCount <= 0)
+                        Debug.LogError("[!] [Loading] [Decks] Card With ID: %" + _cardID + "% Dont Have Count!");
 
                     reader.Read();
 
