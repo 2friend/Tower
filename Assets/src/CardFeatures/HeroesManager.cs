@@ -169,7 +169,7 @@ public class Hero
     public Hero(string _name, string _sprite, string _ability, int _maxHP)
     {
         name = _name;
-        sprite = GameConstant.resourcesLoader.GetSpriteByID(_sprite);
+        sprite = null;
         ability = GameConstant.heroesManager.GetAbilityByID(_ability);
         maxHP = _maxHP;
     }
@@ -196,7 +196,7 @@ public class Ability
     public Ability(string _name, string _sprite, string _type, bool _isGlobal, int _value)
     {
         name = _name;
-        sprite = GameConstant.resourcesLoader.GetSpriteByID(_sprite);
+        sprite = null;
         switch(_type)
         {
             case "Heal":

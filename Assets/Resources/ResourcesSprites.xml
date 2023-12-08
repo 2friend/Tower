@@ -1,0 +1,5 @@
+<Root>
+  <group id="UI" pre_path="Sprites\">
+    <sprite id="0" path="Enemys\Orc\D_Attack"/>
+  </group>
+</Root>

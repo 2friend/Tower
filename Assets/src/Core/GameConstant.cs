@@ -13,7 +13,7 @@ public class GameConstant : MonoBehaviour
     public static HeroesManager heroesManager;
     //public static CardManager cardManager;
 
-    public static bool extendedLogs;
+    public static bool extendedLogs = true;
 
     public void AssignValues()
     {
