@@ -4,6 +4,7 @@ using System.Xml;
 using System.IO;
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // TODO: Refactor. Finish Reallisation
 public class DeckManager : MonoBehaviour
@@ -22,6 +23,7 @@ public class DeckManager : MonoBehaviour
 
     public Hero currHero;
     public List<Deck> decks = new List<Deck>();
+    public List<Deck> playerDecks = new List<Deck>();
     public List<Card> currDeck = new List<Card>();
 
     public void LoadAllDecks()
@@ -62,7 +64,8 @@ public class DeckManager : MonoBehaviour
 
                     reader.Read();
 
-                    Deck deck = new Deck(_cardID, _cardName);
+                    // TODO: Finish Realisation
+                    Deck deck = new Deck(_cardID, _cardName, null);
 
                     decks.Add(deck);
                 }
@@ -109,9 +112,10 @@ public class Deck
     public string name;
     List<Card> cards = new List<Card>();
 
-    public Deck(string _id, string _name)
+    public Deck(string _id, string _name, List<Card> _cards)
     {
         id = _id;
         name = _name;
+        cards = _cards;
     }
 }

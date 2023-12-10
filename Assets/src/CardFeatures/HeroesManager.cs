@@ -189,6 +189,7 @@ public class Ability
     public Sprite sprite;
     public type currentType;
     public bool isGlobal;
+    public bool isPasive;
     public int value;
 
     private bool _isChoosing;

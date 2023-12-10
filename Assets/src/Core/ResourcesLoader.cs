@@ -69,7 +69,7 @@ public class ResourcesLoader : MonoBehaviour
         Debug.Log($"[Loading] [Sprites] Reading Finished, Loaded: %{ResourcesDB.atlases.Keys.Count}% Atlases!");
     }
 
-    public Texture2D CreateAtlasList(string _atlas, List<Sprite> _sprites)
+    private Texture2D CreateAtlasList(string _atlas, List<Sprite> _sprites)
     {
         Texture2D atlas = new Texture2D(2048, 2048, TextureFormat.ARGB32, false);
 

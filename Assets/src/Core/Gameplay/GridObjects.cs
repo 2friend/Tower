@@ -160,6 +160,23 @@ public class GridObjects : MonoBehaviour
         return _tower;
     }
 
+    public Magic GetMagicByID(string _name)
+    {
+        Magic _magic = null;
+
+
+        foreach(Magic item in magics)
+        {
+            if(item.Name == _name)
+                _magic = item;
+        }
+
+        if (_magic == null)
+            Debug.LogError($"[!] [Loading] [Magic] No Such Magic Found: %{_name}%!");
+
+        return _magic;
+    }
+
     public IEnumerator Spawn(EnemyBD _enemy, int count)
     {
         Debug.Log("[Gameplay] [Spawning] Start Spawning enemy: %" + _enemy.enemyName + "%. Count: %" + count + "%");
