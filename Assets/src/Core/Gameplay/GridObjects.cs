@@ -249,7 +249,7 @@ public class GridObjects : MonoBehaviour
                 float _towerSpeed = float.Parse(reader.GetAttribute(ENEMY_SPEED_ATTRIBUTE_VAR), CultureInfo.InvariantCulture);
                 string _towerSprite = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
                 float _attackRange = float.Parse(reader.GetAttribute(TOWER_ATTACK_RANGE), CultureInfo.InvariantCulture);
-                Tower _tower = new Tower(_towerId, _towerName, _towerSprite, _towerSpeed, _attackRange);
+                Tower _tower = CreateTower(_towerId, _towerName, _towerSprite, _towerSpeed, _attackRange);
 
                 XmlReader inner = reader.ReadSubtree();
                 while (inner.Read())
@@ -351,6 +351,16 @@ public class GridObjects : MonoBehaviour
         {
             Debug.Log("[Gameplay] [Building] Not Enought Money To Build: %" + _tower.towerName + "%!");
         }
+    }
+
+    private Tower CreateTower(int _id, string _name, string _sprite, float _spd, float _attackRange)
+    {
+        return new Tower(_id, _name, _sprite, _spd, _attackRange);
+    }
+
+    private EnemyBD CreateEnemy(int _id, string _name, int _hp, string _spr, float _spd, int _money)
+    {
+        return new EnemyBD(_id, _name, _hp, _spr, _spd, _money);
     }
 }
 

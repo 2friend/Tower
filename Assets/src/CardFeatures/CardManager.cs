@@ -181,4 +181,21 @@ public static class CardDB
 
         return _card;
     }
+
+    public static bool TryFoundCardById(string _id)
+    {
+        bool result = false;
+
+        foreach (Card item in AllCards)
+        {
+            if (item.Id == _id)
+            {
+                result = true;
+            }
+            else
+                result = false;
+        }
+
+        return result;
+    }
 }

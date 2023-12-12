@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Linq;
 
 // TODO: Refactor. Finish Reallisation
 public class DeckManager : MonoBehaviour
@@ -13,78 +14,124 @@ public class DeckManager : MonoBehaviour
     private const int MAX_REPLY_CARDS_IN_DECK = 2;
 
     private const string XML_PATH = "Data/Decks/Cards";
-    private const string ROOT_NODE = "Root";
-    private const string CARD_NODE = "Card";
-    private const string ID_ATT = "id";
+    private const string DECK_VAR = "Deck";
     private const string NAME_ATT = "name";
-    private const string COUNT_ATT = "count";
+    private const string CLASS_ATT = "class";
+    private const string CARD_VAR = "card";
+    private const string CARD_ID_ATT = "id";
+    private const string CARD_COUNT_ATT = "count";
 
-    private int currCardsInDeck = 0;
+    private string directoryPath;
+    private string[] allDecks;
+    public List<Deck> decks = new List<Deck>();
 
     public Hero currHero;
-    public List<Deck> decks = new List<Deck>();
-    public List<Deck> playerDecks = new List<Deck>();
-    public List<Card> currDeck = new List<Card>();
+    
+    public Deck currDeck;
 
-    public void LoadAllDecks()
+    public void ReadAllDecks()
     {
-        TextAsset binary = Resources.Load<TextAsset>(XML_PATH);
-        if (binary == null)
+        string myDocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        directoryPath = Path.Combine(myDocumentsPath, "2friends");
+
+        if (!Directory.Exists(directoryPath))
         {
-            Debug.LogError("[!] [Loading] [Cards] No Such File To Read: %" + XML_PATH + "%");
+            Directory.CreateDirectory(directoryPath);
+        }
+
+        allDecks = Directory.GetFiles(directoryPath);
+
+        if (allDecks.Length < 1)
+        {
+            Debug.LogError("[!] [Loading] [Decks] No Decks Found!");
             return;
         }
 
-        XmlTextReader reader = new XmlTextReader(new StringReader(binary.text));
-        int index = 0;
-
-        while (reader.Read())
+        foreach (string file in allDecks)
         {
-            if (reader.IsStartElement(ROOT_NODE))
+            LoadDeck(file);
+        }
+        
+        Debug.Log($"[Loading] [Decks] Loaded Decks Count %{allDecks.Length}%");
+    }
+
+    private void LoadDeck(string _path)
+    {
+        try
+        {
+            string xmlText = File.ReadAllText(_path);
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlText);
+
+            XmlNodeList _decks = xmlDoc.GetElementsByTagName(DECK_VAR);
+
+            foreach (XmlNode _deck in _decks)
             {
-                Debug.Log("[Loading] [Decks] Reading Cards File: %" + XML_PATH + ".xml%");
+                int index = 0;
 
-                XmlReader inner = reader.ReadSubtree();
+                string _deckName = _deck.Attributes[NAME_ATT].Value;
+                string _deckClass = _deck.Attributes[CLASS_ATT].Value;
 
-                while (inner.ReadToFollowing(CARD_NODE))
+                List<Card> _cards = new List<Card>();
+
+                Debug.Log($"[Loading] [Decks] Deck File: {_path}");
+
+                XmlNodeList cards = _deck.SelectNodes(CARD_VAR);
+
+                foreach (XmlNode _card in cards)
                 {
                     index++;
 
-                    string _cardID = reader.GetAttribute(ID_ATT);
-                    if (_cardID == "")
-                        Debug.LogError("[!] [Loading] [Decks] Card With Index: %" + index.ToString() + "% Have No ID!");
+                    string _cardId = _card.Attributes[CARD_ID_ATT].Value;
+                    if (string.IsNullOrEmpty(_cardId))
+                        Debug.LogError($"[!] [Loading] [Decks] Card With Index: {index} Have No ID!");
 
-                    string _cardName = reader.GetAttribute(NAME_ATT);
-                    if (_cardName == "")
-                        Debug.LogError("[!] [Loading] [Decks] Card With ID: %" + _cardID + "% Have No Name!");
+                    if (!CardDB.TryFoundCardById(_cardId))
+                    {
+                        Debug.LogWarning($"[?] [Loading] [Decks] No Such Card Found: %{_cardId}%");
+                        continue;
+                    }
 
-                    int _cardCount = Convert.ToInt32(reader.GetAttribute(COUNT_ATT));
+                    int _cardCount = Convert.ToInt32(_card.Attributes[CARD_COUNT_ATT].Value);
                     if (_cardCount <= 0)
-                        Debug.LogError("[!] [Loading] [Decks] Card With ID: %" + _cardID + "% Dont Have Count!");
+                        Debug.LogError($"[!] [Loading] [Decks] Card With ID: {_cardId} Dont Have Count!");
 
-                    reader.Read();
-
-                    // TODO: Finish Realisation
-                    Deck deck = new Deck(_cardID, _cardName, null);
-
-                    decks.Add(deck);
+                    if (_cardCount <= 2)
+                    {
+                        for (int i = 0; i < _cardCount; i++)
+                        {
+                            _cards.Add(CardDB.GetCardByID(_cardId));
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"[!] [Loading] [Decks] Count Cant Be > 2!");
+                        continue;
+                    }
                 }
-                inner.Close();
+
+                Deck deck = new Deck(_deckName, _deckClass, _cards);
+
+                Debug.Log($"[Loading] [Deck] Loaded New Deck With Cards: {_cards.Count}");
+
+                decks.Add(deck);
             }
         }
-        Debug.Log("[Loading] [Decks] Loaded Decks Count %" + decks.Count + "%");
-
-        Debug.Log("[Loading] [Decks] End of Reading Decks File: %" + XML_PATH + ".xml%");
+        catch (Exception ex)
+        {
+            Debug.LogError($"[!] [Loading] [Decks] Error: {ex.Message}");
+        }
     }
 
     public void AddCardToDeck(Card _card)
     {
-        if(currCardsInDeck++ <= MAX_CARDS_IN_DECK)
+        if(currDeck.cards.Count+1 <= MAX_CARDS_IN_DECK)
         {
             if (CheckReplies(_card))
             {
-                currDeck.Add(_card);
-                currCardsInDeck++;
+                currDeck.cards.Add(_card);
             }
         }
     }
@@ -93,9 +140,9 @@ public class DeckManager : MonoBehaviour
     {
         int index = 0;
 
-        for(int i = 0; i >= currDeck.Count; i++)
+        for(int i = 0; i >= currDeck.cards.Count; i++)
         {
-            if (currDeck[i].Name == _card.Name)
+            if (currDeck.cards[i].Name == _card.Name)
                 index++;
         }
 
@@ -110,7 +157,7 @@ public class Deck
 {
     public string id;
     public string name;
-    List<Card> cards = new List<Card>();
+    public List<Card> cards = new List<Card>();
 
     public Deck(string _id, string _name, List<Card> _cards)
     {
