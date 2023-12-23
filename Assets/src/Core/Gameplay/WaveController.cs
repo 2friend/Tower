@@ -95,7 +95,7 @@ public class WaveController : MonoBehaviour
                         string _enemyType = inner.GetAttribute(ENEMY_TYPE_ATTRIBUTE_VAR);
                         int _enemyCount = Convert.ToInt32(inner.GetAttribute(ENEMY_COUNT_ATTRIBUTE_VAR));
                         
-                        foreach (EnemyBD _enemy in gridObjects.enemys)
+                        foreach (EnemyBD _enemy in GridObjects.enemys)
                         {
                             if (_enemy.enemyName == _enemyType)
                             {

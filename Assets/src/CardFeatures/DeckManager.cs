@@ -4,8 +4,6 @@ using System.Xml;
 using System.IO;
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
-using System.Linq;
 
 // TODO: Refactor. Finish Reallisation
 public class DeckManager : MonoBehaviour
@@ -26,7 +24,6 @@ public class DeckManager : MonoBehaviour
     public List<Deck> decks = new List<Deck>();
 
     public Hero currHero;
-    
     public Deck currDeck;
 
     public void ReadAllDecks()
@@ -44,9 +41,12 @@ public class DeckManager : MonoBehaviour
 
         if (allDecks.Length < 1)
         {
+            CreateDefaultDecks();
             Debug.LogError("[!] [Loading] [Decks] No Decks Found!");
             return;
         }
+
+        allDecks = Directory.GetFiles(directoryPath);
 
         foreach (string file in allDecks)
         {
@@ -125,6 +125,42 @@ public class DeckManager : MonoBehaviour
         }
     }
 
+    private void CreateDefaultDecks()
+    {
+        XmlDocument xmlDoc = new XmlDocument();
+
+        XmlElement rootElement = xmlDoc.CreateElement("Deck");
+        rootElement.SetAttribute("name", "Test");
+        rootElement.SetAttribute("class", "Test");
+
+        xmlDoc.AppendChild(rootElement);
+
+        XmlElement childElement1 = xmlDoc.CreateElement("card");
+        childElement1.SetAttribute("id", "0");
+        childElement1.SetAttribute("count", "2");
+        rootElement.AppendChild(childElement1);
+
+        string savePath = directoryPath + "\\test.xml";
+        xmlDoc.Save(savePath);
+    }
+
+    public Deck GetDeckByName(string _name)
+    {
+        Deck _deck = null;
+
+
+        foreach (Deck item in decks)
+        {
+            if (item.name == _name)
+                _deck = item;
+        }
+
+        if (_deck == null)
+            Debug.LogError($"[!] [Loading] [Magic] No Such Deck Found: %{_name}%!");
+
+        return _deck;
+    }
+
     public void AddCardToDeck(Card _card)
     {
         if(currDeck.cards.Count+1 <= MAX_CARDS_IN_DECK)
@@ -165,4 +201,5 @@ public class Deck
         name = _name;
         cards = _cards;
     }
+
 }

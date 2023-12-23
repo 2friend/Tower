@@ -12,6 +12,7 @@ public class GameConstant : MonoBehaviour
     public static Tutorials tutorials;
     public static HeroesManager heroesManager;
     public static CardManager cardManager;
+    public static DeckManager deckManager;
 
     public static bool extendedLogs = true;
 
@@ -22,6 +23,9 @@ public class GameConstant : MonoBehaviour
         gridObjects = GameObject.Find("GridObjects").GetComponent<GridObjects>();
         pathController = GameObject.Find("PathController").GetComponent<PathController>();
         waveController = GameObject.Find("WaveController").GetComponent<WaveController>();
+        cardManager = GameObject.Find("Cards").GetComponent<CardManager>();
+        heroesManager = GameObject.Find("Cards").GetComponent<HeroesManager>();
+        deckManager = GameObject.Find("Cards").GetComponent<DeckManager>();
         tutorials = GameObject.Find("Tutorial").GetComponent<Tutorials>();
     }
 }

@@ -15,6 +15,7 @@ public class CardManager : MonoBehaviour
     private const string CARD_NODE = "Card";
     private const string ID_ATT = "id";
     private const string NAME_ATT = "name";
+    private const string DESC_ATT = "desc";
     private const string BACKGROUND_ATT = "background";
     private const string SPRITE_ATT = "sprite";
     private const string TYPE_ATT = "type";
@@ -58,6 +59,10 @@ public class CardManager : MonoBehaviour
                     if (_cardName == "")
                         Debug.LogError($"[!] [Loading] [Cards] Card With ID: %{_cardID}% Have No Name!");
 
+                    string _cardDesc = reader.GetAttribute(DESC_ATT);
+                    if (_cardDesc == "")
+                        Debug.LogError($"[!] [Loading] [Cards] Card With ID: %{_cardID}% Have No Description!");
+
                     string _cardBackground = reader.GetAttribute(BACKGROUND_ATT);
                     if (_cardBackground == "")
                         Debug.LogError($"[!] [Loading] [Cards] Card With ID: %{_cardID}% Have No Background!");
@@ -88,7 +93,15 @@ public class CardManager : MonoBehaviour
                             _towerCard = GameConstant.gridObjects.GetTowerByID(_cardTypeValue);
                             break;
                         case "Enemy":
-                            _enemyCard = GameConstant.gridObjects.GetEnemyByID(_cardTypeValue);
+                            foreach (EnemyBD _enemy in GridObjects.enemys)
+                            {
+                                if (_enemy.enemyName == _cardTypeValue)
+                                {
+                                    _enemyCard = _enemy;
+                                    Debug.LogError($"!!!!!!!!!!!!!!!!{_enemy.enemyName} + {_cardTypeValue}");
+                                    break;
+                                }
+                            }
                             break;
                         case "Magic":
                             _magicCard = GameConstant.gridObjects.GetMagicByID(_cardTypeValue);
@@ -99,7 +112,7 @@ public class CardManager : MonoBehaviour
                     if (_cardClass != null)
                         _hero = GameConstant.heroesManager.GetHeroByID(_cardClass);
 
-                    Card card = new Card(_cardID, _cardName, _cardBackground, _cardSprite, _cardMoneycost, _cardType, _cardRare, _enemyCard, _towerCard, _magicCard, _hero);
+                    Card card = new Card(_cardID, _cardName, _cardDesc, _cardBackground, _cardSprite, _cardMoneycost, _cardType, _cardRare, _enemyCard, _towerCard, _magicCard, _hero);
 
                     if (extendedLogs)
                         Debug.Log($"[Loading] [Cards] Loaded New Card: %{_cardName}%");
@@ -119,13 +132,14 @@ public class CardManager : MonoBehaviour
 
 public interface ICardType
 {
-
+    
 }
 
 public struct Card
 {
     public string Id;
     public string Name;
+    public string Description;
     public Sprite Background;
     public Sprite sprite;
     public ICardType cardType;
@@ -134,14 +148,22 @@ public struct Card
     public Hero heroClass;
     public bool isPlaced;
 
-    public Card(string id, string name, string backgroundPath, string spritePath, int moneycost, string type, int stars, EnemyBD cardEnemy, Tower cardTower, Magic cardMagic, Hero _hero)
+    public Card(string id, string name, string desc, string backgroundPath, string spritePath, int moneycost, string type, int stars, EnemyBD cardEnemy, Tower cardTower, Magic cardMagic, Hero _hero)
     {
         Id = id;
         Name = name;
+        Description = desc;
         Background = Resources.Load<Sprite>(backgroundPath);
         sprite = Resources.Load<Sprite>(spritePath);
         MoneyCost = moneycost;
-        cardType = cardEnemy;
+        if (cardEnemy != null)
+            cardType = cardEnemy;
+        else if (cardTower != null)
+            cardType = cardTower;
+        else if (cardMagic != null)
+            cardType = cardMagic;
+        else
+            cardType = null;
         rare = stars;
         isPlaced = false;
         heroClass = _hero;

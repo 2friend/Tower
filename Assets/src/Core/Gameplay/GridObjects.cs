@@ -48,7 +48,7 @@ public class GridObjects : MonoBehaviour
     private Camera mainCamera;
 
     public List<Tower> towers = new List<Tower>();
-    public List<EnemyBD> enemys = new List<EnemyBD>();
+    public static List<EnemyBD> enemys = new List<EnemyBD>();
     public List<Magic> magics = new List<Magic>();
 
     public List<GameObject> allObjectOnGrid = new List<GameObject>();
@@ -58,10 +58,6 @@ public class GridObjects : MonoBehaviour
     [SerializeField] private GridController grid;
     [SerializeField] private WaveController waveController;
     [SerializeField] private EffectHolder effectHolder;
-
-    [SerializeField] private List<GameObject> shopsObjects = new List<GameObject>();
-    [SerializeField] private Transform shopParent;
-    [SerializeField] private GameObject shopObject;
 
     [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject tower;
@@ -128,55 +124,6 @@ public class GridObjects : MonoBehaviour
         }
     }
 
-    public EnemyBD GetEnemyByID(string _name)
-    {
-        EnemyBD _enemy = null;
-
-        foreach(EnemyBD item in enemys)
-        {
-            if (item.enemyName == _name)
-                _enemy = item;
-        }
-
-        if (_enemy == null)
-            Debug.LogError("[!] [Loading] [Enemies] No Such Enemy Found: %" + _name + "%!");
-
-        return _enemy;
-    }
-
-    public Tower GetTowerByID(string _name)
-    {
-        Tower _tower = null;
-
-        foreach (Tower item in towers)
-        {
-            if (item.towerName == _name)
-                _tower = item;
-        }
-
-        if (_tower == null)
-            Debug.LogError("[!] [Loading] [Towers] No Such Tower Found: %" + _name + "%!");
-
-        return _tower;
-    }
-
-    public Magic GetMagicByID(string _name)
-    {
-        Magic _magic = null;
-
-
-        foreach(Magic item in magics)
-        {
-            if(item.Name == _name)
-                _magic = item;
-        }
-
-        if (_magic == null)
-            Debug.LogError($"[!] [Loading] [Magic] No Such Magic Found: %{_name}%!");
-
-        return _magic;
-    }
-
     public IEnumerator Spawn(EnemyBD _enemy, int count)
     {
         Debug.Log("[Gameplay] [Spawning] Start Spawning enemy: %" + _enemy.enemyName + "%. Count: %" + count + "%");
@@ -216,9 +163,8 @@ public class GridObjects : MonoBehaviour
                 int _enemyMoney = Convert.ToInt32(reader.GetAttribute(ENEMY_MONEY_ATTRIBUTE_VAR));
 
                 EnemyBD _enemy = new EnemyBD(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney);
-                Debug.Log("[Loading] [Enemys] Loaded New Enemy: %" + _enemyName + "%");
-
                 enemys.Add(_enemy);
+                Debug.Log("[Loading] [Enemys] Loaded New Enemy: %" + _enemyName + "%");
             }
         }
         reader.Close();
@@ -268,8 +214,6 @@ public class GridObjects : MonoBehaviour
                 inner.Close();
                 Debug.Log("[Loading] [Towers] Loaded New Tower: %" + _towerName + "%");
                 towers.Add(_tower);
-                AddToShop(_tower);
-                Debug.Log("[Loading] [UI] Added new tower button: %" + _towerName + "%");
             }
         }
         reader.Close();
@@ -318,39 +262,54 @@ public class GridObjects : MonoBehaviour
         Debug.Log("[Loading] [Magics] Reading Finished, loaded: %" + towers.Count + "%" + " towers!");
     }
 
-    private void AddToShop(Tower _type)
+    public EnemyBD GetEnemyByID(string _name)
     {
-        UnityAction<Tower> clickAction = (_tower) =>
+        EnemyBD _enemy = null;
+
+        foreach (EnemyBD item in enemys)
         {
-            OnShopButtonClick(_tower);
-        };
+            if (item.enemyName == _name)
+            {
+                _enemy = item;
+            }
+        }
 
-        GameObject shopButtonNew = Instantiate(shopObject, shopParent, false);
-        Tower shopButtonType = shopButtonNew.AddComponent<Tower>();
+        if (_enemy == null)
+            Debug.LogError("[!] [Loading] [Enemies] No Such Enemy Found: %" + _name + "%!");
 
-        shopButtonType.InitializeFrom(_type);
-        shopButtonNew.name = shopButtonType.towerName;
-
-        shopButtonNew.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites\\UI\\Shop\\Shop");
-        shopButtonNew.GetComponent<Button>().onClick.AddListener(() => clickAction.Invoke(_type)); ;
+        return _enemy;
     }
 
-    public void OnShopButtonClick(Tower _tower)
+    public Tower GetTowerByID(string _name)
     {
-        if (player.money - _tower.moneyCost >= 0)
+        Tower _tower = null;
+
+        foreach (Tower item in towers)
         {
-            Debug.Log("[Gameplay] [Building] Buyed Tower: %" + _tower.towerName + "%!");
-            player.money -= _tower.moneyCost;
-            currentBuilding = Instantiate(tower);
-            currentBuilding.GetComponent<SpriteRenderer>().sortingOrder = 2;
-            isBuilding = true;
-            Tower towerType = currentBuilding.AddComponent<Tower>();
-            towerType.InitializeFrom(_tower);
+            if (item.towerName == _name)
+                _tower = item;
         }
-        else
+
+        if (_tower == null)
+            Debug.LogError("[!] [Loading] [Towers] No Such Tower Found: %" + _name + "%!");
+
+        return _tower;
+    }
+
+    public Magic GetMagicByID(string _name)
+    {
+        Magic _magic = null;
+
+        foreach (Magic item in magics)
         {
-            Debug.Log("[Gameplay] [Building] Not Enought Money To Build: %" + _tower.towerName + "%!");
+            if (item.Name == _name)
+                _magic = item;
         }
+
+        if (_magic == null)
+            Debug.LogError($"[!] [Loading] [Magic] No Such Magic Found: %{_name}%!");
+
+        return _magic;
     }
 
     private Tower CreateTower(int _id, string _name, string _sprite, float _spd, float _attackRange)

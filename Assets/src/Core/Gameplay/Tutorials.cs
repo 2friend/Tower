@@ -109,7 +109,6 @@ public class Tutorials : MonoBehaviour
         Debug.Log("[Gameplay] [Tutorials] Started Tutorial: %" + currTutor.tutorial_id + "%");
 
         StartCoroutine(MoveCamera(_tut.stages[currStage].camPos));
-        DeactivateButtons();
     }
 
     IEnumerator MoveCamera(Vector3 targetPosition)
@@ -153,8 +152,6 @@ public class Tutorials : MonoBehaviour
         else if(currStage == maxStages)
         {
             Debug.Log("[Gameplay] [Tutorials] Finished Tutorial: %" + currTutor.tutorial_id + "%");
-
-            ActivateButtons();
 
             currTutor = null;
         }
@@ -226,24 +223,6 @@ public class Tutorials : MonoBehaviour
 
             helperText.text = "";
             currTutor = null;
-
-            ActivateButtons();
-        }
-    }
-
-    void DeactivateButtons()
-    {
-        foreach (Button button in GetButtonsInChildrenRecursive(towerShop.gameObject.transform))
-        {
-            button.interactable = false;
-        }
-    }
-
-    void ActivateButtons()
-    {
-        foreach (Button button in GetButtonsInChildrenRecursive(towerShop.gameObject.transform))
-        {
-            button.interactable = true;
         }
     }
 }

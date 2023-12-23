@@ -146,7 +146,7 @@ public class HeroesManager : MonoBehaviour
 
         foreach (Hero item in heroes)
         {
-            if (item.name == _name)
+            if (item.Name == _name)
             {
                 _hero = item;
             }
@@ -161,14 +161,14 @@ public class HeroesManager : MonoBehaviour
 
 public class Hero
 {
-    public string name;
+    public string Name;
     public Sprite sprite;
     public Ability ability;
     public int maxHP;
 
     public Hero(string _name, string _sprite, string _ability, int _maxHP)
     {
-        name = _name;
+        Name = _name;
         sprite = null;
         ability = GameConstant.heroesManager.GetAbilityByID(_ability);
         maxHP = _maxHP;
