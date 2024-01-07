@@ -30,7 +30,7 @@ public class CardManager : MonoBehaviour
     public void LoadCards()
     {
         TextAsset binary = Resources.Load<TextAsset>(XML_PATH);
-        if (binary==null)
+        if (binary == null)
         {
             Debug.LogError($"[!] [Loading] [Cards] No Such File To Read: %{XML_PATH}%");
             return;
@@ -86,22 +86,13 @@ public class CardManager : MonoBehaviour
                     Tower _towerCard = null;
                     EnemyBD _enemyCard = null;
                     Magic _magicCard = null;
-
-                    switch(_cardType)
+                    switch (_cardType)
                     {
                         case "Tower":
                             _towerCard = GameConstant.gridObjects.GetTowerByID(_cardTypeValue);
                             break;
                         case "Enemy":
-                            foreach (EnemyBD _enemy in GridObjects.enemys)
-                            {
-                                if (_enemy.enemyName == _cardTypeValue)
-                                {
-                                    _enemyCard = _enemy;
-                                    Debug.LogError($"!!!!!!!!!!!!!!!!{_enemy.enemyName} + {_cardTypeValue}");
-                                    break;
-                                }
-                            }
+                            _enemyCard = GameConstant.gridObjects.GetEnemyByID(_cardTypeValue);
                             break;
                         case "Magic":
                             _magicCard = GameConstant.gridObjects.GetMagicByID(_cardTypeValue);
@@ -128,6 +119,7 @@ public class CardManager : MonoBehaviour
 
         Debug.Log($"[Loading] [Cards] End of Reading Cards File: %{XML_PATH}.xml%");
     }
+
 }
 
 public interface ICardType
@@ -156,11 +148,11 @@ public struct Card
         Background = Resources.Load<Sprite>(backgroundPath);
         sprite = Resources.Load<Sprite>(spritePath);
         MoneyCost = moneycost;
-        if (cardEnemy != null)
+        if (cardEnemy.enemyName != null)
             cardType = cardEnemy;
-        else if (cardTower != null)
+        else if (cardTower.towerName != null)
             cardType = cardTower;
-        else if (cardMagic != null)
+        else if (cardMagic.Name != null)
             cardType = cardMagic;
         else
             cardType = null;
@@ -214,8 +206,6 @@ public static class CardDB
             {
                 result = true;
             }
-            else
-                result = false;
         }
 
         return result;

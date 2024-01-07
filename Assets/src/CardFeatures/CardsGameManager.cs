@@ -27,7 +27,7 @@ public class CardsGameManager : MonoBehaviour
     public void StartGame()
     {
         GetCardsToHand(playerDeck, playerHand, 4);
-        GetCardsToHand(enemyDeck, enemyHand, 4);
+        //GetCardsToHand(enemyDeck, enemyHand, 4);
     }
 
     public void NextTurn()
@@ -50,7 +50,7 @@ public class CardsGameManager : MonoBehaviour
             _deck.cards[n] = value;
         }
 
-        List<Card> selectedCards = _deck.cards.GetRange(0, Mathf.Min(_count, _deck.cards.Count));
+        List<Card> selectedCards = _deck.cards.GetRange(0, _count);
 
         foreach (Card card in selectedCards)
         {
@@ -60,18 +60,21 @@ public class CardsGameManager : MonoBehaviour
                 GameObject handCard = Instantiate(magicCardPref, Vector3.zero, Quaternion.identity);
                 handCard.GetComponent<CardObject>().InitCard(card);
                 handCard.transform.SetParent(playerHandObj.transform);
+                handCard.transform.localScale = Vector3.one;
             }
             else if (card.cardType is EnemyBD)
             {
                 GameObject handCard = Instantiate(enemyCardPref, Vector3.zero, Quaternion.identity);
                 handCard.GetComponent<CardObject>().InitCard(card);
                 handCard.transform.SetParent(playerHandObj.transform);
+                handCard.transform.localScale = Vector3.one;
             }
             else if (card.cardType is Tower)
             {
                 GameObject handCard = Instantiate(towerCardPref, Vector3.zero, Quaternion.identity);
                 handCard.GetComponent<CardObject>().InitCard(card);
                 handCard.transform.SetParent(playerHandObj.transform);
+                handCard.transform.localScale = Vector3.one;
             }
             _deck.cards.Remove(card);
         }

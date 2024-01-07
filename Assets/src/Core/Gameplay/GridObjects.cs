@@ -44,11 +44,12 @@ public class GridObjects : MonoBehaviour
     private const string ENEMY_SPEED_ATTRIBUTE_VAR = "speed";
     private const string ENEMY_SPRITE_ATTRIBUTE_VAR = "sprite";
     private const string ENEMY_MONEY_ATTRIBUTE_VAR = "money";
+    private const string ENEMY_DAMAGE_ATTRIBUTE_VAR = "playerDamage";
 
     private Camera mainCamera;
 
     public List<Tower> towers = new List<Tower>();
-    public static List<EnemyBD> enemys = new List<EnemyBD>();
+    public List<EnemyBD> enemys = new List<EnemyBD>();
     public List<Magic> magics = new List<Magic>();
 
     public List<GameObject> allObjectOnGrid = new List<GameObject>();
@@ -161,8 +162,9 @@ public class GridObjects : MonoBehaviour
                 float _enemySpeed = Convert.ToSingle(reader.GetAttribute(ENEMY_SPEED_ATTRIBUTE_VAR), CultureInfo.InvariantCulture);
                 string _enemySprite = reader.GetAttribute(ENEMY_SPRITE_ATTRIBUTE_VAR);
                 int _enemyMoney = Convert.ToInt32(reader.GetAttribute(ENEMY_MONEY_ATTRIBUTE_VAR));
+                int _enemyDamage = Convert.ToInt32(reader.GetAttribute(ENEMY_DAMAGE_ATTRIBUTE_VAR));
 
-                EnemyBD _enemy = new EnemyBD(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney);
+                EnemyBD _enemy = new EnemyBD(_enemyId, _enemyName, _enemyHp, _enemySprite, _enemySpeed, _enemyMoney, _enemyDamage);
                 enemys.Add(_enemy);
                 Debug.Log("[Loading] [Enemys] Loaded New Enemy: %" + _enemyName + "%");
             }
@@ -274,7 +276,7 @@ public class GridObjects : MonoBehaviour
             }
         }
 
-        if (_enemy == null)
+        if (_enemy.enemyName == null)
             Debug.LogError("[!] [Loading] [Enemies] No Such Enemy Found: %" + _name + "%!");
 
         return _enemy;
@@ -317,9 +319,9 @@ public class GridObjects : MonoBehaviour
         return new Tower(_id, _name, _sprite, _spd, _attackRange);
     }
 
-    private EnemyBD CreateEnemy(int _id, string _name, int _hp, string _spr, float _spd, int _money)
+    private EnemyBD CreateEnemy(int _id, string _name, int _hp, string _spr, float _spd, int _money, int _damage)
     {
-        return new EnemyBD(_id, _name, _hp, _spr, _spd, _money);
+        return new EnemyBD(_id, _name, _hp, _spr, _spd, _money, _damage);
     }
 }
 
@@ -524,7 +526,7 @@ public class EnemyBD : MonoBehaviour, ICardType
     public string sprite;
     public float speed;
     public int money;
-    public int playerDamage; // TODO: Parsing playerDamage att in xml
+    public int playerDamage;
     public bool isEnemy;
 
     private int currentWaypointIndex = 0;
@@ -534,7 +536,7 @@ public class EnemyBD : MonoBehaviour, ICardType
     public GridController grid;
     public WaveController waveController;
 
-    public EnemyBD(int _id, string _name, int _hp, string _spr, float _spd, int _money)
+    public EnemyBD(int _id, string _name, int _hp, string _spr, float _spd, int _money, int damage)
     {
         id = _id;
         enemyName = _name;
@@ -542,7 +544,7 @@ public class EnemyBD : MonoBehaviour, ICardType
         sprite = _spr;
         speed = _spd;
         money = _money;
-        playerDamage = 1; // TODO: Parsing playerDamage att in xml
+        playerDamage = damage;
     }
 
     public void InitializeFrom(EnemyBD other)
@@ -554,6 +556,7 @@ public class EnemyBD : MonoBehaviour, ICardType
         sprite = other.sprite;
         speed = other.speed;
         money = other.money;
+        playerDamage = other.playerDamage;
     }
 
     private void Start()

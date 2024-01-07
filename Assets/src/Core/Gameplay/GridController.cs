@@ -118,7 +118,7 @@ public class GridController : MonoBehaviour
                         GameObject overlaySprite = new GameObject("OverlaySprite");
                         SpriteRenderer overlayRenderer = overlaySprite.AddComponent<SpriteRenderer>();
                         overlayRenderer.sprite = selectedDecor;
-                        overlayRenderer.sortingOrder = 1;
+                        overlayRenderer.sortingOrder = 0;
                         overlaySprite.transform.SetParent(newNode.transform);
                         overlaySprite.transform.localPosition = Vector3.zero;
                     }

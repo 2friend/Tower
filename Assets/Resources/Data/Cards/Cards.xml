@@ -1,5 +1,5 @@
 <Root>
-  <Card id="0" name="Orc" background="default" sprite="Orc" type="Enemy" typeValue="Orc" rare="1" moneycost="5" class="warrior"/>
-  <Card id="1" name="Orc" background="default" sprite="Orc" type="Enemy" typeValue="Orc" rare="1" moneycost="5" class="warrior"/>
-  <Card id="2" name="Orc" background="default" sprite="Orc" type="Enemy" typeValue="Orc" rare="1" moneycost="5" class="warrior"/>
+  <Card id="0" name="Orc" desc="Test1" background="default" sprite="Orc" type="Enemy" typeValue="Orc" rare="1" moneycost="5" class="warrior"/>
+  <Card id="1" name="Orc" desc="Test2" background="default" sprite="Orc" type="Enemy" typeValue="Orc" rare="1" moneycost="5" class="warrior"/>
+  <Card id="2" name="Orc" desc="Test3" background="default" sprite="Orc" type="Enemy" typeValue="Orc" rare="1" moneycost="5" class="warrior"/>
 </Root>

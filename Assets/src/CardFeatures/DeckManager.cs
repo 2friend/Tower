@@ -11,7 +11,6 @@ public class DeckManager : MonoBehaviour
     private const int MAX_CARDS_IN_DECK = 30;
     private const int MAX_REPLY_CARDS_IN_DECK = 2;
 
-    private const string XML_PATH = "Data/Decks/Cards";
     private const string DECK_VAR = "Deck";
     private const string NAME_ATT = "name";
     private const string CLASS_ATT = "class";
