@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  unity: game-ci/unity@3.0.1
+  unity: game-ci/unity@1.7.0
 
 workflows:
   build-unity-project:
