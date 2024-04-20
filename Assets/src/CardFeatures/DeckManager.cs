@@ -175,7 +175,7 @@ public class DeckManager : MonoBehaviour
     {
         int index = 0;
 
-        for(int i = 0; i >= currDeck.cards.Count; i++)
+        for (int i = 0; i < currDeck.cards.Count; i++)
         {
             if (currDeck.cards[i].Name == _card.Name)
                 index++;

@@ -13,6 +13,8 @@ public class GameConstant : MonoBehaviour
     public static HeroesManager heroesManager;
     public static CardManager cardManager;
     public static DeckManager deckManager;
+    public static CameraMover cameraMover;
+    public static CardsGameManager cardsGameManager;
 
     public static bool extendedLogs = true;
 
@@ -26,6 +28,8 @@ public class GameConstant : MonoBehaviour
         cardManager = GameObject.Find("Cards").GetComponent<CardManager>();
         heroesManager = GameObject.Find("Cards").GetComponent<HeroesManager>();
         deckManager = GameObject.Find("Cards").GetComponent<DeckManager>();
+        cameraMover = GameObject.Find("CameraController").GetComponent<CameraMover>();
+        cardsGameManager = GameObject.Find("CardManager").GetComponent<CardsGameManager>();
         tutorials = GameObject.Find("Tutorial").GetComponent<Tutorials>();
     }
 }

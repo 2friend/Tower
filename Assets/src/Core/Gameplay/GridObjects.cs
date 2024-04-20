@@ -86,8 +86,6 @@ public class GridObjects : MonoBehaviour
 
         if(isBuilding)
             cameraMover.canMove = false;
-        else
-            cameraMover.canMove = true;
 
         Vector3 clickPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero);

@@ -42,4 +42,9 @@ public class CameraMover : MonoBehaviour
             swipeStartPos = swipeEndPos;
         }
     }
+
+    public void BlockCameraMove(bool value)
+    {
+        canMove = value;
+    }
 }

@@ -24,6 +24,8 @@ public class CardsGameManager : MonoBehaviour
 
     public int turnCount;
 
+    private CardObject currentActiveCard;
+
     public void StartGame()
     {
         GetCardsToHand(playerDeck, playerHand, 4);
@@ -35,11 +37,17 @@ public class CardsGameManager : MonoBehaviour
         turnCount++;
 
         GetCardsToHand(playerDeck, playerHand, 1);
-        GetCardsToHand(enemyDeck, enemyHand, 1);
+        //GetCardsToHand(enemyDeck, enemyHand, 1);
     }
 
     private void GetCardsToHand(Deck _deck, List<Card> _hand, int _count)
     {
+        if (_deck.cards.Count < _count)
+        {
+            Debug.LogError("[Loading] [CardGameManager] Not enough cards in the deck.");
+            return;
+        }
+
         int n = _deck.cards.Count;
         while (n > 1)
         {
@@ -48,6 +56,11 @@ public class CardsGameManager : MonoBehaviour
             Card value = _deck.cards[k];
             _deck.cards[k] = _deck.cards[n];
             _deck.cards[n] = value;
+        }
+
+        if (_count > _deck.cards.Count)
+        {
+            _count = _deck.cards.Count;
         }
 
         List<Card> selectedCards = _deck.cards.GetRange(0, _count);
@@ -78,5 +91,21 @@ public class CardsGameManager : MonoBehaviour
             }
             _deck.cards.Remove(card);
         }
+    }
+
+    public CardObject GetCurrentActiveCard()
+    {
+        return currentActiveCard;
+    }
+
+    public bool UpdateCurrentActiveCard(CardObject value)
+    {
+        if (value != null)
+        {
+            currentActiveCard = value;
+            return true;
+        }
+
+        return false;
     }
 }
