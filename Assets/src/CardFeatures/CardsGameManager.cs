@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class CardsGameManager : MonoBehaviour
 {
+    private const int MAX_CADS_IN_HAND = 6;
+
     public Deck playerDeck;
     public Deck enemyDeck;
 
@@ -65,6 +68,11 @@ public class CardsGameManager : MonoBehaviour
 
         List<Card> selectedCards = _deck.cards.GetRange(0, _count);
 
+        if (_hand.Count + 1 >= MAX_CADS_IN_HAND)
+        {
+
+        }
+
         foreach (Card card in selectedCards)
         {
             _hand.Add(card);
@@ -105,6 +113,13 @@ public class CardsGameManager : MonoBehaviour
             currentActiveCard = value;
             return true;
         }
+
+        return false;
+    }
+
+    public bool IsMaxCardsInHand()
+    {
+
 
         return false;
     }
